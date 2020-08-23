@@ -1,5 +1,5 @@
-var ws_url = "wss://eshail.batc.org.uk/wb/fft_m0dtslivetune";
-var ws_name = 'fft';
+var ws_url = "wss://eshail.batc.org.uk/wb/fft";
+var ws_name = 'fft_f5oeoplutofw';
 
 if(typeof ws_url_override !== 'undefined')
 {
