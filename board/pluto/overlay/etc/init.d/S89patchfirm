@@ -1,0 +1,23 @@
+#! /bin/sh
+
+# Extract patch.zip in /mnt/jfss2 for patching firmware
+# start/stop/restart
+case "$1" in
+  start)
+    /usr/sbin/device_persistent_keys
+	 unzip -ox /mnt/jffs2/patch.zip -d /
+	;;
+  stop)
+	
+	;;
+  restart)
+	
+	;;
+  *)
+	echo "Usage: $0 {start|stop|restart}"
+	exit 1
+esac
+
+exit $?
+
+

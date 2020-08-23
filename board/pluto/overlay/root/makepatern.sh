@@ -1,0 +1,2 @@
+ffmpeg -i patern.png -vf drawtext="fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf: text='PlutoDVB (F5OEO)': fontcolor=white: fontsize=24: box=1: boxcolor=black@0.5:boxborderw=5: x=(w-text_w)/2: y=(h-text_h)/4" -y patern2.png
+ffmpeg -framerate 1/5 -i patern2.png -c:v libx264 -vf fps=25 -g 100 -b:v 150k -minrate 150k -maxrate 150k -pix_fmt yuv420p -muxrate 200000 -f mpegts -metadata service_provider="toto" -metadata service_name=f5oeo -streamid 0:256 -y patern.ts

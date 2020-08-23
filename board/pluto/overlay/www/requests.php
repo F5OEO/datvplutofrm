@@ -1,0 +1,129 @@
+<?php
+
+//set and return requested gain
+if(isset($_GET['gain'])){
+    $cmd = 'echo '.$_GET['gain'].' >  /sys/bus/iio/devices/iio:device1/out_voltage0_hardwaregain';
+    exec($cmd);
+}
+
+if(isset($_GET['onair'])){
+    $cmd = 'cat /sys/bus/iio/devices/iio:device1/out_altvoltage1_TX_LO_powerdown';
+    exec($cmd,$return);
+    
+    foreach( $return as & $value )
+    {
+    echo $value;
+    }
+}
+
+if(isset($_GET['PTT'])){
+    $Tx= $_GET['PTT'];
+    if($Tx == "on")
+    {   
+        $cmd = 'echo 0x27 0x10 > /sys/kernel/debug/iio/iio:device1/direct_reg_access';
+        exec($cmd);
+        $cmd = 'echo  0 >  /sys/bus/iio/devices/iio:device1/out_altvoltage1_TX_LO_powerdown';
+        exec($cmd);
+    }
+    else
+    if($Tx == "off")
+    {
+        $cmd = 'echo 0x27 0x00 > /sys/kernel/debug/iio/iio:device1/direct_reg_access';
+        exec($cmd);
+        $cmd = 'echo  1 >  /sys/bus/iio/devices/iio:device1/out_altvoltage1_TX_LO_powerdown';
+        exec($cmd);
+    }       
+    
+}
+
+//get status
+//doo whatever we like here TBD
+if(isset($_GET['status'])){
+     $cmd = "/root/reportbitrate.sh";	
+     exec($cmd,$stuff);	
+     echo "{";
+
+     echo '"bitrate": ';
+     echo "[";
+     $i=0;
+     foreach( $stuff as & $value ) {
+     echo $value;
+     $i++;
+     if( $i < count($stuff) ){
+     echo ",";
+     }
+     }
+     echo "]";
+     
+ $cmd = "/root/reportpid.sh";
+     exec($cmd,$pid);
+     echo ',';
+     echo '"pid": ';
+     echo "[";
+     $i=0;
+     foreach( $pid as & $value ) {	
+     echo '"' . $value;
+     switch($value) {
+
+     case 0 : echo "(PAT)";break;
+     case 17 : echo "(SDT)";break;
+     case 256: echo  "(Video)";break;
+     case 257 : echo  "(Audio)";break;
+     case 4096 : echo  "(PMT)";break;
+     case 8191 : echo  "(Null packets)";break;
+    }
+   
+     echo '"';		
+     $i++;
+     if( $i < count($pid) ){
+     echo ",";
+     }
+     }
+     echo "]";
+//end of PID Array
+
+$i=0;
+echo ',';
+echo '"pcr": ';
+echo "[";
+     
+
+     $cmd = "tail -n 200 /root/pcr.txt";
+     exec($cmd,$pcrline);
+     foreach( $pcrline as & $value ) {
+         $arraypcr=explode(';',$value);	
+        echo '"' . $arraypcr[7]/90 .'"';
+        $i++;
+     if( $i < count($pcrline) ){
+     echo ",";
+     }
+     }  
+     echo "]";
+
+$i=0;
+
+echo ',';
+echo '"pcrlabel": ';
+echo "[";
+     
+
+     foreach( $pcrline as & $value ) {
+         $arraypcr=explode(';',$value);	
+        echo '"' . $arraypcr[6]/90000 .'"';
+        $i++;
+     if( $i < count($pcrline) ){
+     echo ",";
+     }
+     }  
+     echo "]";
+
+
+//end of json
+echo "}";
+}	
+	
+
+
+
+
+?>

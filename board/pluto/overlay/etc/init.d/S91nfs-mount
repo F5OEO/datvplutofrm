@@ -1,0 +1,46 @@
+nfs_server=`fw_printenv -n nfs_server 2> /dev/null`
+
+start() {
+   if [[ -n $nfs_server ]]
+	then
+		
+		echo "mounting NFS volume : $nfs_server on /remote"		
+		eval 'mount -t nfs -o defaults,_netdev,bg,vers=3,intr,hard,timeo=50 $nfs_server /remote'
+		
+	else
+		
+		echo "Nothing to do"
+	fi
+}
+
+stop() {
+
+	umount /remote
+	echo "Stopping NFS"
+}
+
+restart() {
+	stop
+	start
+}
+
+# start/stop/restart
+case "$1" in
+  start)
+	start
+	;;
+  stop)
+	stop
+	;;
+  restart)
+	restart
+	;;
+  *)
+	echo "Usage: $0 {start|stop|restart}"
+	exit 1
+esac
+
+exit $?
+
+
+

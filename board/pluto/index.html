@@ -1,0 +1,440 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<title>ADALM-PLUTO On-board documentation</title>
+<meta name="description" content="ADALM-PLUTO On board docs">
+
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+<!-- Place favicon.ico in the root directory -->
+<link type="text/css" href="./img/style.css" rel="stylesheet">
+</head>
+<body>
+<!--[if lte IE 11]>
+<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+<![endif]-->
+
+<!-- Add your site or application content here -->
+<header id="top">
+<div class="anchor">
+<a href="https://twitter.com/F5OEOEvariste/" title="Go to Tweeter">F5OEO: <img style="width: 32px;" src="./img/tw.png" alt="Twitter Logo"></a>
+</div>
+</header>
+
+<nav style="text-align: center;">
+	<a class="button" href="pluto.php">Controller</a>
+	<a class="button" href="analysis.php">Analysis</a>
+	<a class="button" href="https://www.paypal.me/f5oeo">Donate</a>	
+</nav>
+<hr>
+<section>
+<h1>Welcome to the <strong>ADALM-PLUTO</strong> QO-100/DATV custom firmware</h1>
+<a href="http://www.analog.com/education"><img src="./img/prof_blue.png" alt="ADI Professor" style="float:left" /></a>
+<p style="margin-bottom:0em;">Thank you for testing this custom firmware. It is mainly intended to make an easy plateform for TX/RX on QO-100 satellite but could be used on other bands.It includes :</p>
+<ul style="margin-left:8em; margin-top:0em;"><li>DATV DVBS/S2 modulator (33KSymbols to 2MSymbols).</li>
+<li>Reduced bandwidth analog TV modulator using NASA Apollo mode (in development) <a href="https://github.com/fsphil/hacktv">HackTV</a></li>
+<li><a href="#ssb">Narrow band ssb</a></li>
+<li><a href="#sstv">Narrow band sstv</a></li>
+<li><a href="#freedv">FreeDV digital voice modulator Codec2</a> </li>
+<li><a href="#spectrum">Spectrum painting</a></li>
+<li>Reception will be added in future.</li></ul>
+<p>Warning : This is an experimental firmware maintained by an amator. Feel free to report bugs, but no warranty to fix them !</p>
+</section>
+<hr>
+<section id="started">
+<a class="anchor" href="#top">Back to top</a>
+<h3>Getting Started</h3>
+<p>Usefull information are available at <a href="https://wiki.batc.org.uk/Custom_DATV_Firmware_for_the_Pluto">BATC wiki</a> thanks to Paul M0EYT</p>
+<p>To install this firmware, use the pluto.frm provided and follow <a href="https://wiki.analog.com/university/tools/pluto/users/firmware">instructions to flash ot on the pluto board</a></p>
+<p id="test"><strong>DATV external requirements:</strong></p>
+<p>In order to send video to PlutoSDR, you need a video producer. It could be a PC, a phone or raspberry pi for example.</p>
+</section>
+<hr>
+<section id="pc">
+<a class="anchor" href="#top">Back to top</a>
+<h3>PC with <a href="https://www.vmix.com/software/download.aspx">Vmix</a> or <a href="https://obsproject.com/fr/download">OBS</a> </h3>
+<p>Use the PlutoDVB with a PC</p>
+<p id="test"><strong>Set streaming</strong></p>
+<p>Assume that pluto is directly connected to PC. Go to connection/new and type the URL. The parsing is very poor so, be very carefull with syntax, particularly "," which is used for parameter separator.</p>
+<ul style="margin-left:8em; margin-top:0em;">
+	<li>Frequency in Mhz: 437</li>
+	<li>Mode (DVBS/DVBS2) : DVBS2</li>
+	<li>Constellation (QPSK,8PSK,16APSK): QPSK (only QPSK in valid in DVBS)</li>
+	<li>SymbolRate in KS (33-2000) : 333</li>
+	<li>FEC (12,23,34,67,78...) : 23</li>
+	<li>Gain in dB (-71..0): 0</li>
+	<li>---Advanced parameters---</li>
+	<li>Calib mode {calib,nocalib]}: Force a calibration process (high spike) with calib</li>
+	<li>PCR/PTS delay (100-2000):default 600: if encoding suffers from underflow, increase this</li>
+	<li>Audio transcoding bitrate: Audio bitrate from OBS could not go down below 64kbit , this is used to workaround that</li>
+	<li>CALLSIGN /li>
+</ul>
+<p>You can copy/paste these fields</p>
+<p>Basic setup</p>
+<p>rtmp://192.168.2.1:7272/,437,DVBS2,QPSK,333,23,0,</p>
+<p>,F5OEO,</p>
+<p>Advanced setup</p>
+<p>rtmp://192.168.2.1:7272/,437,DVBS2,QPSK,333,23,0,nocalib,800,32,</p>
+<p>,F5OEO,</p>
+
+<p id="test"><strong>OBS</strong></p>
+<p><img src="img/obspluto.png" alt="obs" /></p>
+<p id="test"><strong>VMIX</strong></p>
+<p><img src="img/vmixencoding_stream.JPG" alt="obs" /></p>
+<p id="test"><strong>Transport stream bitrate</strong></p>
+<p>DVBS/S2 modulation is a fix channel bitrate. This bitrate is calculated from parameters (SymbolRate,FEC,Pilots) and is called the net transport stream bitrate. Online <a href="http://www.satbroadcasts.com/DVB-S_Bitrate_and_Bandwidth_Calculator.html">DVBS/S2 calculator</a> could help.Transport stream contains video+audio but also some other metadata (dvb table).</p>
+<p><img src="img/dvbscalculator.jpg" alt="dvbscalc" /></p>
+<p id="test"><strong>Video bitrate and Size</strong></p>
+<p>To ensure that we don't overflow the ts bitrate capacity, we need to set a correct video bitrate. A good starting point is a video at 70% of the ts bitrate. On example, I set video at 280kbps (a bit lower than 70% of 440kbps net bitrate (308kbps).</p>
+<p>Video size is very important for quality, however when you use low symbolrates, you should reduce video size as the encoder will give you bad artefacts. It is a compromise. Here 960*540.</p>
+<p id="test"><strong>OBS</strong></p>
+<p><img src="img/obsplutoencoding.png" alt="phon1" /></p>
+<p id="test"><strong>VMIX</strong></p>
+<p><img src="img/vmixadvanceencoding.JPG" alt="phon1" /></p>
+<p id="test"><strong>Transmitting</strong></p>
+<p>You can now test your setup to see if all is working properly. Pushing the "Start streamin" button let you know if the connection is running. DVBS/S2 transmission should start in about 5 seconds. Stopping the stream, stop the transmission after around 2 seconds (until you have some overflows).</p>
+<p id="test"><strong>OBS</strong></p>
+<p><img src="img/obsstreaming.jpg" alt="phon1" /></p>
+<p id="test"><strong>VMIX</strong></p>
+<p><img src="img/vmixstreaming.JPG" alt="phon1" /></p>
+</section>
+<hr>
+
+<section id="H265Box">
+	<a class="anchor" href="#top">Back to top</a>
+	<h3>H264/H265 box though UDP or Jetson nano</h3>
+	<p><img src="img/h265box.jpg" alt="h265" /></p>
+	<p>PlutoSDR wait for transport stream over udp on port 8282.</p>
+	<p><img src="img/h265param.png" alt="h265" /></p>
+	<p>You should have a transport stream bitrate which is calculated from DVB parameters. Parameters are set with <a href="pluto.php">Controller</a> </p>
+	</section>
+<hr>
+<section id="ssb">
+<a class="anchor" href="#top">Back to top</a>
+<h3>SSB modulation</h3>
+<p>Audio only is used from OBS/VMIX</p>
+<p id="test"><strong>Set streaming</strong></p>
+<p>Assume that pluto is directly connected to PC. Go to connection/new and type the URL. The parsing is very poor so, be very carefull with syntax, particularly "," which is used for parameter separator.</p>
+<ul style="margin-left:8em; margin-top:0em;">
+	<li>Frequency in Mhz: 437</li>
+	<li>Mode : SSB</li>
+	<li>Gain in dB (-71..0): 0</li>
+	<li>BF Gain (1..20): Adjust manualy BF gain</li>
+	<li>CALLSIGN </li>
+</ul>
+<p>You can copy/paste these fields</p>
+<p>Basic setup</p>
+<p>rtmp://192.168.2.1:7373/,437,SSB,-10,2,</p>
+<p>,F5OEO,</p>
+</section>
+
+<hr>
+<section id="sstv">
+<a class="anchor" href="#top">Back to top</a>
+<h3>SSTV modulation</h3>
+<p>Video only is used from OBS/VMIX</p>
+<p>Warning : as soon as Picture is starting Tx, there is no way to stop it until finished</p>
+<p id="test"><strong>Set streaming</strong></p>
+<p>Assume that pluto is directly connected to PC. Go to connection/new and type the URL. The parsing is very poor so, be very carefull with syntax, particularly "," which is used for parameter separator.</p>
+<ul style="margin-left:8em; margin-top:0em;">
+	<li>Frequency in Mhz: 437</li>
+	<li>Mode : SSTV</li>
+	<li>Gain in dB (-71..0): 0</li>
+	<li>BF Gain (0.1..20): Adjust manualy BF gain</li>
+	<li>Sstv mode: m1(Martin1),m2(Martin2),s1(Scotty1),s2(Scotty2)</li>
+	<li>CALLSIGN </li>
+</ul>
+<p>You can copy/paste these fields</p>
+<p>Basic setup</p>
+<p>rtmp://192.168.2.1:7373/,437,SSTV,-4,1,m1,</p>
+<p>,F5OEO,</p>
+</section>
+
+<hr>
+<section id="freedv">
+<a class="anchor" href="#top">Back to top</a>
+<h3>FreeDV modulation</h3>
+<p>Audio only is used from OBS/VMIX</p>
+<p id="test"><strong>Set streaming</strong></p>
+<p>Assume that pluto is directly connected to PC. Go to connection/new and type the URL. The parsing is very poor so, be very carefull with syntax, particularly "," which is used for parameter separator.</p>
+<ul style="margin-left:8em; margin-top:0em;">
+	<li>Frequency in Mhz: 437</li>
+	<li>Mode : FREEDV</li>
+	<li>Gain in dB (-71..0): 0</li>
+	<li>BF Gain (0.1..20): Adjust manualy BF gain</li>
+	<li>FreeDV mode {1600|700|700B|700C|700D|2400A|2400B|800XA}</li>
+	<li>CALLSIGN </li>
+</ul>
+<p>You can copy/paste these fields</p>
+<p>Basic setup</p>
+<p>rtmp://192.168.2.1:7373/,437,FREEDV,0,2,800XA,</p>
+<p>,F5OEO,</p>
+</section>
+
+<hr>
+<section id="spectrum">
+<a class="anchor" href="#top">Back to top</a>
+<h3>Spectrum painting</h3>
+<p>Video only is used from OBS/VMIX</p>
+<p>Warning : as soon as spectrum is starting Tx, there is no way to stop it until finished.</p>
+<p id="test"><strong>Set streaming</strong></p>
+<p>Assume that pluto is directly connected to PC. Go to connection/new and type the URL. The parsing is very poor so, be very carefull with syntax, particularly "," which is used for parameter separator.</p>
+<ul style="margin-left:8em; margin-top:0em;">
+	<li>Frequency in Mhz: 437</li>
+	<li>Mode : SPECTRUM</li>
+	<li>Gain in dB (-71..0): 0</li>
+	<li>BF Gain (0.1..20): Adjust manualy BF gain</li>
+	<li>Output picture horizontal resolution : small resolution for narrow band</li>
+	<li>Output picture vertical resolution </li>
+	<li>Line repetition : if spectrum is too short in time, adjust that</li>
+	<li>CALLSIGN </li>
+</ul>
+<p>You can copy/paste these fields</p>
+<p>Basic setup</p>
+<p>rtmp://192.168.2.1:7373/,437,SPECTRUM,0,32,32,32,10,</p>
+<p>,F5OEO,</p>
+</section>
+
+<hr>
+<section id="phone">
+<a class="anchor" href="#top">Back to top</a>
+<h3>Phone</h3>
+<p>On Android you can install <a href="https://play.google.com/store/apps/details?id=com.wmspanel.larix_broadcaster&hl=fr">Larix Broadcaster</a> </p>
+<p id="test"><strong>Add a connection</strong></p>
+<p>Assume that phone and pluto are on a same network (through wifi or ethernet). You need first to know IP address of your pluto(on photo 192.168.1.29). Go to connection/new and type the URL. The parsing is very poor so, be very carefull with syntax, particularly "," which is used for parameter separator.</p>
+<ul style="margin-left:8em; margin-top:0em;">
+	<li>Frequency in Mhz: 437</li>
+	<li>Mode (DVBS/DVBS2) : DVBS2</li>
+	<li>Constellation (QPSK,8PSK,16APSK): QPSK (only QPSK in valid in DVBS)</li>
+	<li>SymbolRate in KS (33-2000) : 333</li>
+	<li>Gain in dB (-71..0): 0</li>
+	<li>FEC (12,23,34,67,78...) : 23</li>
+	<li>CALLSIGN </li>
+</ul>
+<p><img src="img/phon3.jpg" alt="phon1" /></p>
+<p id="test"><strong>Transport stream bitrate</strong></p>
+<p>DVBS/S2 modulation is a fix channel bitrate. This bitrate is calculated from parameters (SymbolRate,FEC,Pilots) and is called the net transport stream bitrate. Online <a href="http://www.satbroadcasts.com/DVB-S_Bitrate_and_Bandwidth_Calculator.html">DVBS/S2 calculator</a> could help.Transport stream contains video+audio but also some other metadata (dvb table).</p>
+<p><img src="img/dvbscalculator.jpg" alt="dvbscalc" /></p>
+<p id="test"><strong>Video bitrate</strong></p>
+<p>To ensure that we don't overflow the ts bitrate capacity, we need to set a correct video bitrate. A good starting point is a video at 70% of the ts bitrate. On example, I set video at 280kbps (a bit lower than 70% of 440kbps net bitrate (308kbps).</p>
+<p><img src="img/phon1.jpg" alt="phon1" /></p>
+<p id="test"><strong>Video size</strong></p>
+<p>Video size is very important for quality, however when you use low symbolrates, you should reduce video size as the encoder will give you bad artefacts. It is a compromise. Here 528*432.</p>
+<p><img src="img/phon2.jpg" alt="phon1" /></p>
+<p id="test"><strong>Transmitting</strong></p>
+<p>You can now test your setup to see if all is working properly. Pushing the red button let you know if the connection is running. DVBS/S2 transmission should start in about 5 seconds. Stopping the stream, stop the transmission after around 2 seconds (until you have some overflows).</p>
+<p><img src="img/phon4.jpg" alt="phon1" /></p>
+</section>
+<hr>
+
+<section id="H265Box">
+<a class="anchor" href="#top">Back to top</a>
+<h3>H264/H265 box though UDP</h3>
+<p>On Android you can install <a href="https://play.google.com/store/apps/details?id=com.wmspanel.larix_broadcaster&hl=fr">Larix Broadcaster</a> </p>
+</section>
+<hr>
+
+<section id="receiving">
+	<a class="anchor" href="#top">Back to top</a>
+	<h3>Receiving DATV</h3>
+	<p>Right now, receiving part is not implemented directly on Pluto (maybe on future releases). Currently you need a satellite receiver (generally could not handle low symbolRate) or PC.</p>
+	<p id="test"><strong>Windows</strong></p>
+	<p>Common way is to use Minitioune software with Minitiouner hardware : see <a href="http://www.vivadatv.org">Vivadatv</a></p>
+	<p><img src="img/receicemt.JPG" alt="mt" /></p>
+	<p id="test"><strong>Windows/Linux with SDR</strong></p>
+	<p>A datv plugin of  <a href="https://github.com/f4exb/sdrangel">SdrAngel</a> based on <a href="http://www.pabr.org/radio/leandvb/leandvb.en.html">Leandvb</a> is able to receive DATV. It usually requires a high SNR but will be surely improved.</p>
+	<p><img src="img/sdrangeldvbs2.png" alt="mt" /></p>
+</section>
+<hr>	
+<section id="firmware">
+<a class="anchor" href="#top">Back to top</a>
+<h3>Firmware</h3>
+<p>The <i>ADALM-PLUTO Firmware</i> refers to the U-Boot, HDL, Linux kernel, device drivers, and user space software, which runs on the PlutoSDR. This is bundled up and given a specific version number for the PlutoSDR. For help upgrading firmware, check out the <a href="https://wiki.analog.com/university/tools/pluto/common/firmware">online documentation</a>.</p>
+<div id="versionsection" class="download">
+<p><strong>Status of the PlutoSDR firmware:</strong></p>
+<p><span id="versiontest">Need javascript to check (sorry)</span></p>
+<p><a id="plutsdr-fw-download" class="button" href="http://www.vivadatv.org/viewtopic.php?f=87&t=685">Check the latest version</a>
+</div>
+<br>
+<a class="anchor" href="#top">Back to top</a>
+<p id="version"><strong>Version Information:</strong></p>
+<p>The various parts of the firmware all have their own unique versions as well:</p>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>#MODEL#</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Serial</td>
+<td>#SERIAL#</td>
+</tr>
+<tr>
+<td>Build</td>
+<td>#BUILD#</td>
+</tr>
+<tr>
+<td>Linux</td>
+<td>#LINUX#</td>
+</tr>
+<tr>
+<td>U-Boot</td>
+<td>#UBOOT#</td>
+</tr>
+<tr>
+<td>FPGA</td>
+<td>#FPGA#</td>
+</tr>
+<tr>
+<td>Root FS</td>
+<td>#ROOTFS#</td>
+</tr>
+<tr>
+<td>IIO</td>
+<td>#IIO#</td>
+</tr>
+</tbody>
+</table>
+<a class="anchor" href="#top">Back to top</a>
+<p id="target"><strong>Standalone Applications:</strong></p>
+<p><a href="https://wiki.analog.com/university/tools/pluto/devs/embedded_code">Custom C/C++ applications</a> can be created/compiled on a host with a <a href="https://releases.linaro.org/components/toolchain/binaries/">Linaro GNU Compiler Collection (GCC)</a> toolchain (with the appropriate flags), transferred over and run directly on the PlutoSDR.</p>
+<table>
+<tbody>
+<tr>
+<td>GCC Compiler <a href="https://collaborate.linaro.org/display/TCWGPUB/ARM+and+AArch64+Target+Triples">Target Triple</a></td>
+<td>arm-linux-gnueabihf</td>
+</tr>
+<tr>
+<td>GCC version</td>
+<td>Linaro GCC 7.3-2018.04-rc3 7.3.1 20180314</td>
+</tr>
+<tr>
+<td>Binutils version</td>
+<td>Linaro_Binutils- 2.29.1.20171214</td>
+</tr>
+<tr>
+<td>SysRoot</td>
+<td><a id="sysroot" href="https://github.com/analogdevicesinc/plutosdr-fw/releases/latest">Latest SYSROOT</a></td>
+</tr>
+</tbody>
+</table>
+<a class="anchor" href="#top">Back to top</a>
+<p id="userpass"><strong>Build Settings:</strong></p>
+<p>There are many settings which are set as part of the build configuration, and can not be changed without rebuilding the firmware.</p>
+<table>
+<tbody>
+<tr>
+<td>Username:</td>
+<td>root</td>
+</tr>
+<tr>
+<td>Password:</td>
+<td>analog</td>
+</tr>
+</tbody>
+</table>
+<a class="anchor" href="#top">Back to top</a>
+<p id="config"><strong>Configuration Settings:</strong></p>
+<p>On the root file system, there are <a href="./config.txt">configuration settings</a> that can modify the default configuration, they currently are:</p>
+<table>
+<tbody>
+<tr>
+<td>Hostname</td>
+<td>#HOSTNAME#</td>
+</tr>
+<tr>
+<td>IP Address (PlutoSDR)</td>
+<td>#IP#</td>
+</tr>
+<tr>
+<td>IP Address (HOST)</td>
+<td>#HOSTIP#</td>
+</tr>
+<tr>
+<td>Netmask</td>
+<td>#NETMASK#</td>
+</tr>
+<tr>
+<td>MAC Address (PlutoSDR)</td>
+<td>#MAC#</td>
+</tr>
+<tr>
+<td>MAC Address (HOST)</td>
+<td>#MACHOST#</td>
+</tr>
+</tbody>
+</table>
+<a class="anchor" href="#top">Back to top</a>
+<p id="wifi">Wi-Fi <a href="./config.txt">Update</a></p>
+<table>
+<tbody>
+<tr>
+<td>SSID</td>
+<td>#SSID_WLAN#</td>
+</tr>
+<tr>
+<td>WPA-PSK Passphrase</td>
+<td>********</td>
+</tr>
+<tr>
+<td>IP Address</td>
+<td>#IPADDR_WLAN#</td>
+</tr>
+</tbody>
+</table>
+<a class="anchor" href="#top">Back to top</a>
+<p id="wired">Wired Ethernet using a USB Ethernet adapter. <a href="./config.txt">Update</a></p>
+<table>
+<tbody>
+<tr>
+<td>IP Address</td>
+<td>#IPADDR_ETH#</td>
+</tr>
+<tr>
+<td>Netmask</td>
+<td>#NETMASK_ETH#</td>
+</tr>
+</tbody>
+</table>
+
+<p>To change these settings, check the <a href="https://wiki.analog.com/university/tools/pluto/common/customizing">on-line documentation</a>.</p>
+</section>
+<hr>
+<section id="support">
+<a class="anchor" href="#top">Back to top</a>
+<h3>Help and Support</h3>
+<p id="test"><strong>Support</strong></p>
+<p>If you have any questions regarding this custom firmware or are experiencing any problems following the user guides, or experiments feel free to ask a question. Questions can be asked on our <a href="http://vivadatv.org/viewforum.php?f=87&sid=265a090b48bb7bace20b4dbbb2b9f034">vivadatv forum</a>. </p>
+<p id="test"><strong>Support the author</strong></p>
+<p>Even most of this development is done under opensource (GPL), I should apreciate donation for integration, development and materials :  <a href="https://www.paypal.me/f5oeo">Donate</a></p>
+</section>
+<hr>
+<section id="social">
+<h3 id="about">About</h3>
+<div class="colLeft">
+<p id="test"><strong>Author</strong></p>	
+<p>Hamradio call F5OEO since 1995, electronic and computer science engineer. Interested in experimenting rather than communicating. Main interests : SDR, embedded platform (raspebrry pi), digital television (DVB). </p>
+<p id="test"><strong>Main projects</strong></p>
+<ul style="margin-left:8em; margin-top:0em;">
+		<li><a href="https://github.com/F5OEO/rpidatv">rpidatv : Standalone DVBS2 raspberry pi modulator</a></li>
+		<li><a href="https://github.com/F5OEO/rpitx">rpitx : Low cost sdr transmitter on raspberry pi </a></li>
+		<li><a href="https://github.com/F5OEO/avc2ts">avc2ts : Dvb compliant H264 encoder for raspberry pi</a></li>
+		<li><a href="https://github.com/F5OEO/dvbsdr">dvbsdr : Script collection handling various encoders and modulators</a></li>
+		
+	</ul>
+<p></p>
+</div>
+</section>
+<footer>
+<p>&copy; 2019 F5OEO, Evariste</p>
+</footer>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+<script>window.jQuery || document.write('<script src="js/vendor/jquery-3.1.1.min.js"><\/script>')</script>
+<script src="./img/version.js"></script>
+</body>
+</html>

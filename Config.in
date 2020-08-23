@@ -1,0 +1,2 @@
+
+source "$BR2_EXTERNAL_PLUTOSDR_PATH/package/ffmpeg43/Config.in"

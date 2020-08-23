@@ -1,0 +1,5 @@
+device-fw v0.32-dirty
+hdl dev_prj_2018_r1-933-g847f
+buildroot v0.20-13876-g1daa6-dirty
+linux xcomm_zynq-2013-04-19-471994-g6edc6c-dirty
+u-boot-xlnx v0.20-PlutoSDR-14-g469a0f
