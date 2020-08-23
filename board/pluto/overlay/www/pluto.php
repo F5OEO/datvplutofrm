@@ -27,8 +27,6 @@ if ( isset( $_POST[ 'delpatch' ] ) ) {
   width: 500px;
 }
 
-  .slider {
-  width: 160px;
 }
 
 .btn {
