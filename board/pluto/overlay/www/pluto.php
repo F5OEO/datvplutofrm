@@ -27,8 +27,6 @@ if ( isset( $_POST[ 'delpatch' ] ) ) {
   width: 500px;
 }
 
-}
-
 .btn {
   border: none;
   color: white;
@@ -81,7 +79,7 @@ if ( isset( $_POST[ 'delpatch' ] ) ) {
 <header id="maintitle"> <h1><strong>ADALM-PLUTO</strong> DATV Controller</h1>
 <section style=" text-align: right;">
   <div >Thanks Rob M0DTS for help. Mods by G4EML for codec selection and sound enable</div>
-  <div >Mods by Roberto IS0GRB (Transverter OL/Prov.Name/Fw version (August 23th, 2020)</div>
+  <div >Mods by Roberto IS0GRB (Transverter LO/Prov.Name/Fw version (August 23th, 2020)</div>
   <div >Mods by Chris <a href="https://www.f5uii.net/?o=pluto2308" title="Go to Chris blog and ressources" target="_blank">F5UII.net</a>&nbsp; <a href="https://twitter.com/f5uii/" title="Go to f5uii profile on twitter"><img style="width: 20px;" src="./img/tw.png" alt="Twitter Logo"></a> version <i>UII1</i>: <span class="note tooltip" title="<strong>Version UII1 - 23/08/2020</strong> <ul><li>BATC spectrum (only if client is online) </li><li>Change transmit frequency by click on a channel</li><li>Up frequencies added to Robertor's channel list</li><li>Reboot command</li><li>Restore firmware by deleting added patches</li><li>Some html format compliance mods (bolded odd columns, uniform presentation of units in the table, adding a tab icon on Controller page) </li></ul><i>On workbench : </i> Remote control of minitiouner (steering the receiver by right click on an occuped channel).<br/> <hr>🛈 Link to <a href='https://www.f5uii.net/en/patch-plutodvb/?o=pluto2308' target='_blank'>download and support page</a>
   
     ">Details</span></div>
@@ -126,7 +124,7 @@ if ( isset( $_POST[ 'delpatch' ] ) ) {
       <td>Callsign <i>DVB Program Name</i></td>
       <td><input type="text" name="callsign" value="NOCALL"></td>
       <td>DVB Provider Name <i>output FwVer_ProvName</i></td>
-      <td><input type="text" name="provname" value="_yourname_or_other_" maxlength="20" size="22"> (max 12 chars)</td>
+      <td><input type="text" name="provname" value="_yourname_or_other_" maxlength="20" size="22"> (max 20 chars)</td>
     </tr>
                 <tr><td>PCR/PTS</td>
 <td><div class="slidecontainer">
