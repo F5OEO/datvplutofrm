@@ -27,6 +27,10 @@ if ( isset( $_POST[ 'delpatch' ] ) ) {
   width: 500px;
 }
 
+  .slider {
+  width: 170px;
+}
+
 .btn {
   border: none;
   color: white;
@@ -79,7 +83,7 @@ if ( isset( $_POST[ 'delpatch' ] ) ) {
 <header id="maintitle"> <h1><strong>ADALM-PLUTO</strong> DATV Controller</h1>
 <section style=" text-align: right;">
   <div >Thanks Rob M0DTS for help. Mods by G4EML for codec selection and sound enable</div>
-  <div >Mods by Roberto IS0GRB (Transverter OL/Prov.Name/Fw version (August 22th, 2020)</div>
+  <div >Mods by Roberto IS0GRB (Transverter OL/Prov.Name/Fw version (August 23th, 2020)</div>
   <div >Mods by Chris <a href="https://www.f5uii.net/?o=pluto2308" title="Go to Chris blog and ressources" target="_blank">F5UII.net</a>&nbsp; <a href="https://twitter.com/f5uii/" title="Go to f5uii profile on twitter"><img style="width: 20px;" src="./img/tw.png" alt="Twitter Logo"></a> version <i>UII1</i>: <span class="note tooltip" title="<strong>Version UII1 - 23/08/2020</strong> <ul><li>BATC spectrum (only if client is online) </li><li>Change transmit frequency by click on a channel</li><li>Up frequencies added to Robertor's channel list</li><li>Reboot command</li><li>Restore firmware by deleting added patches</li><li>Some html format compliance mods (bolded odd columns, uniform presentation of units in the table, adding a tab icon on Controller page) </li></ul><i>On workbench : </i> Remote control of minitiouner (steering the receiver by right click on an occuped channel).<br/> <hr>🛈 Link to <a href='https://www.f5uii.net/en/patch-plutodvb/?o=pluto2308' target='_blank'>download and support page</a>
   
     ">Details</span></div>
@@ -124,7 +128,7 @@ if ( isset( $_POST[ 'delpatch' ] ) ) {
       <td>Callsign <i>DVB Program Name</i></td>
       <td><input type="text" name="callsign" value="NOCALL"></td>
       <td>DVB Provider Name <i>output FwVer_ProvName</i></td>
-      <td><input type="text" name="provname" value="XXXXXXXXXXXX" maxlength="12" size="14"> (max 12 chars)</td>
+      <td><input type="text" name="provname" value="_yourname_or_other_" maxlength="20" size="22"> (max 12 chars)</td>
     </tr>
                 <tr><td>PCR/PTS</td>
 <td><div class="slidecontainer">
@@ -340,8 +344,8 @@ if ( isset( $_POST[ 'delpatch' ] ) ) {
         </select></td>
 
       <td>Transverter OL <i>MHz</i></td>
-      <td><select name="trvol" onchange="upd_freq()">
-          <option value="0" selected>0 (No Transverter/Converter)</option>
+      <td><select name="trvlo" onchange="upd_freq()">
+          <option value="0" selected> 0 (No Transverter/Converter)</option>
           <option value="1968">1968 (SG-Lab IF 432)</option>
           <option value="1888">1888 (SG-Lab IF 512)</option>
           <option value="1886">1886 (SG-Lab IF 514)</option>
@@ -349,6 +353,10 @@ if ( isset( $_POST[ 'delpatch' ] ) ) {
           <option value="1968">1968 (DXPatrol IF 432)</option>
           <option value="1104">1104 (DXPatrol IF 1296)</option>
           <option value="2256">2256 (DXPatrol IF 144)</option>
+          <option value="1970">1970 (Amsat-DL IF 430)</option>
+          <option value="1965">1965 (Amsat-DL IF 435)</option>
+          <option value="1570">1570 (Amsat-DL IF 830)</option>
+          <option value="1110">1110 (Amsat-DL IF 1290)</option>
           </select></td>
        </tr>
 </table>
@@ -553,7 +561,7 @@ var powertxt = document.getElementById("pattext");
 }
 
 function upd_freq() {
-        document.getElementsByName("freq")[0].value=document.getElementsByName('channel')[0].value.split("-")[0] - document.getElementsByName('trvol')[0].value
+        document.getElementsByName("freq")[0].value=document.getElementsByName('channel')[0].value.split("-")[0] - document.getElementsByName('trvlo')[0].value
 
         if(document.getElementsByName("channel")[0].value=="Custom"){
         document.getElementsByName("freq")[0].value="0"
@@ -852,7 +860,7 @@ function load() {
                 var found=false;
 
                 for (var i= 0; i<options.length; i++) {
-                         if (document.getElementsByName('channel')[0].value.split("-")[0] - document.getElementsByName('trvol')[0].value==freq) {
+                         if (document.getElementsByName('channel')[0].value.split("-")[0] - document.getElementsByName('trvlo')[0].value==freq) {
                                 found=true;
                                 break;
                         }
