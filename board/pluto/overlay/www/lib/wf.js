@@ -948,13 +948,3 @@ window.addEventListener("orientationchange", checkOrientation, false);
 
 // Android doesn't always fire orientationChange on 180 degree turns
 setInterval(checkOrientation, 2000);
-
-const ping_interval = 10*1000;
-function ping() {
-  var request = new XMLHttpRequest();
-  request.open('GET', 'https://eshail.batc.org.uk/a.gif', true);
-  request.send();
-  request = null;
-  setTimeout(ping, ping_interval);
-}
-setTimeout(ping, ping_interval);
