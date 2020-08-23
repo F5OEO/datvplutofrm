@@ -27,8 +27,6 @@ if ( isset( $_POST[ 'delpatch' ] ) ) {
   width: 500px;
 }
 
-}
-
 .btn {
   border: none;
   color: white;
