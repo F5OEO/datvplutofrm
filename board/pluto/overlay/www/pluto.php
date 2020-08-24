@@ -13,7 +13,7 @@ if ( isset( $_POST[ 'reboot' ] ) ) {
 ?>
 <?php
 if ( isset( $_POST[ 'delpatch' ] ) ) {
-  exec( 'rm /mnt/jffs2/patch.zip' );
+  exec( 'rm -r /mnt/jffs2/*' );
 }
 ?>
 <!doctype html>
@@ -558,7 +558,6 @@ var powertxt = document.getElementById("pattext");
 }
 
 function upd_freq() {
-        //document.getElementsByName("trvlo")[0].value=document.getElementsByName('trvloselect')[0].value
         document.getElementsByName("freq")[0].value=document.getElementsByName('channel')[0].value.split("-")[0] - document.getElementsByName('trvlo')[0].value
         
         if(document.getElementsByName("channel")[0].value=="Custom"){
@@ -874,7 +873,7 @@ function load() {
                         }
                 }
 
-                upd_freq();
+                
                 //dropdown channel update
                 var options= document.getElementsByName('channel')[0].options;
                 var found=false;
