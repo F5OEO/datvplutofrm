@@ -1,7 +1,7 @@
 # A very dirty trick for gpio running in bash, to inspect !
 #/root/pluto_dvb -f 34 -t 250e6 -s 250e3 >/dev/null </dev/null 2>/dev/null 
 start() {
-   export FW_VERSION=2308night
+   export FW_VERSION=2408
    /root/watchconsoletx.sh >/dev/null </dev/null 2>/dev/null &
    /root/readconfig_from_env.sh >/dev/null </dev/null 2>/dev/null 
    /root/rtmppluto.sh >/dev/null </dev/null 2>/dev/null &
