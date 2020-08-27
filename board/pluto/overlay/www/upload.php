@@ -56,7 +56,7 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload')
 
       if(move_uploaded_file($fileTmpPath, $dest_path)) 
       {
-        $message ='File is successfully uploaded.Updating firmare...(Pluto should blinking for 5 minutes.';
+        $message ='File is successfully uploaded. Updating firmware...(Pluto should blinking for 5 minutes).';
         $uploadFileDir = '/www/uploaded_files/';
         $dest_path = $uploadFileDir . $newFileName;
         exec("cp $dest_path /mnt/jffs2/ && reboot");
