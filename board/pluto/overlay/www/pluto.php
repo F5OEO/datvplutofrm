@@ -20,6 +20,7 @@ if ( isset( $_POST[ 'delpatch' ] ) ) {
 <html>
 <head>
 <meta charset="UTF-8">
+
 <style>
 .slidernewpower {
   width: 500px;
@@ -78,11 +79,13 @@ if ( isset( $_POST[ 'delpatch' ] ) ) {
 <section style=" text-align: right;">
   <div >Thanks Rob M0DTS for help. Mods by G4EML for codec selection and sound enable</div>
   <div >Mods by Chris <a href="https://www.f5uii.net/?o=pluto2308" title="Go to Chris blog and ressources" target="_blank">F5UII.net</a>&nbsp; <a href="https://twitter.com/f5uii/" title="Go to f5uii profile on twitter"><img style="width: 20px;" src="./img/tw.png" alt="Twitter Logo"></a> version <i>UII1</i>: <span class="note tooltip" title="<strong>Version UII1 - 23/08/2020</strong> <ul><li>BATC spectrum (only if client is online) </li><li>Change transmit frequency by click on a channel</li><li>Up frequencies added to Robertor's channel list</li><li>Reboot command</li><li>Restore firmware by deleting added patches</li><li>Some html format compliance mods (bolded odd columns, uniform presentation of units in the table, adding a tab icon on Controller page) </li></ul><i>On workbench : </i> Remote control of minitiouner (steering the receiver by right click on an occuped channel).<br/> <hr>🛈 Link to <a href='https://www.f5uii.net/en/patch-plutodvb/?o=pluto2308' target='_blank'>download and support page"></a>Details</span></div>
- <div >Mods by Roberto IS0GRB (Fix fwversion, Add SR Drop-Down menu (August 27th, 2020)</div>
-
+ <div >Mods by Roberto IS0GRB (Add SR Drop-list,Power slider at the top,Disable/Enable Spectrum (August 27th, 2020)</div>
+<br><div> <button onclick="viewspectrum()">Disable/Enable Spectrum</button></div>
 </section>
 </div>
 </header>
+
+<div id="nospectrum">
 <section>
 <div id="wf" style="width: 100%;">
   <div id="fft-col" class="col-xl-7"  style="width: 100%;">
@@ -98,6 +101,8 @@ if ( isset( $_POST[ 'delpatch' ] ) ) {
   </div>
 </div>  
 </section>
+</div>
+
 <section>
  <table>
     <tr>
@@ -111,11 +116,21 @@ if ( isset( $_POST[ 'delpatch' ] ) ) {
         </td>
         </tr>
         </table>
+<form action="save.php" method="post">
+<table>
+<tr><td>Power <i>(0.1 dB steps)</i></td>
+<td><div class="slidecontainer">
+  <input type="range" min="-79" max="10" step="0.1" value="-10" class="slidernewpower" name="power" onchange="update_slider()" oninput="update_slidertxt()">
+  <span id="powertext"></span>
+</div>
+</td>
+</tr>
+</table>
+
 </section>
 <h2>Modulator</h2>
 
 <hr>
-<form action="save.php" method="post">
   <table>
     <tr>
       <td>Callsign <i>(DVB Program Name)</i></td>
@@ -371,13 +386,7 @@ if ( isset( $_POST[ 'delpatch' ] ) ) {
           </select></td>
        </tr>
 </table>
-<table>
-<tr><td>Power <i>(0.1 dB steps)</i></td>
-<td><div class="slidecontainer">
-  <input type="range" min="-79" max="10" step="0.1" value="-10" class="slidernewpower" name="power" onchange="update_slider()" oninput="update_slidertxt()">
-  <span id="powertext"></span>
-</div>
-</td>
+
 <div id="advanced">
   <table>
     <tr>
@@ -608,6 +617,16 @@ function upd_sr() {
         if(document.getElementsByName("srselect")[0].value=="Custom"){
         document.getElementsByName("sr")[0].value="0"
         }        
+}
+
+
+function viewspectrum() {
+  var x = document.getElementById("nospectrum");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
 }
 
 
