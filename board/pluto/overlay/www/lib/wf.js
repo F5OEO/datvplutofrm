@@ -835,7 +835,7 @@ function render_frequency_info(mouse_x, mouse_y)
 
         ctx.fillRect(xd1, yd, xd2-xd1, 5);
         display_triggered = true;
-        document.getElementById("upf").value = (1910.50 + freq_info[i].center_frequency) ;
+        document.getElementById("upf").value = (1910.50 + freq_info[i].center_frequency - document.getElementsByName('trvlo')[0].value) ;
 
 
 
