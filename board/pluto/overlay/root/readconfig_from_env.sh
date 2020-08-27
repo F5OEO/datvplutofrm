@@ -1,5 +1,5 @@
 rm /www/settings.txt
-echo "fwversion $FW_VERSION" >>/www/settings.txt
+
 OIFS=$IFS
 IFS=';'
 line=$(fw_printenv datvset|cut -f2- -d'=')
