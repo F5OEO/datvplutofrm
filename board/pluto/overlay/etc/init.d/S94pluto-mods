@@ -11,6 +11,8 @@ REBOOTNEEDED=0
 echo "Checking for maxcpus and ad9364 mods..."
 export `fw_printenv maxcpus`
 export `fw_printenv attr_val`
+export `fw_printenv mode`
+export `fw_printenv compatible`
 ## Check/set dual-core mode
 if [ $maxcpus == 1 ]; then
 	flash_indication_on
@@ -18,13 +20,26 @@ if [ $maxcpus == 1 ]; then
         fw_setenv maxcpus
         REBOOTNEEDED=1
 fi
+
 ## Check/set 70-6000mhz trick (default is 325-3800Mhz)
-if [ "$attr_val" != "ad9364" ]; then
-	flash_indication_on
-	echo "Enabling 70-6000Mhz mod..."
-        fw_setenv attr_name compatible
-        fw_setenv attr_val "ad9364"
-        REBOOTNEEDED=1
+##depends on uboot
+if [ "$mode" == "" ]; then
+echo "Old u-boot detected"
+    if [ "$attr_val" != "ad9364" ]; then
+	    flash_indication_on
+	    echo "Enabling 70-6000Mhz mod..."
+            fw_setenv attr_name compatible
+            fw_setenv attr_val "ad9364"
+            REBOOTNEEDED=1
+    fi
+else
+    echo "New u-boot detected"
+    if [ "$compatible" != "ad9364" ]; then
+	    flash_indication_on
+	    echo "Enabling 70-6000Mhz mod..."
+            fw_setenv compatible "ad9364"
+            REBOOTNEEDED=1
+    fi
 fi
 if [ $REBOOTNEEDED == 1 ]; then
 	echo "Rebooting!"
