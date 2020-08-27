@@ -34,11 +34,13 @@ echo "Old u-boot detected"
     fi
 else
     echo "New u-boot detected"
-    if [ "$compatible" != "ad9364" ]; then
-	    flash_indication_on
-	    echo "Enabling 70-6000Mhz mod..."
-            fw_setenv compatible "ad9364"
-            REBOOTNEEDED=1
+    if [ "$mode" == "1r1t" ]; then
+        if [ "$compatible" != "ad9364" ]; then
+	        flash_indication_on
+	        echo "Enabling 70-6000Mhz mod..."
+                fw_setenv compatible "ad9364"
+                REBOOTNEEDED=1
+        fi
     fi
 fi
 if [ $REBOOTNEEDED == 1 ]; then
