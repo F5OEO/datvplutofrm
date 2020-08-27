@@ -78,7 +78,7 @@ if ( isset( $_POST[ 'delpatch' ] ) ) {
 <section style=" text-align: right;">
   <div >Thanks Rob M0DTS for help. Mods by G4EML for codec selection and sound enable</div>
   <div >Mods by Chris <a href="https://www.f5uii.net/?o=pluto2308" title="Go to Chris blog and ressources" target="_blank">F5UII.net</a>&nbsp; <a href="https://twitter.com/f5uii/" title="Go to f5uii profile on twitter"><img style="width: 20px;" src="./img/tw.png" alt="Twitter Logo"></a> version <i>UII1</i>: <span class="note tooltip" title="<strong>Version UII1 - 23/08/2020</strong> <ul><li>BATC spectrum (only if client is online) </li><li>Change transmit frequency by click on a channel</li><li>Up frequencies added to Robertor's channel list</li><li>Reboot command</li><li>Restore firmware by deleting added patches</li><li>Some html format compliance mods (bolded odd columns, uniform presentation of units in the table, adding a tab icon on Controller page) </li></ul><i>On workbench : </i> Remote control of minitiouner (steering the receiver by right click on an occuped channel).<br/> <hr>🛈 Link to <a href='https://www.f5uii.net/en/patch-plutodvb/?o=pluto2308' target='_blank'>download and support page"></a>Details</span></div>
- <div >Mods by Roberto IS0GRB (Add Transverter LO/ProvName/Fix fwver (August 26th,2020)</div>
+ <div >Mods by Roberto IS0GRB (Fix fwversion, Add SR Drop-Down menu (August 27th, 2020)</div>
 
 </section>
 </div>
@@ -121,7 +121,7 @@ if ( isset( $_POST[ 'delpatch' ] ) ) {
       <td>Callsign <i>(DVB Program Name)</i></td>
       <td><input type="text" name="callsign" value="NOCALL"></td>
       <td>DVB Provider Name <br><i>(output: FwVer_ProvName)</i></td>
-      <td><input type="text" name="provname" value="_Op_yourname___" maxlength="15" size="16"> (max 15 chrs)</td>
+      <td><input type="text" name="provname" value="_yrname/project_" maxlength="15" size="16"> (max 15 chrs)</td>
     </tr>
                 <tr><td>PCR/PTS</td>
 <td><div class="slidecontainer">
@@ -305,8 +305,22 @@ if ( isset( $_POST[ 'delpatch' ] ) ) {
     </tr>
     <tr>
       <td>SR <i>(KSymbols)</i></td>
-      <td><input type="text" name="sr">
-        </td>
+      <td><input type="text" name="sr" value="" maxlength="4" size="5" onchange="calc_ts()">
+    &nbsp; 
+        <select name="srselect" onchange="upd_sr();calc_ts()">
+        <option value="2000">2000KS</option>
+        <option value="1500">1500KS</option>
+        <option value="1000">1000KS</option>
+        <option value="500"> 500KS</option>
+        <option value="333"> 333KS</option>
+        <option value="250"> 250KS</option>
+        <option value="125"> 125KS</option>
+        <option value="66">  66KS</option>
+        <option value="33">  33KS</option>
+        <option value="Custom">Custom</option>
+
+        </select>
+      </td>
       <td>FEC</td>
       <td><select name="fec" onchange="calc_ts()">
           <option value="12">1/2</option>
@@ -338,8 +352,8 @@ if ( isset( $_POST[ 'delpatch' ] ) ) {
 
       <td>Transverter LO <i>(MHz)</i></td>
       <td>
-      <input type="text" name="trvlo" value="" maxlength="4" size="6" onchange="upd_freq()">
-        &nbsp; &nbsp;
+      <input type="text" name="trvlo" value="" maxlength="4" size="5" onchange="upd_freq()">
+        &nbsp; 
           <select name="trvloselect" onchange="upd_trvlo();upd_freq()">
           <option value="0">  0 (No TRV/UpConv)</option>
           <option value="2256"> 2256 (IF 144)</option>
@@ -575,7 +589,7 @@ function upd_freq() {
         }
 
         document.getElementsByName("sr")[0].value=sr;
-}
+        }
         
 
 
@@ -584,6 +598,15 @@ function upd_trvlo() {
         
         if(document.getElementsByName("trvloselect")[0].value=="Custom"){
         document.getElementsByName("trvlo")[0].value="0"
+        }        
+}
+
+
+function upd_sr() {
+        document.getElementsByName("sr")[0].value=document.getElementsByName('srselect')[0].value
+        
+        if(document.getElementsByName("srselect")[0].value=="Custom"){
+        document.getElementsByName("sr")[0].value="0"
         }        
 }
 
@@ -852,6 +875,7 @@ function load() {
         var trvlo="";
         var channel="";
         var trvloselect="";
+        var srselect="";
         if(s!=""){
                 var array=s.split(",");
                 for (index = 0; index < array.length; ++index) {
@@ -872,6 +896,10 @@ function load() {
                                 
                                 if(vals[0]=="trvlo"){
                                         trvlo=vals[1];
+                                }
+                                
+                                if(vals[0]=="sr"){
+                                        sr=vals[1];
                                 }
                         }
                 }
@@ -899,6 +927,20 @@ function load() {
 
                 for (var i= 0; i < options.length; i++) {
                          if (document.getElementsByName('trvloselect')[0].value==trvlo) {
+                                found=true;
+                                break;
+                        }
+                }
+                if(!found){
+                        options[options.length-1].selected= true;
+                }
+
+               //dropdown srselect update
+                var options= document.getElementsByName('srselect')[0].options;
+                var found=false;
+
+                for (var i= 0; i < options.length; i++) {
+                         if (document.getElementsByName('srselect')[0].value==sr) {
                                 found=true;
                                 break;
                         }

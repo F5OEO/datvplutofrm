@@ -11,6 +11,7 @@ if(isset($_POST["callsign"])){
     setcookie("mode",$_POST["mode"],time() + (10 * 365 * 24 * 60 * 60),"/");
     setcookie("mod",$_POST["mod"],time() + (10 * 365 * 24 * 60 * 60),"/");
     setcookie("sr",$_POST["sr"],time() + (10 * 365 * 24 * 60 * 60),"/");
+    setcookie("srselect",$_POST["srselect"],time() + (10 * 365 * 24 * 60 * 60),"/");
     setcookie("fec",$_POST["fec"],time() + (10 * 365 * 24 * 60 * 60),"/");
     setcookie("pilots",$_POST["pilots"],time() + (10 * 365 * 24 * 60 * 60),"/");
     setcookie("frame",$_POST["frame"],time() + (10 * 365 * 24 * 60 * 60),"/");
@@ -28,7 +29,7 @@ if(isset($_POST["callsign"])){
     setcookie("provname",$_POST["provname"],time() + (10 * 365 * 24 * 60 * 60),"/");
     $_SESSION["settings"]="";
 
-	$settings="callsign ".$_POST["callsign"]."\n"."freq ".$_POST["freq"]."\n"."channel ".$_POST["channel"]."\n"."mode ".$_POST["mode"]."\n"."mod ".$_POST["mod"]."\n"."sr ".$_POST["sr"]."\n"."fec ".$_POST["fec"]."\n"."pilots ".$_POST["pilots"]."\n"."frame ".$_POST["frame"]."\n"."power ".$_POST["power"]."\n"."rolloff ".$_POST["rolloff"]."\n"."pcrpts ".$_POST["pcrpts"]."\n"."patperiod ".$_POST["patperiod"]."\n"."h265box ".$_POST["h265box"]."\n"."codec ".$_POST["codec"]."\n"."sound ".$_POST["sound"]."\n"."audioinput ".$_POST["audioinput"]."\n"."remux ".$_POST["remux"]."\n"."trvlo ".$_POST["trvlo"]."\n"."trvloselect ".$_POST["trvloselect"]."\n"."provname ".$_POST["provname"]."\n";
+	$settings="callsign ".$_POST["callsign"]."\n"."freq ".$_POST["freq"]."\n"."channel ".$_POST["channel"]."\n"."mode ".$_POST["mode"]."\n"."mod ".$_POST["mod"]."\n"."sr ".$_POST["sr"]."\n"."srselect ".$_POST["srselect"]."\n"."fec ".$_POST["fec"]."\n"."pilots ".$_POST["pilots"]."\n"."frame ".$_POST["frame"]."\n"."power ".$_POST["power"]."\n"."rolloff ".$_POST["rolloff"]."\n"."pcrpts ".$_POST["pcrpts"]."\n"."patperiod ".$_POST["patperiod"]."\n"."h265box ".$_POST["h265box"]."\n"."codec ".$_POST["codec"]."\n"."sound ".$_POST["sound"]."\n"."audioinput ".$_POST["audioinput"]."\n"."remux ".$_POST["remux"]."\n"."trvlo ".$_POST["trvlo"]."\n"."trvloselect ".$_POST["trvloselect"]."\n"."provname ".$_POST["provname"]."\n";
 	file_put_contents("settings.txt",$settings) or die("Unable to write file!");;
     //echo $settings;    
 }
