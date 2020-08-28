@@ -79,7 +79,7 @@ if ( isset( $_POST[ 'delpatch' ] ) ) {
 <section style=" text-align: right;">
   <div >Thanks Rob M0DTS for help. Mods by G4EML for codec selection and sound enable</div>
   <div >Mods by Chris <a href="https://www.f5uii.net/?o=pluto2308" title="Go to Chris blog and ressources" target="_blank">F5UII.net</a>&nbsp; <a href="https://twitter.com/f5uii/" title="Go to f5uii profile on twitter"><img style="width: 20px;" src="./img/tw.png" alt="Twitter Logo"></a> version <i>UII1</i>: <span class="note tooltip" title="<strong>Version UII1 - 23/08/2020</strong> <ul><li>BATC spectrum (only if client is online) </li><li>Change transmit frequency by click on a channel</li><li>Up frequencies added to Robertor's channel list</li><li>Reboot command</li><li>Restore firmware by deleting added patches</li><li>Some html format compliance mods (bolded odd columns, uniform presentation of units in the table, adding a tab icon on Controller page) </li></ul><i>On workbench : </i> Remote control of minitiouner (steering the receiver by right click on an occuped channel).<br/> <hr>🛈 Link to <a href='https://www.f5uii.net/en/patch-plutodvb/?o=pluto2308' target='_blank'>download and support page"></a>Details</span></div>
- <div >Mods by Roberto IS0GRB (Add SR Drop-list,Power slider at the top,Disable/Enable Spectrum (August 27th, 2020)</div>
+ <div >Mods by Roberto IS0GRB (Add SR Drop-list,Power slider at the top,Disable/Enable Spectrum (August 28th, 2020)</div>
 <br><div> <button onclick="viewspectrum()">Disable/Enable Spectrum</button></div>
 </section>
 </div>
@@ -116,7 +116,9 @@ if ( isset( $_POST[ 'delpatch' ] ) ) {
         </td>
         </tr>
         </table>
+
 <form action="save.php" method="post">
+
 <table>
 <tr><td>Power <i>(0.1 dB steps)</i></td>
 <td><div class="slidecontainer">
@@ -154,7 +156,7 @@ if ( isset( $_POST[ 'delpatch' ] ) ) {
 </tr>
     <tr>
       <td>Freq-Manual <i>(70 MHz - 6 GHz)</i></td>
-      <td><input type="text" name="freq" value="">
+      <td><input type="text" name="freq" value="0">
         </td>
       <td>Freq-Channel <br><i>(SR channel Uplink / Downlink)</i></td>
       <td><select name="channel" onchange="upd_freq();calc_ts()">
@@ -320,7 +322,7 @@ if ( isset( $_POST[ 'delpatch' ] ) ) {
     </tr>
     <tr>
       <td>SR <i>(KSymbols)</i></td>
-      <td><input type="text" name="sr" value="" maxlength="4" size="5" onchange="calc_ts()">
+      <td><input type="text" name="sr" value="0" maxlength="4" size="5" onchange="calc_ts()">
     &nbsp; 
         <select name="srselect" onchange="upd_sr();calc_ts()">
         <option value="2000">2000KS</option>
@@ -367,7 +369,7 @@ if ( isset( $_POST[ 'delpatch' ] ) ) {
 
       <td>Transverter LO <i>(MHz)</i></td>
       <td>
-      <input type="text" name="trvlo" value="" maxlength="4" size="5" onchange="upd_freq()">
+      <input type="text" name="trvlo" value="0" maxlength="4" size="5" onchange="upd_freq()">
         &nbsp; 
           <select name="trvloselect" onchange="upd_trvlo();upd_freq()">
           <option value="0">  0 (No TRV/UpConv)</option>
@@ -427,7 +429,7 @@ echo "$fwver";
     </tr>
                 <input type="submit" value="Apply Settings">
                 </form>
-<td><b>Warning : <i>Select ON if you have trouble receiving with continuous blocks</b></i></td>
+<td><br><b>Warning : <i>Select ON if you have trouble receiving with continuous blocks</b></i></td>
 
 <br><br>
 <h2>Save for next reboot</h2>
@@ -460,7 +462,8 @@ if ( isset( $_SESSION[ 'message' ] ) && $_SESSION[ 'message' ] ) {
 <br><br>
 <h2>Delete patch</h2>
 <hr>
-This will restore to the last firmware state, removing the patches added in overlay. After erasing the files, you will have to reboot manually or with below reboot button to resume with the basic firmware. <br>
+This will restore to the last firmware state, removing the patches added in overlay.
+<br>After erasing the files, you will have to reboot manually or with below reboot button to resume with the basic firmware. <br>
 <form method="post">
   <p>
     <button name="delpatch">Delete Patch</button>
@@ -923,7 +926,6 @@ function load() {
                         }
                 }
 
-                
                 //dropdown channel update
                 var options= document.getElementsByName('channel')[0].options;
                 var found=false;
