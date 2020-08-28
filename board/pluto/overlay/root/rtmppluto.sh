@@ -39,7 +39,7 @@ CALIB=$(grep -o "match up:.*" infortmp | cut -f8 -d,)
 ASKPCRPTS=$(grep -o "match up:.*" infortmp | cut -f9 -d,)
 ASKAUDIO=$(grep -o "match up:.*" infortmp | cut -f10 -d,)
 PROVNAME=$(grep "\bprovname\b" /www/settings.txt | cut -f2 -d' ')
-FWVERS=$(grep "\bfwversion\b" /www/settings.txt | cut -f2 -d' ')
+FWVERS=$(cat /www/fwversion.txt)
 MESSAGE="$FWVERS""$PROVNAME"
 
 if [ "$ASKPCRPTS" = "" ]; then

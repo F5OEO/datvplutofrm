@@ -35,7 +35,7 @@ SOUND=$(grep "\bsound\b" /www/settings.txt | cut -f2 -d' ')
 AUDIOINPUT=$(grep "\baudioinput\b" /www/settings.txt | cut -f2 -d' ')
 REMUX=$(grep "\bremux\b" /www/settings.txt | cut -f2 -d' ')
 PROVNAME=$(grep "\bprovname\b" /www/settings.txt | cut -f2 -d' ')
-FWVERS=$(grep "\bfwversion\b" /www/settings.txt | cut -f2 -d' ')
+FWVERS=$(cat /www/fwversion.txt)
 MESSAGE="$FWVERS""$PROVNAME"
 
 echo FREQ $FREQ MODE $MODE CONSTEL $CONSTEL SR $SR FEC $FEC PILOT $PILOTS_TXT FRAME $FRAME_TXT Rof $ROLLOFF PCRPTS $PCRPTS PATPERIOD $PATPERIOD CODEC $CODEC SOUND $SOUND AUDIOINPUT $AUDIOINPUT
