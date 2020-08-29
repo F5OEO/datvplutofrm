@@ -7,7 +7,8 @@ set -e
 INSTALL=install
 
 date +"%d%m" >  ${TARGET_DIR}/www/fwversion.txt
-
+touch ${TARGET_DIR}/www/releasenote.txt
+git --git-dir=${BR2_EXTERNAL}/.git log --pretty=oneline --abbrev-commit > ${TARGET_DIR}/www/releasenote.txt
 # Add a console on tty1
 grep -qE '^ttyGS0::' ${TARGET_DIR}/etc/inittab || \
 sed -i '/GENERIC_SERIAL/a\
