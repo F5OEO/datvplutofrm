@@ -79,13 +79,12 @@ if ( isset( $_POST[ 'delpatch' ] ) ) {
 <section style=" text-align: right;">
   <div >Thanks Rob M0DTS for help. Mods by G4EML for codec selection and sound enable</div>
   <div >Mods by Chris <a href="https://www.f5uii.net/?o=pluto2308" title="Go to Chris blog and ressources" target="_blank">F5UII.net</a>&nbsp; <a href="https://twitter.com/f5uii/" title="Go to f5uii profile on twitter"><img style="width: 20px;" src="./img/tw.png" alt="Twitter Logo"></a> version <i>UII1</i>: <span class="note tooltip" title="<strong>Version UII1 - 23/08/2020</strong> <ul><li>BATC spectrum (only if client is online) </li><li>Change transmit frequency by click on a channel</li><li>Up frequencies added to Robertor's channel list</li><li>Reboot command</li><li>Restore firmware by deleting added patches</li><li>Some html format compliance mods (bolded odd columns, uniform presentation of units in the table, adding a tab icon on Controller page) </li></ul><i>On workbench : </i> Remote control of minitiouner (steering the receiver by right click on an occuped channel).<br/> <hr>🛈 Link to <a href='https://www.f5uii.net/en/patch-plutodvb/?o=pluto2308' target='_blank'>download and support page"></a>Details</span></div>
- <div >Mods by Roberto IS0GRB (Add SR Drop-list,Power slider at the top,Disable/Enable Spectrum (August 28th, 2020)</div>
-<br><div> <button onclick="viewspectrum()">Disable/Enable Spectrum</button></div>
+ <div >Mods by Roberto IS0GRB (Save SpectrumView button state,Show how much patch.zip inserted (August 29th, 2020)</div>
+<br><div> <button id="spectrumstate" onclick="saveviewspectrum()">Disable/Enable Spectrum</button></div>
 </section>
 </div>
 </header>
 
-<div id="nospectrum">
 <section>
 <div id="wf" style="width: 100%;">
   <div id="fft-col" class="col-xl-7"  style="width: 100%;">
@@ -99,9 +98,8 @@ if ( isset( $_POST[ 'delpatch' ] ) ) {
       </span>
     </div>
   </div>
-</div>  
-</section>
 </div>
+</section>
 
 <section>
  <table>
@@ -460,7 +458,26 @@ if ( isset( $_SESSION[ 'message' ] ) && $_SESSION[ 'message' ] ) {
   <input type="submit" name="uploadBtn" value="Upload" />
 </form>
 <br><br>
-<h2>Delete patch</h2>
+<h2>Delete patch</h2>&nbsp; &nbsp; 
+
+<?php 
+$patchchk = shell_exec ( 'ls -la /mnt/jffs2 | grep -c patch.zip' ); 
+echo "<b>$patchchk</b> &nbsp; Loaded<br/>"; 
+if($patchchk)
+{
+    $listzip = shell_exec ( 'unzip -l /mnt/jffs2/patch.zip' );
+   $separator = "\r\n";
+$line = strtok($listzip, $separator);
+
+while ($line !== false) {
+    echo $line;
+    echo "<br>";
+    $line = strtok( $separator );
+}
+}
+?>
+
+
 <hr>
 This will restore to the last firmware state, removing the patches added in overlay.
 <br>After erasing the files, you will have to reboot manually or with below reboot button to resume with the basic firmware. <br>
@@ -623,14 +640,32 @@ function upd_sr() {
 }
 
 
-function viewspectrum() {
-  var x = document.getElementById("nospectrum");
-  if (x.style.display === "none") {
-    x.style.display = "block";
+function saveviewspectrum() {
+  var x = document.getElementById('wf');
+   if (wf.style.display === "none") {
+    localStorage.setItem('wf',"block");
+    document.getElementById("spectrumstate").innerHTML = "Spectrum Enabled";
+    wf.style.display = "block";
+    location.reload('wf');
   } else {
-    x.style.display = "none";
+    localStorage.setItem('wf',"none");
+    document.getElementById("spectrumstate").innerHTML = "Spectrum Disabled";
+    wf.style.display = "none";
   }
 }
+
+
+function loadviewspectrum() {
+  var x = localStorage.getItem('wf');
+    wf.style.display = x;
+    if (wf.style.display == "block") {
+    document.getElementById("spectrumstate").innerHTML = "Spectrum Enabled";
+    wf.style.display = "block";
+    } else {
+    document.getElementById("spectrumstate").innerHTML = "Spectrum Disabled";
+    wf.style.display = "none";
+  }
+  }
 
 
 function calc_ts(){
@@ -889,15 +924,15 @@ function load() {
         //events
         //document.getElementById('gain+').addEventListener('click', increase_gain);
         //document.getElementById('gain-').addEventListener('click', decrease_gain);
-
-
-
+        
+        loadviewspectrum();
         var s='<?php include("load.php"); ?>';
         var freq="";
         var trvlo="";
         var channel="";
         var trvloselect="";
         var srselect="";
+
         if(s!=""){
                 var array=s.split(",");
                 for (index = 0; index < array.length; ++index) {
