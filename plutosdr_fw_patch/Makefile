@@ -61,7 +61,7 @@ all:
 	@echo "Invalid `TARGET variable ; valid values are: pluto, sidekiqz2" &&
 	exit 1
 else
-all: clean-build $(TARGETS) zip-all legal-info
+all: clean-build $(TARGETS) zip-all 
 endif
 
 .NOTPARALLEL: all
@@ -120,7 +120,7 @@ buildroot/output/images/rootfs.cpio.gz:
 ###	make -C buildroot legal-info
 ###	scripts/legal_info_html.sh "$(COMPLETE_NAME)" "$(CURDIR)/buildroot/board/$(TARGET)/VERSIONS"
 ###	cp build/LICENSE.html buildroot/board/$(TARGET)/msd/LICENSE.html
-	make -C buildroot TOOLCHAIN_EXTERNAL_INSTALL_DIR=$(TOOLCHAIN_PATH) ARCH=arm CROSS_COMPILE=$(CROSS_COMPILE) all
+	make -C buildroot TOOLCHAIN_EXTERNAL_INSTALL_DIR=$(TOOLCHAIN_PATH) ARCH=arm CROSS_COMPILE=$(CROSS_COMPILE) BUSYBOX_CONFIG_FILE=$(BR2_EXTERNAL)/board/$(TARGET)/busybox-1.25.0.config all
 
 .PHONY: buildroot/output/images/rootfs.cpio.gz
 
