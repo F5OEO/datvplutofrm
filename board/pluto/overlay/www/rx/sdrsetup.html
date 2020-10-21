@@ -118,7 +118,7 @@ function onstart()
         $("#txt2").text("Rufzeichen:");
         $("#txt3").text("Rufzeichen dieser WebSDR Station");
         $("#txt4").text("TCP port für SDR Daten:");
-        $("#txt5").text("zusätzlich öffne diesen TCP Port im Internet-Router");
+        $("#txt5").text("zusätzlich öffne diesen TCP Port im Internet-Router. Standard Ports: SSB=8091, DATV=8090. Bei Änderung müssen html Dateien manuell geändert werden!");
         $("#txt6").text("Fernbedienung erlauben:");
         $("#txt7").text("LNB original Quarzfrequenz [MHz]:");
         $("#txt8").text("LNB ext. Referenz Frequenz [Hz]:");
@@ -150,6 +150,9 @@ function onstart()
         $("#txt31a").text("AUS (INET Zugriff blockiert)");
         $("#txt32a").text("EIN (INET Zugriff erlaubt)");
         $("#txt33").text("Zugriffsbeschränkung für SETUP und andere Systemeinstellungen");
+        $("#txt34").text("Adalm-PLUTO (nur wenn ein Pluto angeschlossen ist)");
+        $("#txt35").text("IP-Adresse");
+        $("#txt36").text("wenn der Pluto über USB angeschlossen ist, dann dieses Feld LEER lassen !");
     }
     else
     {
@@ -157,7 +160,7 @@ function onstart()
         $("#txt2").text("Callsign:");
         $("#txt3").text("callsign of this WebSDR station");
         $("#txt4").text("TCP port for SDR data:");
-        $("#txt5").text("in addition open this TCP port in the INET router");
+        $("#txt5").text("in addition open this TCP port in the INET router. Default ports: SSB=8091, DATV=8090. If changed you need to modify HTML files manually.");
         $("#txt6").text("allow remote control");
         $("#txt7").text("LNB original crystal [MHz]:");
         $("#txt8").text("LNB reference frequency [Hz]:");
@@ -189,6 +192,9 @@ function onstart()
         $("#txt31a").text("OFF (INET access blocked)");
         $("#txt32a").text("ON (INET access allowed)");
         $("#txt33").text("access restrictions for SETUP and other system related settings");
+        $("#txt34").text("Adalm-PLUTO (only if a Pluto is connected)");
+        $("#txt35").text("IP-address");
+        $("#txt36").text("if your Pluto is connected via USB cable, then leave this field EMPTY !");
     }
 
     // read config data from local storage
@@ -206,6 +212,7 @@ function onstart()
     document.getElementById('CIV_address').value = config.CIV_address.toString(16);
     document.getElementById('tx_correction').value = config.tx_correction;
     document.getElementById('icom_satmode').value = config.icom_satmode;
+    document.getElementById('plutoIP').value = config.pluto_ip;
 }
 
 function save()
@@ -222,6 +229,7 @@ function save()
     config.CIV_address = parseInt(document.getElementById('CIV_address').value.substring(0,2), 16);
     config.tx_correction = document.getElementById('tx_correction').value;
     config.icom_satmode = document.getElementById('icom_satmode').value;
+    config.pluto_ip = document.getElementById('plutoIP').value;
     
     saveConfig(); 
     
@@ -232,7 +240,7 @@ function save()
     
 <body>
 <div class="header_mytitle">QO-100 on es'hail-2 NB-Transponder SSB Live Stream</div>
-<div class="header_subtitle">for SDRplay RSP1a and RTL-SDR by DJ0ABR</div>
+<div class="header_subtitle">for SDRplay, Pluto and RTL-SDR by DJ0ABR</div>
 <div class="header_title">System SETUP</div>
 
 <table border="1" id="setuptab">
@@ -309,6 +317,7 @@ function save()
     <td></td>
     <td></td>
   </tr>
+  
   <tr>
     <td colspan="3" class="setup_title" id="txt14"></td>
   </tr>
@@ -335,6 +344,17 @@ function save()
     </select>
     </td>
     <td id="txt20"></td>
+  </tr>
+
+  <tr>
+    <td colspan="3" class="setup_title" id="txt34"></td>
+  </tr>
+  <tr>
+    <td id="txt35"></td>
+    <td>
+    <input type="text" name="plutoIP" id="plutoIP">
+    </td>
+    <td id="txt36"></td>
   </tr>
   
   <tr>

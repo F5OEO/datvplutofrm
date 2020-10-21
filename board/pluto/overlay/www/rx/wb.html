@@ -23,6 +23,25 @@ body {
     display: flex;
 }
 
+.userliste
+{
+    width:300px;
+    display: flex;
+}
+
+.userlabel
+{
+    margin-right: 5px;
+    margin-top: 6px;
+    font-size:12px;
+    height: 5px;
+}
+
+.activeips
+{
+    font-size:10px;
+}
+
 .leftside
 {
     width: 620px;
@@ -138,11 +157,21 @@ body {
 .tuneinfo
 {
     font: "Arial";
-    font-size:26px;
+    font-size:32px;
     font-weight: 600;
     color: blue;
-    width: 1600px;
+    width: 950px;
     text-align: center;
+    margin-top: 5px;
+}
+
+.clickinfo
+{
+    width: 350px;
+    font: "Arial";
+    font-size:12px;
+    font-weight: 100;
+    background: #f0f0f0;
 }
 
 .selectbox {
@@ -162,6 +191,12 @@ body {
     cursor:pointer;
     font-size: 16px;
     font-weight: 600;
+}
+
+.selectbox_small {
+    width: 120px;
+    margin-top: 4px;
+    font-size: 12px;
 }
 
 .mybutton {
@@ -186,6 +221,16 @@ body {
 
 .qrg {
 width:100px;
+}
+
+.symrate {
+width:87px;
+font-weight: 600;
+}
+
+.result {
+width:182px;
+font-weight: 600;
 }
 
 canvas {
@@ -239,9 +284,25 @@ function MouseMoveHandler(e)
     $("#tuneinfo").html(sd);
 }
 
+function myRightClick(e)
+{
+    var e = window.event || e; // old IE support
+    var frequency = mouseXtoQRG(e.pageX) * 1000000; // clicked qrg in Hz
+    frequency = Math.round(frequency);
+
+    for(var xx=0; xx<qrgarridx; xx++)
+    {
+        if(startqrgarr[xx] <= frequency && endqrgarr[xx] >= frequency)
+        {
+            // clicked signal's BW in bwarr[xx]
+            $("#symrate").val(bwarr[xx]);
+            CalcBitrate();
+        }
+    }
+}
+
 function MouseClickHandler(e)
 {
-    // get clicked frequency
     var e = window.event || e; // old IE support
     var frequency = mouseXtoQRG(e.pageX) * 1000000; // clicked qrg in Hz
     frequency = Math.round(frequency);
@@ -290,7 +351,32 @@ function filter36()
 
 function onstart()
 {
+    $("#symrate").val("333");
+    $("#fec").val(0.5);
+    CalcBitrate();
+
     setListboxes();
+    
+    $(document).ready(function() 
+    {
+    	//Define the handler
+        var handler = function(e) 
+        {
+            e.preventDefault();
+            switch(e.button) 
+            {
+                case 2:
+                    console.log('Right click');
+                    myRightClick(e);
+                    break;
+            }
+        };
+      
+        //For left and middle click
+        //$('#clickme').on('click', handler);
+    	//For right click
+        $('#spec').on('contextmenu', handler);
+    });
     
     // click into WF
     var myitem = document.getElementById("wf_overlay");
@@ -793,8 +879,8 @@ function draw_spec()
     var n_minval = 999999;
 
     // WB-Transponder, take minval only at specific frequencies                
-    var xm1 = cpos(10493810);
-    var xm2 = cpos(10493910);
+    var xm1 = cpos(10492450);
+    var xm2 = cpos(10492480);
 
     // storage for Y values
     // used to find rising and falling edges of a signal
@@ -926,19 +1012,30 @@ function draw_spec()
             context.lineTo(x, y3db);
             context.stroke();
             
+            // center Frequency
+            var freq = ((x-redge)/2+redge)*5000 / 1000000;
+            freq = Number(freq) + tuneqrg/1000;
+            freq = Number(freq) - 10000;
+            context.fillText(freq.toFixed(2) + "0",(x-redge)/2+redge,y3db+15);
+            
             // description
             var bw = ((x-redge)*5000)/1000;
             if(bw > 1900) bw = 2000;
             else if(bw > 1400) bw = 1500;
             else if(bw > 900) bw = 1000;
             else if(bw > 450) bw = 500;
-            else if(bw > 310) bw = 333;
-            else if(bw > 220) bw = 250;
+            else if(bw > 280) bw = 333;
+            else if(bw > 200) bw = 250;
             else if(bw > 110) bw = 125;
             else if(bw > 50) bw = 66;
             else if(bw > 20) bw = 33;
-            else bw = "?";
-            context.fillText(bw,(x-redge)/2+redge,y3db-7);
+            else bw = 0;
+            
+            if(freq < 492)
+                bw = 1500; // correct Beacon BW
+            
+            if(bw > 0)
+                context.fillText(bw,(x-redge)/2+redge,y3db-7);
             bwarr[arridx] = bw;
             
             var startfreq = redge*5000 / 1000;
@@ -950,12 +1047,6 @@ function draw_spec()
             endqrgarr[arridx] = endfreq*1000;
             
             arridx++;
-            
-            var freq = ((x-redge)/2+redge)*5000 / 1000000;
-            freq = Number(freq) + tuneqrg/1000;
-            freq = Number(freq) - 10000;
-            context.fillText(freq.toFixed(2) + "0",(x-redge)/2+redge,y3db+15);
-            
             
             redge = 0;
         }
@@ -1452,8 +1543,45 @@ function handle_type(type,arr,pos,len)
         extract_data(arr,idx);
         $('#setupbutton').show();
     }
+    
+    if(type == 4)
+    {
+        // active user data
+        show_users(String.fromCharCode.apply(String, arr.slice(pos+2)));
+    }
 }
 
+function show_users(itext)
+{
+    var text = itext.split(" ");
+    
+    var label = document.getElementById('userlabel');
+    var select = document.getElementById('activeips');
+
+    for (var i = select.length - 1; i >= 0; i--)
+        select.remove(i);
+
+    select.length = 0;
+
+    // text has all IPs with a fixed length of 16 chars
+    var users = 0;
+    for(var i=0; i<text.length; i++)
+    {
+        var ip = text[i].trim();
+        if(ip.length >= 7)
+        {
+            //console.log(ip);
+            
+            var opt = document.createElement('option');
+            opt.value = i;
+            opt.innerHTML = ip;
+            select.appendChild(opt);
+            users++;
+        }
+    }
+    
+    label.innerHTML = users + " users: ";
+}
 
 var openintv;
 var openints = 0;
@@ -1489,7 +1617,7 @@ function openWebSocket()
         }
     }
     var ya = y.split(":");
-    sockurl = "ws://" + ya[0] + ":8090";
+    sockurl = "ws://" + ya[0] + ":8090"; 
     //console.log("open websocket");
     console.log(sockurl);
     //$('#myinfo').html(sockurl);
@@ -1799,11 +1927,63 @@ function closingCode()
     setupwindow.close();
     return null;
 }
+
+function getPS(p)
+{
+    if(p == 0) return 0;
+    if(p == "0") return 0;
+    
+    var pn = ((fec_frame_size / modulation / 90 - 1) / 16) * 36;
+    
+    // kein Pilot=0, sonst abgerundete Ganzzahl von ((fec_frame_size / modulation / 90 - 1) / 16) * 36
+    return pn;
+}
+
+function find_fec(a, b)
+{
+    if(Math.abs(a-b) <= (((Math.abs(a) > Math.abs(b))?Math.abs(a):Math.abs(b))/100.0)) return 1;
+    return 0;
+}
+
+function getcs(fecframe, fec)
+{
+    if (fecframe != 64800)
+        return 0xc0;
+    
+    if(find_fec(2.0/3.0, fec) || find_fec(5.0/6.0, fec)) 
+        return 0xa0;
+    
+    if(find_fec(8.0/9.0, fec) || find_fec(9.0/10.0, fec)) 
+        return 0x80;
+    
+    return 0xc0;
+}
+
+function CalcBitrate()
+{
+    var rolloff = $("#rolloff").val();
+    var modulation = $("#modulation").val();
+    var symbol_rate = $("#symrate").val();
+    var fec = $("#fec").val();
+    var fec_frame_size = $("#fecsize").val();
+    var pilot = 0;
+    if($("#pilot").val() == 1)
+    {
+        pilot = (fec_frame_size / modulation / 90 - 1) * 2.25;
+        console.log("pilot: " + pilot);
+    }
+    var channel_size_tmp = getcs(fec_frame_size,fec);
+    var nettoTSbitrate = Math.floor(symbol_rate/(fec_frame_size/modulation + 90 + pilot)*(fec_frame_size*fec - channel_size_tmp -80));
+    var usedBW = (1 + parseFloat(rolloff))*symbol_rate;
+    $("#nettoTSrate").val("netto TS rate: " + Math.floor(nettoTSbitrate) + " kbit/s");
+    $("#occrate").val("Bandwidth: " + Math.floor(usedBW) + " kbit/s");
+}
+
 </script>
 </head>
     <body>
         <div class="header_mytitle" id="header_mytitle">QO-100 on es'hail-2 Wideband DATV Live Spectrum</div>
-        <div class="header_subtitle" id="header_subtitle">PlutoSDR Alpha test (F5OEO) based on DJ0ABR V2.81</div>
+        <div class="header_subtitle" id="header_subtitle">SDRplay / Pluto by DJ0ABR V3.1</div>
         <div class="controls">
             <div class="leftside">
                 <select id="color" class="selectbox" name="color">
@@ -1844,6 +2024,7 @@ function closingCode()
                 <div class="controls_left">
                     <div class="controls_left_left">
                         <div>SDR-SERVER:</div>
+                        <button class="mybutton" id="setupbutton" onclick="setup()" style="display:none" align="right">SETUP</button>
                     </div>
                     <div class="controls_left_mid">
                         <div id="status">Status</div>
@@ -1891,7 +2072,7 @@ function closingCode()
                         Gain:
                     </div>
                     <div class="rightcell_slider">
-                        <input id="specgain" type="range" min="-100" max="-50" value="-90" style="direction: rtl;">
+                        <input id="specgain" type="range" min="-110" max="-50" value="-90" style="direction: rtl;">
                     </div>
                     <div class="rightcell_label">
                         Level:
@@ -1919,16 +2100,55 @@ function closingCode()
             <div class="rl_space">
             </div>
             <div class="rightside">
-                <div>
-                    <button class="mybutton" id="setupbutton" onclick="setup()" style="display:none" align="right">SETUP</button>
-                </div>
-                <div class="cat_message">
-                    ! for local users only !<hr>
-                </div>
+                <input type="text" class="symrate" id="symrate" onkeyup="CalcBitrate()">kS/s
+                <select id="modulation" class="selectbox_small" name="modulation" onchange="CalcBitrate()">
+                    <option value="2">QPSK</option>
+                    <option value="3">8PSK</option>
+                    <option value="4">16PSK</option>
+                    <option value="5">32PSK</option>
+                </select>
+                <select id="fec" class="selectbox_small" name="fec" onchange="CalcBitrate()">
+                    <option value="0.25">FEC: 1/4</option>
+                    <option value="0.333">FEC: 1/3</option>
+                    <option value="0.4">FEC: 2/5</option>
+                    <option value="0.5">FEC: 1/2</option>
+                    <option value="0.6">FEC: 3/5</option>
+                    <option value="0.667">FEC: 2/3</option>
+                    <option value="0.75">FEC: 3/4</option>
+                    <option value="0.8">FEC: 4/5</option>
+                    <option value="0.8333">FEC: 5/6</option>
+                    <option value="0.8889">FEC: 8/9</option>
+                    <option value="0.9">FEC: 9/10</option>
+                </select>
+                <select id="fecsize" class="selectbox_small" name="fecsize" onchange="CalcBitrate()">
+                    <option value="64800">FEC: normal</option>
+                    <option value="16200">FEC: short</option>
+                </select>
+                <select id="rolloff" class="selectbox_small" name="rolloff" onchange="CalcBitrate()">
+                    <option value="0.35">Rolloff: 0.35</option>
+                    <option value="0.25">Rolloff: 0.25</option>
+                    <option value="0.2">Rolloff: 0.2</option>
+                </select>
+                <select id="pilot" class="selectbox_small" name="pilot" onchange="CalcBitrate()">
+                    <option value="0">Pilot: OFF</option>
+                    <option value="1">Pilot: ON</option>
+                </select>
+                <input type="text" class="result" id="nettoTSrate" readonly>
+                <input type="text" class="result" id="occrate" readonly>
             </div>
         </div>
         
-        <div id="tuneinfo" class="tuneinfo"></div>
+        <div class="myflex">
+            <div id="clickinfo" class="clickinfo">
+                left click on signal: set Minitiouner<br>
+                right click on signal: fill Symbol Rate into calculator
+            </div>
+            <div id="tuneinfo" class="tuneinfo"></div>
+            <div class="userliste">
+                <div id="userlabel" class="userlabel">current users</div>
+                <select id="activeips" class="activeips" size="4"></select>
+            </div>
+        </div>
         <br>
         
         <div style="position: relative;">
