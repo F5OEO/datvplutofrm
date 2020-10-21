@@ -1,3 +1,11 @@
+  if ( ((!window.navigator.onLine)||(document.getElementById("spectrum_enable").checked==false)) )
+  { 
+   //no execution (exit)
+  }
+
+  else
+  {
+
 var ws_url = "wss://eshail.batc.org.uk/wb/fft";
 var ws_name = 'fft_f5oeoplutofw';
 
@@ -7,10 +15,12 @@ if(typeof ws_url_override !== 'undefined')
 }
 
 var render_timer;
+
 const render_interval_map = {
   'fft': 250, // ms
   'fft_fast': 100 // ms
 };
+
 var render_interval = render_interval_map[ws_name];
 var render_busy = false;
 var render_buffer = [];
@@ -20,6 +30,8 @@ var canvas_jqel;
 var ctx;
 var canvasWidth;
 var canvasHeight;
+var signal_selected = null; //if not undefined, shows box on channel clicked
+var signal_tune = null;     //if not undefined tune to receiver
 
 var mouse_in_canvas = false;
 var mouse_x = 0;
@@ -54,12 +66,15 @@ if(typeof(Storage) !== "undefined")
 
 /* On load */
 $(function() {
-  if (!window.navigator.onLine) return false;
+  if ((!window.navigator.onLine)||(document.getElementById("spectrum_enable").checked==false)) 
+  { 
+    return false;
+  }
   else {
   var fft_ws = new u16Websocket(ws_url, ws_name, render_buffer);
-  console.log(fft_ws);
-  canvasHeight = 542;
-  canvasWidth = $("#fft-col").width();
+  //console.log(fft_ws);
+  canvasHeight = 550;
+  canvasWidth = $("#fft-col").width(); //padding
   
   el = document.getElementById('c');
   canvas_jqel = $("#c");
@@ -69,17 +84,7 @@ $(function() {
   updateFFT(null);
  
  }
-
  
-
-  /* Hide fullscreen link for iOS */
-  var n=navigator.userAgent.toLowerCase();
-  if((n.indexOf('iphone')!=-1) || (n.indexOf('ipad')!=-1) || (n.indexOf('ipod')!=-1) || (n.indexOf('ios')!=-1))
-  {
-    $("#fullscreen-link").hide();
-  }
-
-
 
 
   canvas_jqel.on('mousemove', function(e)
@@ -107,6 +112,7 @@ $(function() {
 
   canvas_jqel.on('click', function(e)
   {
+
     const el_boundingRectangle = el.getBoundingClientRect();
     clicked_x = e.clientX - el_boundingRectangle.left;
     clicked_y = e.clientY - el_boundingRectangle.top;
@@ -119,11 +125,30 @@ $(function() {
 
       if(signal_selected != null && typeof signal_tune !== 'undefined')
       {
-        signal_tune(signal_selected.frequency, signal_selected.symbolrate);
+        if(mouse_y <= (canvasHeight * 7/8)) {
+        signal_steering(signal_selected.frequency, signal_selected.symbolrate);
+        }
       } 
     }       
   });
 });
+
+function signal_steering(f,sr) { //F5UII 2608
+ 
+  var xmlhttp = new XMLHttpRequest();
+  xmlhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+        //document.getElementsByName("power")[0].value = this.responseText;
+      }
+    };
+    let receiver = 'minitiouner';
+    f = parseFloat(f) - 10000;
+    xmlhttp.open("GET", "receiver.php?f="+f.toFixed(3)+'&rate='+(sr/1000)+'&rec='+receiver, true);
+    xmlhttp.send();
+          $('#message_spectrum').html('Receiver channel change request completed !');
+          $("#message_spectrum").fadeIn(250).fadeOut(1500);
+        
+  }
 
 function initCanvas()
 {
@@ -397,7 +422,7 @@ render_timer = setInterval(render_fft, render_interval);
 
 function align_symbolrate(width)
 {
-  //console.log(width);
+  
   if(width < 0.022)
   {
     return 0;
@@ -803,11 +828,28 @@ if(mouse_y > (canvasHeight * 7/8))
         textarea.select();
         let ret= document.execCommand('copy');
         if (ret == true) {
-          $("#copied").fadeIn(250).fadeOut(1500);
-         
-
+          let ret=false;
+          $('#message_spectrum').html('Frequency set and also copied in clipboard ! <span id="rtmp"><i>Click here to copy RTMP server URL in </i>📋<i>.</i></span>');
+          $("#message_spectrum").fadeIn(250).delay(5000).fadeOut(1500);
         }
-  }  
+
+         $('#rtmp').click(function () {
+          //rtmp://192.168.2.1:7272/,437,DVBS2,QPSK,333,23,0,nocalib,800,32,
+          let m=window.location.origin+':7272/,' + $("input[name='freq']").val() + ',' + $("select[name='mode']").val()+ ',' + $("select[name='mod']").val() + ',' + $("input[name='sr']").val() + ',' + $("select[name='fec']").val() + ',' + $("input[name='power']").val() + ',nocalib,'+$("input[name='pcrpts']").val() +',32,';
+          m = m.replace("http://", "rtmp://");
+          document.getElementById("upf").value = m;
+          let textarea = document.getElementById("upf");
+          textarea.select();
+          let ret= document.execCommand('copy');
+          if (ret == true) {
+            ret=false;
+            $('#message_spectrum').html('The URL string is in the clipboard and can by paste in your streaming software.<br/> <span style="font-family:verdana;  font-size: 12px; "> '+ m +'</span>');
+                   
+          }
+    
+        });
+
+}
 
 }
 
@@ -915,7 +957,7 @@ var checkResize = function()
     && (previousHeight != window.innerHeight || previousWidth != window.innerWidth))
   {
     canvasHeight = 550;
-    canvasWidth = $("#fft-col").width();
+    canvasWidth = $("#fft-col").width() ; 
     initCanvas();
 
     previousHeight = window.innerHeight;
@@ -939,6 +981,7 @@ window.addEventListener("fullscreenchange", function()
     /* Reset canvas size */
     canvasHeight = 550;
     canvasWidth = $("#fft-col").width();
+
     initCanvas();
   }
 });
@@ -948,3 +991,4 @@ window.addEventListener("orientationchange", checkOrientation, false);
 
 // Android doesn't always fire orientationChange on 180 degree turns
 setInterval(checkOrientation, 2000);
+}
