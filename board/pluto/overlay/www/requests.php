@@ -1,5 +1,5 @@
 <?php
-
+header("Access-Control-Allow-Origin: *"); //for developping & testing purposes
 //set and return requested gain
 if(isset($_GET['gain'])){
     $cmd = 'echo '.$_GET['gain'].' >  /sys/bus/iio/devices/iio:device1/out_voltage0_hardwaregain';
@@ -39,7 +39,9 @@ if(isset($_GET['PTT'])){
 //get status
 //doo whatever we like here TBD
 if(isset($_GET['status'])){
-     $cmd = "/root/reportbitrate.sh";	
+     $source = $_GET['source'];
+     
+     $cmd = "/root/reportbitrate.sh ".$source;	
      exec($cmd,$stuff);	
      echo "{";
 
@@ -55,7 +57,7 @@ if(isset($_GET['status'])){
      }
      echo "]";
      
- $cmd = "/root/reportpid.sh";
+ $cmd = "/root/reportpid.sh ".$source;
      exec($cmd,$pid);
      echo ',';
      echo '"pid": ';
@@ -88,7 +90,7 @@ echo '"pcr": ';
 echo "[";
      
 
-     $cmd = "tail -n 200 /root/pcr.txt";
+     $cmd = "tail -n 200 /root/pcr".$source.".txt";
      exec($cmd,$pcrline);
      foreach( $pcrline as & $value ) {
          $arraypcr=explode(';',$value);	
