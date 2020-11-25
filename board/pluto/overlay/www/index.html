@@ -11,6 +11,7 @@
 <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
 <!-- Place favicon.ico in the root directory -->
 <link type="text/css" href="./img/style.css" rel="stylesheet">
+
 </head>
 <body>
 <!--[if lte IE 11]>
@@ -252,6 +253,12 @@
 <section id="firmware">
 <a class="anchor" href="#top">Back to top</a>
 <h3>Firmware</h3>
+
+
+<div class="xterm" id="releasenote">
+
+</div>
+
 <p>The <i>ADALM-PLUTO Firmware</i> refers to the U-Boot, HDL, Linux kernel, device drivers, and user space software, which runs on the PlutoSDR. This is bundled up and given a specific version number for the PlutoSDR. For help upgrading firmware, check out the <a href="https://wiki.analog.com/university/tools/pluto/common/firmware">online documentation</a>.</p>
 <div id="versionsection" class="download">
 <p><strong>Status of the PlutoSDR firmware:</strong></p>
@@ -436,5 +443,8 @@
 <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
 <script>window.jQuery || document.write('<script src="js/vendor/jquery-3.1.1.min.js"><\/script>')</script>
 <script src="./img/version.js"></script>
+<script type="text/javascript">
+	$('#releasenote').load('releasenote.php');
+</script>
 </body>
 </html>

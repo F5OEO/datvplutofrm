@@ -823,7 +823,12 @@ function copy_upfreq(mouse_x, mouse_y)
 {
 if(mouse_y > (canvasHeight * 7/8))
   {
-         $('[name="freq"]').val($("#upf").val());
+        
+       
+        //$(t+'[name="freq"]').val($("#upf").val()- $(t+'[name="trvlo"]').val());
+        $(t+'[name="freq"]').val($("#upf").val()- $(t+'[name="trvlo"]').val());
+        console.log('tab wf = '+t + ' .upf='+$("#upf").val() + ' tvrlo='+$(t+'[name="trvlo"]').val());
+        save_local_modulator();
         let textarea = document.getElementById("upf");
         textarea.select();
         let ret= document.execCommand('copy');
@@ -834,8 +839,9 @@ if(mouse_y > (canvasHeight * 7/8))
         }
 
          $('#rtmp').click(function () {
+          let t='#tab'+tab+'C ';
           //rtmp://192.168.2.1:7272/,437,DVBS2,QPSK,333,23,0,nocalib,800,32,
-          let m=window.location.origin+':7272/,' + $("input[name='freq']").val() + ',' + $("select[name='mode']").val()+ ',' + $("select[name='mod']").val() + ',' + $("input[name='sr']").val() + ',' + $("select[name='fec']").val() + ',' + $("input[name='power']").val() + ',nocalib,'+$("input[name='pcrpts']").val() +',32,';
+          let m=window.location.origin+':7272/,' + $(t+"input[name='freq']").val() + ',' + $(t+"select[name='mode']").val()+ ',' + $(t+"select[name='mod']").val() + ',' + $(t+"input[name='sr']").val() + ',' + $(t+"select[name='fec']").val() + ',' + $(t+"input[name='power']").val() + ',nocalib,'+$(t+"input[name='pcrpts']").val() +',32,';
           m = m.replace("http://", "rtmp://");
           document.getElementById("upf").value = m;
           let textarea = document.getElementById("upf");
@@ -877,7 +883,8 @@ function render_frequency_info(mouse_x, mouse_y)
 
         ctx.fillRect(xd1, yd, xd2-xd1, 5);
         display_triggered = true;
-        document.getElementById("upf").value = (1910.50 + freq_info[i].center_frequency - document.getElementsByName('trvlo')[0].value) ;
+        //document.getElementById("upf").value = (1910.50 + freq_info[i].center_frequency - document.getElementsByName('trvlo')[0].value) ;
+        document.getElementById("upf").value = (1910.50 + freq_info[i].center_frequency ) ;
 
 
 

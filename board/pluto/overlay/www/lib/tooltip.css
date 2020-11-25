@@ -199,3 +199,17 @@
 #note a {
 	color : #be1028;
 }
+
+div #col1 {
+	float: left;
+	width: 160px;
+
+}
+div #col2 {
+
+}
+div #col3 {
+	float: right;
+	width: 160px;
+
+}
