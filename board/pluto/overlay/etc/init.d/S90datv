@@ -8,6 +8,7 @@ start() {
    /root/udpts.sh >/dev/null </dev/null 2>/dev/null &
    /root/audio.sh >/dev/null </dev/null 2>/dev/null &
    /root/watchudp.sh >/dev/null </dev/null 2>/dev/null & 
+   /root/decodevideo.sh >/dev/null </dev/null 2>/dev/null &  
 }
 
 stop() {
