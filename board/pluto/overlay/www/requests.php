@@ -119,6 +119,19 @@ echo "[";
      }  
      echo "]";
 
+ //Name and provider
+ $cmd = "/root/reportname.sh ".$source;
+     
+ echo ',';
+echo '"name": "';
+echo exec($cmd);
+echo '"';
+
+$cmd = "/root/reportprovider.sh ".$source;
+echo ',';
+echo '"provider": "';
+echo exec($cmd);
+echo '"';
 
 //end of json
 echo "}";

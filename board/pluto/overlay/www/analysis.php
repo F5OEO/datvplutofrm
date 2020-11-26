@@ -79,6 +79,7 @@
 
         </tr>
     </table>
+    <li>Name : <span id="servicename"></span></li><li>Provider : <span id="providername"></span></li>
     <div class="row">
       <div class="column_1">
           <div style="height:40%; width:100%;">
@@ -145,6 +146,8 @@
     var PcrChart;
     var pcrpts;
     var pcrptslabel;
+    var servicename;
+    var providername;
 
     function request_status(source){
     if (source === undefined) {
@@ -160,6 +163,8 @@
     pidts=analysis.pid;
     pcrpts=analysis.pcr;
     pcrptslabel=analysis.pcrlabel;
+    servicename=analysis.name;
+    providername=analysis.provider;
     if (pidts.includes('0(PAT)') ==  false) {
         pidts.push ('0(PAT)');
         datats.push(0);
@@ -198,6 +203,9 @@
     }
      $('#pnull').text((pidnull/pidtotal*100).toFixed(1)+'');
      $('#pidtotal').text(' among '+pidtotal.toLocaleString('fr')+' kbits/s of total data');
+     $('#servicename').text(servicename);
+     $('#providername').text(providername);
+     
     }
     };
 
