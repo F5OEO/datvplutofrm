@@ -63,7 +63,7 @@
 
 
     </header>
-
+    
 
     <h2>Transport stream analysis</h2>
     <hr>
@@ -79,7 +79,11 @@
 
         </tr>
     </table>
+
     <li>Name : <span id="servicename"></span></li><li>Provider : <span id="providername"></span></li>
+      <img src="frame.bmp" id="img" style="height:20%; width:50%;"/>
+    
+    
     <div class="row">
       <div class="column_1">
           <div style="height:40%; width:100%;">
@@ -369,10 +373,11 @@ var mean_pnull_1min = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
         $('#meannull').text(avg.toFixed(1));
          avg = total_1min / mean_pnull_1min.length;
         $('#mean_pnull_1min').text(avg.toFixed(1));        
-        
+        $("#img").attr("src", "/frame.bmp?timestamp=" + new Date().getTime());    
         loop()
       }, 1000);
     }());
     </script>
+  
     </body>
     </html>
