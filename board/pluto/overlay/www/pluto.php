@@ -1227,7 +1227,7 @@ function get_config_modulator(only_part) {
         }
        $el.val(datal[1]);
      if (datal[0] == 'mod')  {
-        upd_fec();
+        upd_mod();
       }
     }
   }

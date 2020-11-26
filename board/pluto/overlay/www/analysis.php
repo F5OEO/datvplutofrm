@@ -67,10 +67,9 @@
 
     <h2>Transport stream analysis</h2>
     <hr>
-    <!--
     <table style="padding-bottom: 21px;">
         <tr>
-        <td>Receiver analysis <span  class="note tooltip" title="Allows you to set the stream source that is analysed<br>no = Transmitter analysis / yes = Receiver analysis <ul><li>In the Controller panel, on Setup Receiver tab, specify the IP address and port of the UDP broadcast sent by your source, like Minitiouner.</li><li>For those who use Minitiouner by author F6DZP, this informations can be found in the <i>minitiouneConfig.ini</i> file, in section <i>[UDP]</i>, and variables <i>TS_AddrUDP</i>, <i>TS_Port</i></li><li>Remember to enable UDP broadcasting either from the Minitiouner control panel (UDP button), or by activating it by default, with udp_switch=1 (Section buttons) in <i>minitiouneConfig.ini</i>.</li> "> ( ℹ️ ) </span></td>
+        <td>Receiver analysis <span  class="note tooltip" title="Allows you to set the stream source of the analysis<br>no = transmitter analysis / yes = receiver analysis <ul><li>In the Controller panel, on Setup Receiver tab, specify the IP address and port of the UDP broadcast.</li><li>For those who use Minitiouner by author F6DZP, this information can be found in the <i>minitiouneConfig.ini</i> file, in section <i>[UDP]</i>, and variables <i>TS_AddrUDP</i>, <i>TS_Port</i></li> "> ( ℹ️ ) </span></td>
           <td>
             <div class="checkcontainer">
               <input type="checkbox" id="analysis_source" name="analysis_source">
@@ -80,7 +79,6 @@
 
         </tr>
     </table>
--->
     <div class="row">
       <div class="column_1">
           <div style="height:40%; width:100%;">
