@@ -1,5 +1,8 @@
+# We could do a continuous decoding BUT even by keeping just I picture, ffmpeg decodes all frames and CPU is too high
+
 while :
 do
-ffmpeg -analyzeduration 8000000 -skip_frame nokey -r 1 -fflags +genpts -f mpegts -i udp://230.0.0.10:10000  -c:v bmp -vframes 1 -f rawvideo -y /root/frame.bmp
-cp /root/frame.bmp /www/frame.bmp
+#ffmpeg -analyzeduration 8000000 -discard nokey -fflags +genpts -f mpegts -i udp://$1  -c:v bmp -vframes 1 -f rawvideo -y /root/frame.bmp
+ffmpeg -discard 'noref' -f mpegts -i udp:/$1 -vframes 1 -update 1 -y /www/frame.png
+cp /root/frame.png /www/frame.png
 done

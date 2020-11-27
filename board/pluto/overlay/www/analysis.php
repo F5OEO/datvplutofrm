@@ -81,7 +81,7 @@
     </table>
 
     <li>Name : <span id="servicename"></span></li><li>Provider : <span id="providername"></span></li>
-      <img src="frame.bmp" id="img" style="height:20%; width:50%;"/>
+      <img src="frame.png" id="img" style="height:20%; width:50%;"/>
     
     
     <div class="row">
@@ -373,7 +373,7 @@ var mean_pnull_1min = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
         $('#meannull').text(avg.toFixed(1));
          avg = total_1min / mean_pnull_1min.length;
         $('#mean_pnull_1min').text(avg.toFixed(1));        
-        $("#img").attr("src", "/frame.bmp?timestamp=" + new Date().getTime());    
+        $("#img").attr("src", "/frame.png?timestamp=" + new Date().getTime());    
         loop()
       }, 1000);
     }());
