@@ -32,6 +32,28 @@
           display: table;
           clear: both;
         }
+
+        #img_cycler{
+            position:relative;
+            height: 165px;
+            padding-left:113px;
+
+        }
+        #img_cycler img{
+            position:absolute;
+            z-index:1 ;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            padding: 5px;
+            background-color: white;
+            height: 150px;
+
+
+        }
+        #img_cycler img.active{z-index:3;
+       
+        }
+
     </style>
     </head>
     <header id="top">
@@ -78,9 +100,17 @@
     <h2>Transport stream analysis</h2>
     <hr>
 
+    <div style="padding-left:113px;">
+      <i>Name : <span id="servicename"></span>
+       Provider : <span id="providername"></span></i>
+    </div>
+    
+    <div id="img_cycler">
+      <img src="./img/patern.png" class="active" >
+      <img src="./img/patern.png"  >
 
-    <li>Name : <span id="servicename"></span></li><li>Provider : <span id="providername"></span></li>
-      <img src="frame.png" id="img" style="height:20%; width:50%;"/>
+    </div>
+      
     
     
     <div class="row">
@@ -132,8 +162,38 @@
              request_status();
         }  
 
+
     	
     }, 1000);
+
+    setInterval (function() {
+        img_cycle();
+    } , 2000);
+
+
+
+
+    function img_cycle() {
+    var $active = $('#img_cycler .active');
+    var $src= "frame.png?timestamp=" + new Date().getTime();
+   
+    $.get($src, function() {
+        var $next = ($active.next().length >0 ) ? $active.next() : $('#img_cycler img:first');
+        $next.css ('z-index',2);
+        $next.attr('src',$src); 
+        $active.fadeOut(1000, function() {
+             
+            $active.css('z-index',1).show().removeClass('active');
+            $next.css('z-index',3).addClass('active');
+        })
+        })
+        .fail(function() {
+         
+        })
+        
+    }
+
+
 
     $("#analysis_source").change(function() {
         if(this.checked) {
@@ -362,7 +422,8 @@
 
 var mean_pnull = [0,0,0,0,0];
 var mean_pnull_1min = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
-    (function loop() {
+    (
+    function loop() {
       setTimeout(function () {
         mean_pnull.shift();
         mean_pnull_1min.shift();
@@ -379,8 +440,8 @@ var mean_pnull_1min = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
         var avg = total / mean_pnull.length;
         $('#meannull').text(avg.toFixed(1));
          avg = total_1min / mean_pnull_1min.length;
-        $('#mean_pnull_1min').text(avg.toFixed(1));        
-        $("#img").attr("src", "/frame.png?timestamp=" + new Date().getTime());    
+        $('#mean_pnull_1min').text(avg.toFixed(1));  
+ 
         loop()
       }, 1000);
     }());
