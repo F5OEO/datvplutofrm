@@ -63,11 +63,7 @@
 
 
     </header>
-    
-
-    <h2>Transport stream analysis</h2>
-    <hr>
-    <table style="padding-bottom: 21px;">
+    <table style="padding-top: 21px;">
         <tr>
         <td>Receiver analysis <span  class="note tooltip" title="Allows you to set the stream source of the analysis<br>no = transmitter analysis / yes = receiver analysis <ul><li>In the Controller panel, on Setup Receiver tab, specify the IP address and port of the UDP broadcast.</li><li>For those who use Minitiouner by author F6DZP, this information can be found in the <i>minitiouneConfig.ini</i> file, in section <i>[UDP]</i>, and variables <i>TS_AddrUDP</i>, <i>TS_Port</i></li> "> ( ℹ️ ) </span></td>
           <td>
@@ -79,6 +75,9 @@
 
         </tr>
     </table>
+    <h2>Transport stream analysis</h2>
+    <hr>
+
 
     <li>Name : <span id="servicename"></span></li><li>Provider : <span id="providername"></span></li>
       <img src="frame.png" id="img" style="height:20%; width:50%;"/>
