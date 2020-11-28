@@ -118,6 +118,12 @@
     <script src="Chart.bundle.js"></script>
     <script src="lib/chartjs-plugin-labels.js"></script>
     <script>
+
+     if (localStorage.getItem('analysis_source')=='rcv') {
+        $( "#analysis_source" ).prop('checked',true);
+     } else {
+        $( "#analysis_source" ).prop('checked',false);
+     }
     //timer loop to request status information
     setInterval(function() {
         if ($( "#analysis_source" ).is(":checked")==true) {
@@ -132,12 +138,14 @@
     $("#analysis_source").change(function() {
         if(this.checked) {
           $.get( "rcv_analyse.php?cmd=start", function( data ) {//Read temps of the pluto
-          console.log ("Receiver analysis "+data)
+          console.log ("Receiver analysis "+data);
+          localStorage.setItem ('analysis_source','rcv');
           });
             
         } else {
           $.get( "rcv_analyse.php?cmd=stop", function( data ) {//Read temps of the pluto
-          console.log ("Receiver analysis "+data)
+          console.log ("Receiver analysis "+data);
+          localStorage.setItem ('analysis_source','pluto');
           });
         }
     });
