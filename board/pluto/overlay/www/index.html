@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html class="no-js" lang="en">
 <head>
@@ -11,7 +12,6 @@
 <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
 <!-- Place favicon.ico in the root directory -->
 <link type="text/css" href="./img/style.css" rel="stylesheet">
-
 </head>
 <body>
 <!--[if lte IE 11]>
@@ -253,12 +253,6 @@
 <section id="firmware">
 <a class="anchor" href="#top">Back to top</a>
 <h3>Firmware</h3>
-
-
-<div class="xterm" id="releasenote">
-
-</div>
-
 <p>The <i>ADALM-PLUTO Firmware</i> refers to the U-Boot, HDL, Linux kernel, device drivers, and user space software, which runs on the PlutoSDR. This is bundled up and given a specific version number for the PlutoSDR. For help upgrading firmware, check out the <a href="https://wiki.analog.com/university/tools/pluto/common/firmware">online documentation</a>.</p>
 <div id="versionsection" class="download">
 <p><strong>Status of the PlutoSDR firmware:</strong></p>
@@ -273,37 +267,37 @@
 <thead>
 <tr>
 <th>Model</th>
-<th>#MODEL#</th>
+<th>Analog Devices PlutoSDR Rev.B (Z7010-AD9364)</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Serial</td>
-<td>#SERIAL#</td>
+<td>10447354119600060e001600241f1ef0d3</td>
 </tr>
 <tr>
 <td>Build</td>
-<td>#BUILD#</td>
+<td>v0.32-dirty</td>
 </tr>
 <tr>
 <td>Linux</td>
-<td>#LINUX#</td>
+<td>Linux pluto 4.19.0-g6edc6cd24b48-dirty #12 SMP PREEMPT Wed Nov 25 18:23:19 CET 2020 armv7l GNU-Linux;2 core(s)</td>
 </tr>
 <tr>
 <td>U-Boot</td>
-<td>#UBOOT#</td>
+<td>U-Boot PlutoSDR v0.20-PlutoSDR-00053-g89d0754 (Jan 14 2019 - 13:15:56 +0100)</td>
 </tr>
 <tr>
 <td>FPGA</td>
-<td>#FPGA#</td>
+<td>dev_prj_2018_r1-933-g847f</td>
 </tr>
 <tr>
 <td>Root FS</td>
-<td>#ROOTFS#</td>
+<td>v0.20-13876-g1daa6-dirty</td>
 </tr>
 <tr>
 <td>IIO</td>
-<td>#IIO#</td>
+<td>Library version: 0.21 (git tag: v0.21)</td>
 </tr>
 </tbody>
 </table>
@@ -352,27 +346,27 @@
 <tbody>
 <tr>
 <td>Hostname</td>
-<td>#HOSTNAME#</td>
+<td>pluto</td>
 </tr>
 <tr>
 <td>IP Address (PlutoSDR)</td>
-<td>#IP#</td>
+<td>192.168.2.1</td>
 </tr>
 <tr>
 <td>IP Address (HOST)</td>
-<td>#HOSTIP#</td>
+<td>192.168.2.10</td>
 </tr>
 <tr>
 <td>Netmask</td>
-<td>#NETMASK#</td>
+<td>255.255.255.0</td>
 </tr>
 <tr>
 <td>MAC Address (PlutoSDR)</td>
-<td>#MAC#</td>
+<td>00:05:f7:55:d2:fb</td>
 </tr>
 <tr>
 <td>MAC Address (HOST)</td>
-<td>#MACHOST#</td>
+<td>00:e0:22:5d:8b:cb</td>
 </tr>
 </tbody>
 </table>
@@ -382,7 +376,7 @@
 <tbody>
 <tr>
 <td>SSID</td>
-<td>#SSID_WLAN#</td>
+<td></td>
 </tr>
 <tr>
 <td>WPA-PSK Passphrase</td>
@@ -390,7 +384,7 @@
 </tr>
 <tr>
 <td>IP Address</td>
-<td>#IPADDR_WLAN#</td>
+<td></td>
 </tr>
 </tbody>
 </table>
@@ -400,11 +394,11 @@
 <tbody>
 <tr>
 <td>IP Address</td>
-<td>#IPADDR_ETH#</td>
+<td>192.168.1.8</td>
 </tr>
 <tr>
 <td>Netmask</td>
-<td>#NETMASK_ETH#</td>
+<td>255.255.255.0</td>
 </tr>
 </tbody>
 </table>
@@ -420,6 +414,8 @@
 <p id="test"><strong>Support the author</strong></p>
 <p>Even most of this development is done under opensource (GPL), I should apreciate donation for integration, development and materials :  <a href="https://www.paypal.me/f5oeo">Donate</a></p>
 </section>
+<p id="test"><strong>Release notes </strong></p>
+<div class="xterm" id="releasenote">  <b>Release notes</b> (<a href="https://github.com/F5OEO/datvplutofrm/commits/master" target="_blank">GitHub commits</a>)<br></div>
 <hr>
 <section id="social">
 <h3 id="about">About</h3>
@@ -436,15 +432,18 @@
 	</ul>
 <p></p>
 </div>
+
 </section>
 <footer>
 <p>&copy; 2019 F5OEO, Evariste</p>
 </footer>
+
 <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
 <script>window.jQuery || document.write('<script src="js/vendor/jquery-3.1.1.min.js"><\/script>')</script>
-<script src="./img/version.js"></script>
 <script type="text/javascript">
 	$('#releasenote').load('releasenote.php');
 </script>
+<script src="./img/version.js"></script>
+
 </body>
 </html>
