@@ -87,7 +87,7 @@
     </header>
     <table style="padding-top: 21px;">
         <tr>
-        <td>Receiver analysis <span  class="note tooltip" title="Allows you to set the stream source of the analysis<br>no = transmitter analysis / yes = receiver analysis <ul><li>In the Controller panel, on Setup Receiver tab, specify the IP address and port of the UDP broadcast.</li><li>For those who use Minitiouner by author F6DZP, this information can be found in the <i>minitiouneConfig.ini</i> file, in section <i>[UDP]</i>, and variables <i>TS_AddrUDP</i>, <i>TS_Port</i></li> "> ( ℹ️ ) </span></td>
+        <td>Receiver analysis <span  class="note tooltip" title="Allows you to set the stream source of the analysis<br>no = transmitter analysis / yes = receiver analysis <ul><li>In the Controller panel, on Setup Receiver tab, specify the IP address and port of the UDP broadcast.</li><li>For those who use Minitiouner by author F6DZP, this information can be found in the <i>minitiouneConfig.ini</i> file, in section <i>[UDP]</i>, and variables <i>TS_AddrUDP</i>, <i>TS_Port</i></li><li>Remember to enable UDP broadcasting either from the Minitiouner control panel (UDP button), or by activating it by default, with udp_switch=1 (Section buttons) in <i>minitiouneConfig.ini</i>.</li> "> ( ℹ️ ) </span></td>
           <td>
             <div class="checkcontainer">
               <input type="checkbox" id="analysis_source" name="analysis_source">
@@ -175,7 +175,12 @@
 
     function img_cycle() {
     var $active = $('#img_cycler .active');
-    var $src= "frame.png?timestamp=" + new Date().getTime();
+    if (($('#providername')=='(unknown)') || ($('#providername')==''))
+    {
+        var $src= "img/patern.png";
+    } else {
+        var $src= "frame.png?timestamp=" + new Date().getTime();    
+    }
    
     $.get($src, function() {
         var $next = ($active.next().length >0 ) ? $active.next() : $('#img_cycler img:first');
