@@ -1212,7 +1212,7 @@ function get_local_modulator() {
            tabname ="Mod";
         }
 
-        $('#tabs').append('<li><a id="tab' + id + '" contenteditable="true" class="inactive">'+tabname+'<span id="delcross" contenteditable="false"> ✖️ </span></a></li>');
+        $('#tabs').append('<li><a id="tab' + id + '" contenteditable="true" spellcheck="false" class="inactive">'+tabname+'<span id="delcross" contenteditable="false"> ✖️ </span></a></li>');
         $('.tabs-content').append('<div class="container" id="' + tabId + 'C" style="display: none;"></div>');
         $('div#tab1C.container #modulator').clone().appendTo('div#'+tabId+'C.container');
         $('div#tab'+id+'C.container form#modulator').attr('id','modulator'+id);
@@ -1345,7 +1345,7 @@ function reset_counter() {
     max_id_modulator = parseInt(max_id_modulator) +1 ;
     var id =  parseInt(max_id_modulator,10)  ;//$("#tabs").children().length; 
     var tabId = 'tab' + id;
-    $('#tabs').append('<li><a id="tab' + id + '" contenteditable="true" class="inactive">Mod<span  contenteditable="false"> ✖️ </span></a></li>');
+    $('#tabs').append('<li><a id="tab' + id + '" contenteditable="true" spellcheck="false" class="inactive">Mod<span  contenteditable="false"> ✖️ </span></a></li>');
     $('.tabs-content').append('<div class="container" id="' + tabId + 'C" style="display: none;"></div>');
     //$('div#tab1C.container').clone().appendTo('div#tab2C.container');
     if (sourcetab === undefined) {
