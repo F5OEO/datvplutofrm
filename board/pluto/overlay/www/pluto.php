@@ -63,6 +63,15 @@
   </head>
 
   <body onload="load()">
+
+    <ul class='right-c-menu'>
+      <li data-action="lock">🔒 Lock modulator</li>
+      <li data-action="unlock">🔓 Unlock modulator</li>
+      <li data-action="duplicate">➕ Duplicate this modulator</li>
+      <li data-action="copydata">📋 <span  class="note tooltip" style="color: #333;" title="Copies the callsign, program name and power from the active modulator to all unlocked modulators">Copy Callsign, Program Name, Power</span></li>
+   </ul>
+
+
     <header id="top">
       <div id="col1">
         &nbsp;
@@ -266,7 +275,7 @@
 
   <hr>
 
-<span id ="addtab"><a id='plussign'> ➕ </a><a><span  class="note tooltip" title="Click ➕ to add a new modulator profile.<ul><li>The new tab is initialized in the same state as the Main tab.</li><li> You can edit the name of the tab. <li>It is saved locally in your browser, as soon as you have changed <u>at least one</u> setting in the table. (No click on <i>Apply Settings</i> needed)</li><li>  To use the active modulator for the next transmission (or during an ongoing transmision), click <i>Apply settings</i> button.</li></ul> ">Add modulator</span></a></span>
+<span id ="addtab"><a id='plussign'> ➕ </a><a><span  class="note tooltip" title="Click ➕ to add a new modulator profile.<ul><li>The new tab is initialized in the same state as the Main tab.</li><li> You can edit the name of the tab. <li>It is saved locally in your browser, as soon as you have changed <u>at least one</u> setting in the table. (No click on <i>Apply Settings</i> needed)</li><li>  To use the active modulator for the next transmission (or during an ongoing transmision), click <i>Apply settings</i> button.</li><li>With a right click on a form, you can <ul><li>lock the modulator so that no changes can be done before unlocking it again.</li><li>duplicate the current active modulator on a new tab</li><li>copies the callsign, program name and power from the active modulator to all unlocked profiles</li></li></ul> ">Add modulator</span></a></span>
   <ul id="tabs"  >
     <li><a id="tab1">Main</a></li>
   </ul>
@@ -1172,6 +1181,11 @@ function update_tab(id) {
 
         }
       }
+      if (localStorage.getItem('tablocked_'+id)=='true') {
+        $('#tab'+id+'C :input').prop("disabled", true);
+      } else {
+        $('#tab'+id+'C :input').prop("disabled", false);
+      }
 
      //upd_mod();
      upd_fec();
@@ -1234,6 +1248,7 @@ function get_config_modulator(only_part) {
 })
  .fail(function() {
   console.log('modulator settings read failed. It may be normal if never saved Modulator section');
+   upd_mod();
 }) 
  .done(function() {
    update_slider_pat();
@@ -1243,8 +1258,6 @@ function get_config_modulator(only_part) {
  }) 
 
 }
-
-
 
 function load() {
   get_config_receiver() ;
@@ -1256,7 +1269,7 @@ function load() {
   update_tab(1);
 }
 get_local_modulator();
-if (localStorage.getItem('ActivTab')!=null) {
+if ((localStorage.getItem('ActivTab')!=null) && ($('#tabs #tab'+localStorage.getItem('ActivTab')).length>0)) {
   $('#tabs #tab' + localStorage.getItem('ActivTab') ).trigger( "click" ); 
 }
 transmission_tooltip();
@@ -1266,11 +1279,7 @@ $('input[type=file]').change(function(e){
   if ((filen!='patch.zip')&&(filen!='pluto.frm')){
     alert('The file "' + filen +  '" is incorrect. Only pluto.frm and patch.zip are allowed. File names must be in lower case'); }
   });
-
-
-  }
-
-
+}
 
   function save_local_modulator() {
     if (tab!= '1') {
@@ -1299,6 +1308,7 @@ function reset_counter() {
 
 
   $('#tabs').on ('click','li a', function(){
+    $(".right-c-menu").hide(100);
     if ($('#'+ $(this).attr('id')+'C').length >0) {
        t = '#'+ $(this).attr('id')+'C ';
        tab = $(this).attr('id').substring(3);
@@ -1324,32 +1334,81 @@ function reset_counter() {
          $('#tabs #tab1' ).trigger( "click" ); 
         localStorage.removeItem('modulator_'+memotab);
         localStorage.removeItem('tabname_'+memotab);
+        localStorage.removeItem('tablocked_'+memotab);
 
 
      }
      });
 
- 
-
-
-  $('#addtab').click(function (e) {
-    e.preventDefault();
-  
+ function add_tab (sourcetab) {
+    $(".right-c-menu").hide(100);
     max_id_modulator = parseInt(max_id_modulator) +1 ;
     var id =  parseInt(max_id_modulator,10)  ;//$("#tabs").children().length; 
     var tabId = 'tab' + id;
     $('#tabs').append('<li><a id="tab' + id + '" contenteditable="true" class="inactive">Mod<span  contenteditable="false"> ✖️ </span></a></li>');
     $('.tabs-content').append('<div class="container" id="' + tabId + 'C" style="display: none;"></div>');
     //$('div#tab1C.container').clone().appendTo('div#tab2C.container');
-    $('div#tab1C.container #modulator').clone().appendTo('div#'+tabId+'C.container');
-    $('div#tab'+id+'C.container form#modulator').attr('id','modulator'+id);
-    var selects = $('#tab1C').find("select");
+    if (sourcetab === undefined) {
+      sourcetab = '1';
+    }
+    if (sourcetab == '1') {
+        $('div#tab'+sourcetab+'C.container #modulator').clone().appendTo('div#'+tabId+'C.container');  
+        $('div#tab'+id+'C.container form#modulator').attr('id','modulator'+id);
+      } else {
+        $('div#tab'+sourcetab+'C.container #modulator'+sourcetab).clone().appendTo('div#'+tabId+'C.container');  
+        $('div#tab'+id+'C.container form#modulator'+sourcetab).attr('id','modulator'+id);
+      }
+  
+    //$('div#tab'+id+'C.container form#modulator').attr('id','modulator'+id);
+    var selects = $('#tab'+sourcetab+'C').find("select");
     $(selects).each(function(i) {
         let selname=$(this).prop('name');
-        $('div#tab'+id+'C select[name ="'+selname+'"] option[value="'+$('#tab1C select[name ="'+selname+'"]').val()+'"]').prop('selected',true);      
+        $('div#tab'+id+'C select[name ="'+selname+'"] option[value="'+$('#tab'+sourcetab+'C select[name ="'+selname+'"]').val()+'"]').prop('selected',true);      
     });
 
    $('#tabs #tab' + id ).trigger( "click" ); 
+ }
+
+ function copy_data(sourcetab) {
+    var find_mod1=false;
+    for (var j = 0; j < localStorage.length; j++) {
+     if (localStorage.key(j).substring(0,10) == 'modulator_') {
+
+      var id =  localStorage.key(j).substring(10,localStorage.key(j).length);
+      //if (id!=1) {
+      
+        var tabId = 'tab' + id;
+        if ((id!=sourcetab) && (localStorage.getItem('tablocked_'+id)!='true')) {
+          $('div#tab'+id+'C input[name ="callsign"]').val($('div#tab'+sourcetab+'C input[name ="callsign"]').val());
+          $('div#tab'+id+'C input[name ="provname"]').val($('div#tab'+sourcetab+'C input[name ="provname"]').val());
+          $('div#tab'+id+'C input[name ="power"]').val($('div#tab'+sourcetab+'C input[name ="power"]').val());    
+          if (id==1) {
+           find_mod1 =true;
+           localStorage.setItem('modulator_'+id,$("#modulator").serialize());
+          } else {
+            localStorage.setItem('modulator_'+id,$("#modulator"+id).serialize());
+          }
+
+         }
+
+      //}
+     }
+  }
+  id=1;
+  if ((find_mod1==false) && (tab !=1 )&& (localStorage.getItem('tablocked_'+id)!='true')) {
+
+          $('div#tab'+id+'C input[name ="callsign"]').val($('div#tab'+sourcetab+'C input[name ="callsign"]').val());
+          $('div#tab'+id+'C input[name ="provname"]').val($('div#tab'+sourcetab+'C input[name ="provname"]').val());
+          $('div#tab'+id+'C input[name ="power"]').val($('div#tab'+sourcetab+'C input[name ="power"]').val());  
+  }
+ }
+
+
+  $('#addtab').click(function (e) {
+    e.preventDefault();
+
+    add_tab();
+
  });
 
   $("body").on("keydown", "[contenteditable='true'], [name='comment']", function (e) { 
@@ -1363,6 +1422,53 @@ $("body").on("keyup", "[contenteditable='true']", function (e) {
   let strname = name.substring(0,name.length-4);
   localStorage.setItem('tabname_'+tab,strname);
   });
+
+
+$(".tabs-content").bind("contextmenu", function (event) {
+    // Avoid the real one
+    event.preventDefault();
+    // Show contextmenu
+    $(".right-c-menu").finish().toggle(100).
+    // In the right position (the mouse)
+    css({
+        top: event.pageY + "px",
+        left: event.pageX + "px"
+    });
+});
+
+$(".tabs-content").bind("mousedown", function (e) {
+    // If the clicked element is not the menu
+    if (!$(e.target).parents(".right-c-menu").length > 0) {
+        // Hide it
+        $(".right-c-menu").hide(100);
+    }
+});
+
+
+// right click menu
+$(".right-c-menu li").on('click', function(){
+  switch($(this).attr("data-action")) {
+      
+      // A case for each action. Your actions here
+      case "lock": 
+        $(t+':input').prop("disabled", true);
+        localStorage.setItem('tablocked_'+tab,true);
+      break;
+      case "unlock":
+        $(t+':input').prop("disabled", false);
+        localStorage.removeItem('tablocked_'+tab);
+      break;
+      case "duplicate": 
+        add_tab(tab);
+      break;
+      case "copydata": 
+        copy_data(tab);
+      break;      
+  }
+  // Hide after the action was triggered
+  $(".right-c-menu").hide(100);
+});
+
 
 </script>
 </body>
