@@ -149,6 +149,8 @@
     <script src="lib/chartjs-plugin-labels.js"></script>
     <script>
 
+    var TabisActive = true;
+
      if (localStorage.getItem('analysis_source')=='rcv') {
         $( "#analysis_source" ).prop('checked',true);
      } else {
@@ -175,7 +177,7 @@
 
     function img_cycle() {
     var $active = $('#img_cycler .active');
-    if (($('#providername')=='(unknown)') || ($('#providername')==''))
+    if (($('#providername').text()=='(unknown)') || ($('#providername').text()=='') || TabisActive == false)
     {
         var $src= "img/patern.png";
     } else {
@@ -450,7 +452,23 @@ var mean_pnull_1min = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
         loop()
       }, 1000);
     }());
+
+
+    window.onfocus = function () {
+        TabisActive = true;
+        console.log('tab active');
+     };
+
+    window.onblur = function () {
+        TabisActive = false;
+        console.log('tab inactive');
+     };
+
+
+
+
     </script>
-  
+
+
     </body>
     </html>
