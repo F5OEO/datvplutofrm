@@ -168,6 +168,7 @@ pre {
   background-color:#f5f5f5;
   border:1px solid #ccc;
   border-radius:4px;
+  white-space: pre;
 }
 
 
@@ -596,7 +597,7 @@ a {cursor:pointer;}
     font-size: small;
     font-weight: bold; 
     color: #33b3ca;
-     padding-top: 5px;
+     padding-top: 3px;
      padding-left: 7px;
      padding-right: 0px;
     padding-bottom: 0px; 
@@ -613,7 +614,7 @@ a {cursor:pointer;}
 
 
 #tabs li a.inactive{
-    padding-top:5px;
+    padding-top:3px;
     padding-bottom:0px;
   padding-left: 8px;
   padding-right: 8px;
@@ -716,4 +717,32 @@ a {cursor:pointer;}
   display: inline-block;
   height: 100%;
 
+}
+/*right-click right-c-menu*/
+.right-c-menu {
+    display: none;
+    z-index: 1000;
+    position: absolute;
+    overflow: hidden;
+    border: 1px solid #CCC;
+    white-space: nowrap;
+    font-family: sans-serif;
+    background: #FFF;
+    color: #333;
+    border-radius: 5px;
+    padding: 0;
+}
+
+/* Each of the items in the list */
+.right-c-menu li {
+    font-size : 13px;
+    padding: 6px 8px;
+    cursor: pointer;
+    list-style-type: none;
+    transition: all .3s ease;
+    user-select: none;
+}
+
+.right-c-menu li:hover {
+    background-color: #33b3ca78;
 }
