@@ -5,7 +5,7 @@ start() {
 	then
 		
 		echo "mounting NFS volume : $nfs_server on /remote"		
-		eval 'mount -t nfs -o defaults,_netdev,bg,vers=3,intr,hard,timeo=50 $nfs_server /remote'
+		eval 'mount -t nfs -o defaults,_netdev,bg,vers=3,intr,hard,timeo=50 $nfs_server /root/remote'
 		
 	else
 		
