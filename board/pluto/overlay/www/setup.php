@@ -18,9 +18,9 @@
 
     $config_ini = readinifile($file_config);
     $headfile = $config_ini[0];
-    $ini_array = $config_ini[1];
+    $network_config = $config_ini[1];
     $general_ini = readinifile($file_general);
-    $ini2_array = $general_ini[1];    
+    $datv_config = $general_ini[1];    
   
 
   ?>
@@ -31,7 +31,7 @@
   <head>
     <meta charset="UTF-8">
 
-    <title>ADALM-PLUTO DVB General setup</title>
+    <title>PlutoDVB General setup</title>
     <meta name="description" content="ADALM-PLUTO DVB General Setup ">
     <link type="text/css" href="./img/style.css" rel="stylesheet">
     <script src="lib/jquery-3.5.1.min.js"></script>
@@ -44,12 +44,15 @@
     </div>
   </header> 
   <body>
+
+    
+
     <nav style="text-align: center;">
      <a class="button" href="analysis.php">Analysis</a>
      <a class="button" href="pluto.php">Controller</a>
      <a class="button" href="index.html">Documentation</a>
    </nav>
-   <h1>ADALM-PLUTO General Setup</h1> 
+   <h1>PlutoDVB General setup</h1> 
    <hr>
    <h2>Pluto Configuration</h2>
    This section read and save the <pre>/opt/config.txt</pre> file. Take care of your modifications before applying them. Some modifications may make your equipment inaccessible from the network. To apply, please reboot (control button further down the page).
@@ -58,16 +61,16 @@
 <form id="configtxt" name="config" method="post" action = "javascript:save_config_setup('configtxt','<?php echo urlencode($file_config)?>', '<?php echo urlencode($config_ini[0]) ?>');">
     <table>
       <tr>
-        <td>hostname</td>
-        <td><input type="text" id="hostname" name="NETWORK[hostname]" value="<?php echo $ini_array['NETWORK']['hostname']; ?>" maxlength="15" size="16"></td>
-        <td>IP address</td>
-        <td><input type="text" id="ipaddr" name="NETWORK[ipaddr]" value="<?php echo $ini_array['NETWORK']['ipaddr']; ?>" maxlength="15" size="16"></td>        
+        <td><span class="note tooltip" title="Name the Pluto will have on your network. This setting is also valid when the pluto is accessed using a network adapter. <br/> Factory default value is 192.168.2.1" style="color : #636363;">Hostname</span></td>
+        <td><input type="text" id="hostname" name="NETWORK[hostname]" value="<?php echo $network_config['NETWORK']['hostname']; ?>" maxlength="15" size="16"></td>
+        <td><span class="note tooltip" title="IP address that the pluto will take when plugged in one of its USB port. <br/> Factory default value is 192.168.2.10" style="color : #636363;">IP address</span></td>
+        <td><input type="text" id="ipaddr" name="NETWORK[ipaddr]" value="<?php echo $network_config['NETWORK']['ipaddr']; ?>" maxlength="15" size="16"></td>        
       </tr>
       <tr>
-        <td>Host IP address (computer)<br></td>
-        <td><input type="text" id="ipaddr_host" name="NETWORK[ipaddr_host]"value="<?php echo $ini_array['NETWORK']['ipaddr_host']; ?>" maxlength="15" size="16"> </td>
-        <td>Network mask</td>
-        <td><input type="text" id="netmask" name="NETWORK[netmask]"value="<?php echo $ini_array['NETWORK']['netmask']; ?>" maxlength="15" size="16"></td>
+        <td><span class="note tooltip" title="IP address that the PC will take when plugged the Pluto is plugged into a USB port." style="color : #636363;">Host IP address (computer)</span><br></td>
+        <td><input type="text" id="ipaddr_host" name="NETWORK[ipaddr_host]"value="<?php echo $network_config['NETWORK']['ipaddr_host']; ?>" maxlength="15" size="16"> </td>
+        <td><span class="note tooltip" title="Factory default value is 255.255.255.0" style="color : #636363;">Network mask</span></td>
+        <td><input type="text" id="netmask" name="NETWORK[netmask]"value="<?php echo $network_config['NETWORK']['netmask']; ?>" maxlength="15" size="16"></td>
       </tr>
     </table>
     <h3>Ethernet </h3>
@@ -75,19 +78,19 @@
 
     <table>
       <tr>
-        <td>DHCP (dynamic IP)<br></td>
+        <td><span class="note tooltip" title="Automatic determination of an IP address by your network router." style="color : #636363;">DHCP (dynamic IP)</span><br></td>
         <td><div class="checkcontainer">
-          <input type="checkbox" id="dhcp_eth" name="USB_ETHERNET[dhcp_eth]" <?php if (isset($ini_array['USB_ETHERNET']['dhcp_eth']))  echo $ini_array['USB_ETHERNET']['dhcp_eth']=='on' ? " checked" :  "" ?>>
+          <input type="checkbox" id="dhcp_eth" name="USB_ETHERNET[dhcp_eth]" <?php if (isset($network_config['USB_ETHERNET']['dhcp_eth']))  echo $network_config['USB_ETHERNET']['dhcp_eth']=='on' ? " checked" :  "" ?>>
           <label for="dhcp_eth" aria-describedby="label"><span class="ui"></span> <span id='dhcp_eth_label'> static</span></label>
         </div> </td>
-        <td class="toggle1"> IP address</td>
-        <td class="toggle1"><input type="text" id="ipaddr_eth" name="USB_ETHERNET[ipaddr_eth]"value="<?php if (isset($ini_array['USB_ETHERNET']['ipaddr_eth'])) echo $ini_array['USB_ETHERNET']['ipaddr_eth']; ?>" maxlength="15" size="16"></td>
+        <td class="toggle1"> <span class="note tooltip" title="Enter a free IP address according to your network plan (LAN router)." style="color : #636363;">IP address</span></td>
+        <td class="toggle1"><input type="text" id="ipaddr_eth" name="USB_ETHERNET[ipaddr_eth]"value="<?php if (isset($network_config['USB_ETHERNET']['ipaddr_eth'])) echo $network_config['USB_ETHERNET']['ipaddr_eth']; ?>" maxlength="15" size="16"></td>
       </tr>
       <tr class="toggle1">
         <td>Network mask</td>
-        <td><input type="text" id="netmask_eth" name="USB_ETHERNET[netmask_eth]" value="<?php if (isset($ini_array['USB_ETHERNET']['netmask_eth'])) echo $ini_array['USB_ETHERNET']['netmask_eth']; ?>" maxlength="15" size="16"></td>
+        <td><input type="text" id="netmask_eth" name="USB_ETHERNET[netmask_eth]" value="<?php if (isset($network_config['USB_ETHERNET']['netmask_eth'])) echo $network_config['USB_ETHERNET']['netmask_eth']; ?>" maxlength="15" size="16"></td>
         <td><span class="note tooltip" title="LAN Router address : Necessary to control the network equipment from the Pluto (Longmynd, Minitiouner)" style="color : #636363;">Gateway IP address</span><br></td>
-        <td><input type="text" id="gateway_eth" name="USB_ETHERNET[gateway_eth]" value="<?php if (isset($ini_array['USB_ETHERNET']['gateway_eth'])) echo $ini_array['USB_ETHERNET']['gateway_eth']; ?>" maxlength="15" size="16"> </td>
+        <td><input type="text" id="gateway_eth" name="USB_ETHERNET[gateway_eth]" value="<?php if (isset($network_config['USB_ETHERNET']['gateway_eth'])) echo $network_config['USB_ETHERNET']['gateway_eth']; ?>" maxlength="15" size="16"> </td>
       </tr>
 
     </table><br>
@@ -95,13 +98,13 @@
     <table>
       <tr>
         <td>WLAN SSID</td>
-        <td><input type="text" id="ssid_wlan" name="WLAN[ssid_wlan]" value="<?php if (isset($ini_array['WLAN']['ssid_wlan'])) echo $ini_array['WLAN']['ssid_wlan']; ?>" maxlength="15" size="16"></td>
+        <td><input type="text" id="ssid_wlan" name="WLAN[ssid_wlan]" value="<?php if (isset($network_config['WLAN']['ssid_wlan'])) echo $network_config['WLAN']['ssid_wlan']; ?>" maxlength="15" size="16"></td>
         <td>WLAN Password<br></td>
-        <td><input type="text" id="pwd_wlan" name="WLAN[pwd_wlan]" value="<?php if (isset($ini_array['WLAN']['pwd_wlan'])) echo $ini_array['WLAN']['pwd_wlan']; ?>" maxlength="15" size="16"> </td>
+        <td><input type="text" id="pwd_wlan" name="WLAN[pwd_wlan]" value="<?php if (isset($network_config['WLAN']['pwd_wlan'])) echo $network_config['WLAN']['pwd_wlan']; ?>" maxlength="15" size="16"> </td>
       </tr>
       <tr>
         <td>WLAN IP address</td>
-        <td><input type="text" id="ssid_wlan" name="WLAN[ipaddr_wlan]" value="<?php if (isset($ini_array['WLAN']['ipaddr_wlan'])) echo $ini_array['WLAN']['ipaddr_wlan']; ?>" maxlength="15" size="16"></td>
+        <td><input type="text" id="ssid_wlan" name="WLAN[ipaddr_wlan]" value="<?php if (isset($network_config['WLAN']['ipaddr_wlan'])) echo $network_config['WLAN']['ipaddr_wlan']; ?>" maxlength="15" size="16"></td>
       </tr>               
     </table>
     <br>
@@ -119,9 +122,9 @@
 
       <tr>
         <td>Xo Correction</td>
-        <td><input type="text" id="xo_correction" name="SYSTEM[xo_correction]" value="<?php if (isset($ini_array['SYSTEM']['xo_correction'])) echo $ini_array['SYSTEM']['xo_correction']; ?>" maxlength="4" size="4"></td>
+        <td><input type="text" id="xo_correction" name="SYSTEM[xo_correction]" value="<?php if (isset($network_config['SYSTEM']['xo_correction'])) echo $network_config['SYSTEM']['xo_correction']; ?>" maxlength="4" size="4"></td>
         <td>UDC Handle suspend </td>
-        <td><input type="text" id="udc_handle_suspend" name="SYSTEM[udc_handle_suspend]" value="<?php if (isset($ini_array['SYSTEM']['udc_handle_suspend'])) echo $ini_array['SYSTEM']['udc_handle_suspend']; ?>" maxlength="4" size="4"></td>
+        <td><input type="text" id="udc_handle_suspend" name="SYSTEM[udc_handle_suspend]" value="<?php if (isset($network_config['SYSTEM']['udc_handle_suspend'])) echo $network_config['SYSTEM']['udc_handle_suspend']; ?>" maxlength="4" size="4"></td>
 
       </tr>
 
@@ -130,15 +133,15 @@
 
       <tr>
         <td>Diagnostic report</td>
-        <td><input type="text" id="diagnostic_report" name="ACTIONS[diagnostic_report]" value="<?php if (isset($ini_array['ACTIONS']['diagnostic_report'])) echo $ini_array['ACTIONS']['diagnostic_report']; ?>" maxlength="4" size="4"></td>
+        <td><input type="text" id="diagnostic_report" name="ACTIONS[diagnostic_report]" value="<?php if (isset($network_config['ACTIONS']['diagnostic_report'])) echo $network_config['ACTIONS']['diagnostic_report']; ?>" maxlength="4" size="4"></td>
         <td>DFU (Device Firmware Update) </td>
-        <td><input type="text" id="dfu" name="ACTIONS[dfu]" value="<?php if (isset($ini_array['ACTIONS']['dfu'])) echo $ini_array['ACTIONS']['dfu']; ?>" maxlength="4" size="4"></td>
+        <td><input type="text" id="dfu" name="ACTIONS[dfu]" value="<?php if (isset($network_config['ACTIONS']['dfu'])) echo $network_config['ACTIONS']['dfu']; ?>" maxlength="4" size="4"></td>
       </tr>
       <tr>
         <td>Reset</td>
-        <td><input type="text" id="reset" name="ACTIONS[reset]" value="<?php if (isset($ini_array['ACTIONS']['reset'])) echo $ini_array['ACTIONS']['reset']; ?>" maxlength="4" size="4"></td>
+        <td><input type="text" id="reset" name="ACTIONS[reset]" value="<?php if (isset($network_config['ACTIONS']['reset'])) echo $network_config['ACTIONS']['reset']; ?>" maxlength="4" size="4"></td>
         <td>Calibrate </td>
-        <td><input type="text" id="calibrate" name="ACTIONS[calibrate]" value="<?php if (isset($ini_array['ACTIONS']['calibrate'])) echo $ini_array['ACTIONS']['calibrate']; ?>" maxlength="4" size="4"></td>
+        <td><input type="text" id="calibrate" name="ACTIONS[calibrate]" value="<?php if (isset($network_config['ACTIONS']['calibrate'])) echo $network_config['ACTIONS']['calibrate']; ?>" maxlength="4" size="4"></td>
 
       </tr>
   
@@ -161,7 +164,7 @@
         <td><span class="note tooltip" title="<ul><li>When enabled (yes position), at (re)start of the Pluto, the transmit is activated. This feature is welcome for restart quickly transmission after an unexpected power cut.</li><li>When disabled (no position), the Pluto stay stand-by at (re)start.</li></ul>" style="color : #636363;">Transmission permitted at start-up</span><br></td>
         <td><div class="checkcontainer">
 
-          <input type="checkbox" id="tx_onstart" name="DATV[tx_onstart]" <?php if (isset($ini2_array['DATV']['tx_onstart']))  echo $ini2_array['DATV']['tx_onstart']=='on' ? " checked" :  "" ?>>
+          <input type="checkbox" id="tx_onstart" name="DATV[tx_onstart]" <?php if (isset($datv_config['DATV']['tx_onstart']))  echo $datv_config['DATV']['tx_onstart']=='on' ? " checked" :  "" ?>>
           <label for="tx_onstart" aria-describedby="label"><span class="ui"></span> <span id='tx_onstart_label'> enabled</span></label>
         </div> </td>  
 
@@ -169,14 +172,37 @@
      
      <tr>
         <td><span class="note tooltip" title="⚠️ This setting is not to be considered as an absolute protection against overpower.<br>It is highly recommended for safety of your transmision line to ensure it by inserting suitable RF attenuators.<p>The value to be indicated is the relative power (maximum 0dB which corresponds to the maximum output power of the Pluto). The expected value is therefore <strong>negative</strong></p>" style="color : #636363;">Maximum adjustable power</span>  <i>(dB)</i></td>
-        <td><input type="text" id="hi_power_limit" name="DATV[hi_power_limit]" value="<?php if (isset($ini2_array['DATV']['hi_power_limit'])) echo $ini2_array['DATV']['hi_power_limit']; ?>" maxlength="6" size="6"></td>
+        <td><input type="text" id="hi_power_limit" name="DATV[hi_power_limit]" value="<?php if (isset($datv_config['DATV']['hi_power_limit'])) echo $datv_config['DATV']['hi_power_limit']; ?>" maxlength="6" size="6"></td>
 
         <td><span class="note tooltip" title="<ul><li>When set to a value different than 0, the absolute power conversion (abs) is displayed in dB and also Watt unit on the controller. </li><li>The value can be positive or negative.</li></ul>" style="color : #636363;">Conversion gain to display the real power (absolute level) </span><i>(dB)</i></td>
-        <td><input type="text" id="abs_gain" name="DATV[abs_gain]" value="<?php if (isset($ini2_array['DATV']['abs_gain'])) echo $ini2_array['DATV']['abs_gain']; ?>" maxlength="4" size="4"></td>
+        <td><input type="text" id="abs_gain" name="DATV[abs_gain]" value="<?php if (isset($datv_config['DATV']['abs_gain'])) echo $datv_config['DATV']['abs_gain']; ?>" maxlength="4" size="4"></td>
    
 
      </tr>
+   </table>
+   <h3>H264/H265 box</h3>
+
+   <table>
      <tr>
+        <td><span class="note tooltip" title="<ul><li>When enabled (yes position), the H264/H265 section is displayed on the controller page. The automatic or manual control of its parameters are then possible from anywhere in the world. " style="color : #636363;">Use of a H264/H265 box</span><br></td>
+        <td><div class="checkcontainer">
+
+          <input type="checkbox" id="use_h265box" name="H265BOX[use_h265box]" <?php if (isset($datv_config['H265BOX']['use_h265box']))  echo $datv_config['H265BOX']['use_h265box']=='on' ? " checked" :  "" ?>>
+          <label for="use_h265box" aria-describedby="label"><span class="ui"></span> <span id='use_h265box_label'> enabled</span></label>
+        </div> </td>
+        <td><span class="note tooltip" title="Address of your H264/H265 encoder box. The online status is updated after moving the cursor out of the input field.<ul><li>✔️ : Is online from the Pluto (good answer to the ping command).</li><li>✖️ : Seems not online from the Pluto (no answer to the ping command)</li> " style="color : #636363;">IP address</span></td>
+
+        <td><input type="text" id="ipaddr_h265box" name="H265BOX[ipaddr_h265box]" value="<?php  if (isset($datv_config['H265BOX']['use_h265box'])) { $ping_ip= $datv_config['H265BOX']['ipaddr_h265box'] ;} else { $ping_ip=  '192.168.1.120'; } ; echo $ping_ip; ?>" maxlength="15" size="16"> <?php $a= shell_exec ("ping -W 1 -c 1 ".$ping_ip); if (strpos($a, ", 100% packet loss") > 0) {$r= " ✖️";} else { $r= " ✔️"; } ?><span id="ipaddr_h265box_status"><?php echo $r; ?></span></td>
+
+      <tr>
+          <td><span class="note tooltip" title="'admin' by default" style="color : #636363;">Administrator login</span> </td>
+          <td><input type="text" id="h265box_login" name="H265BOX[h265box_login]" value="<?php if (isset($datv_config['H265BOX']['h265box_login'])) echo $datv_config['H265BOX']['h265box_login']; else echo "admin" ?>" maxlength="6" size="6"></td>
+
+          <td><span class="note tooltip" title="'12345' by default." style="color : #636363;">Password</span></td>
+          <td><input type="text" id="h265box_password" name="H265BOX[h265box_password]" value="<?php if (isset($datv_config['H265BOX']['h265box_password'])) echo $datv_config['H265BOX']['h265box_password']; else echo "12345"?>" maxlength="8" size="8"></td>
+     
+
+       </tr>
      </tr>
     
    </table>
@@ -186,7 +212,7 @@
     <tr>
       
       <td><span class="note tooltip" title="Automatically switches off the transmission after the specificated duration .<ul><li>The feature is disabled when the parameter is empty or equal to zero.</li></ul>" style="color : #636363;">Watchdog</span> <i>(min)</i></td>
-      <td><input type="text" id="tx_watchdog" name="DATV_EXPERT[tx_watchdog]" value="<?php if (isset($ini2_array['DATV_EXPERT']['tx_watchdog'])) echo $ini2_array['DATV_EXPERT']['tx_watchdog']; ?>" maxlength="4" size="4"></td>    
+      <td><input type="text" id="tx_watchdog" name="DATV_EXPERT[tx_watchdog]" value="<?php if (isset($datv_config['DATV_EXPERT']['tx_watchdog'])) echo $datv_config['DATV_EXPERT']['tx_watchdog']; ?>" maxlength="4" size="4"></td>    
 
     </tr>
    </table>
@@ -195,10 +221,10 @@
     <table>
 
      <tr>
-        <td><span class="note tooltip" title="Allows to correct a phase shift by balancing the central points around the centre of the constellation<ul><li>on the central points of 16ASPK mod</li><li>on the two central point circles of 32ASPK mod</li></ul><p>💡 For fine adjustment, click on the slider and then use the up and down keys<br/> For an adjustment in steps of 10% of the full scale, click on the slider and then use the page up and page down keys.</p>" style="color : #636363;">Phase rotation correction</span> <i>(degrees)</i></td>
-        <td><input type="range" min="-45" max="45" step="0.1" id="phase_correction" name="DATV_EXPERT[phase_correction]" value="<?php if (isset($ini2_array['DATV_EXPERT']['phase_correction'])) echo $ini2_array['DATV_EXPERT']['phase_correction']; ?>" oninput="update_slide($(this).attr('id'),1,' °')"> <span id="phase_correction-value"></span></td>    
+        <td><span class="note tooltip" title="Allows to correct a phase shift by balancing the central points around the center of the constellation<ul><li>on the central points of 16ASPK mod</li><li>on the two central point circles of 32ASPK mod</li></ul><p>💡 For fine adjustment, click on the slider and then use the up and down keys<br/> For an adjustment in steps of 10% of the full scale, click on the slider and then use the page up and page down keys.</p>" style="color : #636363;">Phase rotation correction</span> <i>(degrees)</i></td>
+        <td><input type="range" min="-45" max="45" step="0.1" id="phase_correction" name="DATV_EXPERT[phase_correction]" value="<?php if (isset($datv_config['DATV_EXPERT']['phase_correction'])) echo $datv_config['DATV_EXPERT']['phase_correction']; ?>" oninput="update_slide($(this).attr('id'),1,' °')"> <span id="phase_correction-value"></span></td>    
         <td><span class="note tooltip" title="Allows to correct the distance from the constellation center<ul><li>for the central points of 16ASPK mod</li><li>for the two central point circles of 32ASPK mod</li></ul><p>💡 For fine adjustment, click on the slider and then use the up and down keys<br/> For an adjustment in steps of 10% of the full scale, click on the slider and then use the page up and page down keys.</p>" style="color : #636363;">Module vector correction</span> <i>(factor)</i></td>
-        <td><input type="range" min="0.8" max="1.2" step="0.01"  id="module_correction" name="DATV_EXPERT[module_correction]" value="<?php if (isset($ini2_array['DATV_EXPERT']['module_correction'])) echo $ini2_array['DATV_EXPERT']['module_correction']; ?>" oninput="update_slide($(this).attr('id'),2,'')"> <span id="module_correction-value"></span></td>               
+        <td><input type="range" min="0.8" max="1.2" step="0.01"  id="module_correction" name="DATV_EXPERT[module_correction]" value="<?php if (isset($datv_config['DATV_EXPERT']['module_correction'])) echo $datv_config['DATV_EXPERT']['module_correction']; ?>" oninput="update_slide($(this).attr('id'),2,'')"> <span id="module_correction-value"></span></td>               
      </tr>
 
 
@@ -235,6 +261,18 @@ This is needed for apply your saved modifications made in Pluto Configuration se
     })
   });
 
+   // Check device ping
+    $("#ipaddr_h265box").on('change',function() {
+        $.get("requests.php?cmd="+encodeURIComponent("ping -W 1 -c 1 "+$("#ipaddr_h265box").val()+" >/dev/null && echo 'ok' || echo 'nok'"), function(data, status) {
+            if (status=='success') {
+              if (data.substring(0,2)!='ok') 
+                {r= " ✖️";} 
+              else { r= " ✔️"; }
+               $("#ipaddr_h265box_status").html(r);
+            }
+
+        });
+    });
 
 
   function dhcp () {
