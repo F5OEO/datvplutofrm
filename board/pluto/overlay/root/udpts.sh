@@ -90,9 +90,20 @@ fi
 echo "Try starting UDP"
 #-max_interleave_delta 200000 -audio_preload 20000 : to investigate
 if [ "$REMUX" = "1" ]; then
+
 ffmpeg -analyzeduration 4000000 -f mpegts -i udp://0.0.0.0:8282/   -ss 4 -c:v copy -tune zerolatency -c:a copy -f mpegts -muxrate $TSBITRATE -pat_period $PATPERIOD -metadata service_provider="$MESSAGE" -metadata service_name=$CALL -streamid 0:256 -muxrate "$TSBITRATE" -max_delay "$PCRPTS"000 -pat_period $PATPERIODSEC - | tsp -r --buffer-size-mb 0.01 --max-flushed-packets 100 --max-input-packets 50 -P analyze --normalized -i 1 -o /root/analyse.txt -P pcrextract --evaluate-pcr-offset --pts --noheader --pid 256 -o /root/pcr.txt -O file /root/tspipe | /root/pluto_dvb -i /root/tspipe -m $MODE -c $CONSTEL -s $SR"000" -f $FEC -t $FREQ"e6" -g $GAIN -T 6 -L 400 $PILOTS $FRAME -P 0 -r $ROLLOFF
+
+#tsp -r --buffer-size-mb 0.001 --max-flushed-packets 10 --max-input-packets 10 -I ip 0.0.0.0:8282 | /root/tsvbr2cbr -b $TSBITRATE -p $PCRPTS | tsp --buffer-size-mb 0.001 --max-flushed-packets 10 --max-input-packets 10 -r -P sdt -n $CALL -p $MESSAGE -i -s 1 | /root/pluto_dvb -m $MODE -c $CONSTEL -s $SR"000" -f $FEC -t $FREQ"e6" -g $GAIN -T 6 -L 400 $PILOTS $FRAME -P 0 -r $ROLLOFF 
+
+#tsp -r -d -v --buffer-size-mb 0.01 --max-flushed-packets 100 --max-input-packets 50 -b 2500000 -I ip 230.0.0.1:8282 -P sdt -n $CALL -p $MESSAGE -i -s 1 -O ip 230.0.0.2:10000
+
+#nc -lu -p 8282 | /root/tsvbr2cbr -b $TSBITRATE -p $PCRPTS | /root/pluto_dvb -m $MODE -c $CONSTEL -s $SR"000" -f $FEC -t $FREQ"e6" -g $GAIN -T 6 -L 400 $PILOTS $FRAME -P 0 -r $ROLLOFF 
+#tsp --buffer-size-mb 4   -I ip 230.0.0.1:8282 -P continuity -O drop
+### AS SOON AS VIDEO BITRATE IS ABOVE 1Mbits, through network, Pluto is loosing packets
+#tsp --buffer-size-mb 0.1 --max-flushed-packets 20 -I ip 0.0.0.0:8282 -P continuity  | /root/tsvbr2cbr -b $TSBITRATE -p $PCRPTS | tsp --buffer-size-mb 0.1 --max-flushed-packets 20 -P sdt -n $CALL -p $MESSAGE -i -s 1 -P analyze --normalized -i 1 -o /root/analyse.txt -P pcrextract --evaluate-pcr-offset --pts --noheader --pid 256 -o /root/pcr.txt | /root/pluto_dvb -m $MODE -c $CONSTEL -s $SR"000" -f $FEC -t $FREQ"e6" -g $GAIN -T 6 -L 400 $PILOTS $FRAME -P 0 -r $ROLLOFF 
+
 else
-tsp -r --buffer-size-mb 0.01 --max-flushed-packets 100 --max-input-packets 50 -I ip 0.0.0.0:8282 -P sdt -n $CALL -p $MESSAGE -i -s 1 -P analyze --normalized -i 1 -o /root/analyse.txt -P pcrextract --evaluate-pcr-offset --pts --noheader --pid 256 -o /root/pcr.txt  | /root/pluto_dvb -m $MODE -c $CONSTEL -s $SR"000" -f $FEC -t $FREQ"e6" -g $GAIN -T 2 -L 400 $PILOTS $FRAME -P 0 -r $ROLLOFF
+tsp -r --buffer-size-mb 0.01 --max-flushed-packets 100 --max-input-packets 50 -I ip 0.0.0.0:8282 -P sdt -n $CALL -p $MESSAGE -i -s 1 -P analyze --normalized -i 1 -o /root/analyse.txt -P pcrextract --evaluate-pcr-offset --pts --noheader --pid 256 -o /root/pcr.txt | /root/pluto_dvb -m $MODE -c $CONSTEL -s $SR"000" -f $FEC -t $FREQ"e6" -g $GAIN -T 2 -L 400 $PILOTS $FRAME -P 0 -r $ROLLOFF
 fi
 echo endstreaming
 
