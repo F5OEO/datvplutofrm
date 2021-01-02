@@ -151,15 +151,11 @@ ol.gen-ress li.placeholder:before {
 
 
                 <div >Mods by Chris <a href="https://www.f5uii.net/?o=2110
-" title="Go to Chris blog and ressources" target="_blank">F5UII.net</a>&nbsp; <a href="https://twitter.com/f5uii/" title="Go to f5uii profile on twitter"><img style="width: 20px;" src="./img/tw.png" alt="Twitter Logo"></a> version <i id='patch-uii'>UII2.4</i><div id="note">A new UII patch is available<span id = 'uii-new-version'></span>. Follow <a href= "https://www.f5uii.net/en/patch-plutodvb/?ori=update" target="_blank">this link</a>.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <a id="close">❌</a></div>: <span class="note tooltip" title="
-        <strong>Version UII2.4 - 29/11/2020</strong><ul><li>Right click on modulator profiles (lock/unlock + Duplicate + Copy 3 items crosswise)</li><li>Keyboard shortcuts (F9=Apply modulator settings, F10=PTT toggle)</li><li>Analysis page, reception with crossfade display</li></ul><strong>Version UII2.3 - 22/11/2020</strong><ul><li>Multiple modulator memory (tabbed system) <i>big program evolution</i>🤯</li><li>Transmission time counter with totalizer of the switchover and duration</li><li>Internal temperatures of the PlutoSDR (Suggested by <a href='https://www.f5uii.net/en/patch-plutodvb/#div-comment-18162' target='_blank'> Greg SV2RR</a>)</li><li>Focus on null packets on the <a href='analysis.php'>analysis page</a>, with some formatting</li><li>Github commits history on <a href='index.html#releasenote'>Documentation page</a> </li></ul>
-        <strong>Version UII2.2 - 18/10/2020</strong><ul><li>Copy to clipboard the RTMP URL string (<i>Detailed on Help tab</i>)</li></ul>
-        <strong>Version UII2.1c - 15/10/2020</strong><ul><li>Saving parameters (Spectrum & Minitiouner Receiver control panel)</li><li>Minitiouner steering, Gateway address</li></ul>
-        <strong>Version UII2 - 29/08/2020</strong> <ul><li>Minitiouner Receiver control by clicking on a channel of the spectrum with its setup fields and Help tab, Retractable spectrum</li></ul><strong>Version UII1 - 23/08/2020</strong> <ul><li>BATC spectrum (only if client is online) with transmit frequency choose by click on a channel</li><li>Reboot command, Delete patch, html format compliance mods...</li></ul> <hr>🛈 Link to <a href='https://www.f5uii.net/en/patch-plutodvb/?o=2110
+" title="Go to Chris blog and ressources" target="_blank">F5UII.net</a>&nbsp; <a href="https://twitter.com/f5uii/" title="Go to f5uii profile on twitter"><img style="width: 20px;" src="./img/tw.png" alt="Twitter Logo"></a> version <i id='patch-uii'>UII2.5</i><div id="note">A new UII patch is available<span id = 'uii-new-version'></span>. Follow <a href= "https://www.f5uii.net/en/patch-plutodvb/?ori=update" target="_blank">this link</a>.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <a id="close">❌</a></div>: <span class="note tooltip" title="
+        <strong>Version UII2.5 - 03/01/2021</strong><ul><li>New PlutoDVB <a href='setup.php'>setup page</a> (under development, not everything is functional yet)</li><li>Maximum adjustable power </li><li>Display of absolute output power expressed in dB and watts</li><li>masking of the H265 encoder control panels if set as such</li><li>Manual control of H265 encoder parameters</li></ul>
+        <strong>Version UII2.4 - 29/11/2020</strong><ul><li>Right click on modulator profiles (lock/unlock + Duplicate + Copy 3 items crosswise)</li><li>Keyboard shortcuts (F9=Apply modulator settings, F10=PTT toggle)</li><li>Analysis page, reception with crossfade display (Not perfect yet)</li></ul>
+        <strong>previous versions, see support page</strong><hr>🛈 Link to <a href='https://www.f5uii.net/en/patch-plutodvb/?o=2110
 ' target='_blank'>download, roadmap and support page">
-
-
-
 
         </a>Details</span></div>
         <div >Mods by Roberto IS0GRB (Save SpectrumView button state,Show how much patch.zip inserted (August 29th, 2020)</div>
@@ -329,7 +325,6 @@ ol.gen-ress li.placeholder:before {
   $datv_config = $general_ini[1];  
   
   $max_power = 10;
-  echo $datv_config['DATV']['hi_power_limit'];
 
   if (($general_ini!=false) && (isset($datv_config['DATV']['hi_power_limit'])) && ($datv_config['DATV']['hi_power_limit'])!=null ) {
     $max_power = $datv_config['DATV']['hi_power_limit'];
@@ -1079,7 +1074,7 @@ function update_slidertxt()
   }
   else
   {
-    echo "abs_gain=0";
+    echo "abs_gain=0;";
   }
 ?>
  if (abs_gain!=0) {
