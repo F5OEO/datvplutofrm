@@ -1,9 +1,5 @@
   <?php
   session_start();
-  //require ('./lib/functions.php');
-  //$file_general = '/mnt/jffs2/etc/settings-datv.txt';
-  //$general_ini = readinifile($file_general);
-  //$ini2_array = $general_ini[1];  
   ?>
   <?php
   if ( isset( $_POST[ 'savefw' ] ) ) {
@@ -321,6 +317,25 @@ ol.gen-ress li.placeholder:before {
   </section>
 
 
+<?php
+  require ('./lib/functions.php');
+  $file_general = '/mnt/jffs2/etc/settings-datv.txt';
+  if (true==false) // replace false by true for developping on debug server
+  {
+    echo "<i style='color:red;'>Attention, in developping mode </i><br>";
+    $file_general = 'settings-datv.txt';
+  }
+  $general_ini = readinifile($file_general);
+  $datv_config = $general_ini[1];  
+  
+  $max_power = 10;
+  echo $datv_config['DATV']['hi_power_limit'];
+
+  if (($general_ini!=false) && (isset($datv_config['DATV']['hi_power_limit'])) && ($datv_config['DATV']['hi_power_limit'])!=null ) {
+    $max_power = $datv_config['DATV']['hi_power_limit'];
+  }
+
+?>
 
   <h2>Modulator</h2>
 
@@ -339,7 +354,7 @@ ol.gen-ress li.placeholder:before {
         <table>
           <tr><td>Power <i>(0.1 dB steps)</i></td>
             <td><div class="slidecontainer">
-              <input type="range" min="-79" max="10" step="0.1" value="-10" class="slidernewpower" name="power" onchange="update_slider()" oninput="update_slidertxt()">
+              <input type="range" min="-79" max="<?php echo $max_power; ?>" step="0.1" value="-10" class="slidernewpower" name="power" onchange="update_slider()" oninput="update_slidertxt()">
               <span id="powertext"></span>
             </div>
           </td>
@@ -623,6 +638,11 @@ ol.gen-ress li.placeholder:before {
 <input type="submit" value="Apply Settings" id="apply_modulator"><span id="saved_modulator" class="saved"  style="display: none;"> Saved !</span>
 </form>
 <br><br>
+<?php  
+// check if setup file is present, and if it is check if H265Box parameter is enabled
+if (($general_ini==false) || (isset($datv_config['H265BOX']['use_h265box'])&& $datv_config['H265BOX']['use_h265box']=='on')) {
+
+?>
 <h2>H264/H265 box control (option)</h2>
 <hr>
 <form id="h264h265" method="post" action = "javascript:save_modulator_setup();">
@@ -632,7 +652,7 @@ ol.gen-ress li.placeholder:before {
   <tr> <td>Sound</td> <td> <select name="sound"> <option value="On">On</option> <option value="Off">Off</option> </select> </td> </tr>
   <tr> <td>Audio Input</td> <td> <select name="audioinput"> <option value="line">Line</option> <option value="HDMI">HDMI</option> </select> </td> </tr>
   <tr>
-    <td><span class="note tooltip" style="color: #636363;" title="In manual mode, all the changes in this section are sent directly to the decoder without having to apply them via the <i>Apply Settings</i> button. They can be applied even when your transmission is running. Please keep an eye on your buffer and null packets when driving the CBR.">Manual control</span></td>
+    <td><span class="note tooltip" style="color: #636363;" title="In manual mode, all the changes in this section are sent directly to the decoder without having to apply them via the <i>Apply Settings</i> button. It is therefore advisable to set its default setting with the transmission switched off and to save these settings by <i>Apply Settings</i> button. You will find these manual settings set as default. <br/>They can be applied new values even when your transmission is running. <br/> Each time the modulator is changed, the maximum of the adjustable CBR is adapted. An appropriate CBR value is also initialised.">Manual control</span></td>
     <td>
       <div class="checkcontainer">
         <input type="checkbox" id="h265box-manualmode" name="h265box-manualmode"  onchange="upd_h265box()">
@@ -654,7 +674,7 @@ ol.gen-ress li.placeholder:before {
         <option value='854x480'>854 × 480 [16∶9]</option>
         <option value='960x540'>960 × 540 [16∶9]</option>
         <option value='960x544'>960 × 544 [16∶9]</option>
-        <option value='1024x576'>1024 × 576 [16∶9]</option>
+        <option selected="selected" value='1024x576'>1024 × 576 [16∶9]</option>
         <option value='1024x600'>1024 × 600 [16∶9]</option>
         <option value='1136x640'>1136 × 640 [16∶9]</option>
         <option value='1138x640'>1138 × 640 [16∶9]</option>
@@ -702,7 +722,7 @@ ol.gen-ress li.placeholder:before {
   <tr class="h265box-manual" >
     <td>GOP <i>Group of pictures</i>
     </td>
-    <td><input type="range" min="5" max="200" step="1" value="20" class="h265box-gop" name="keyint" onchange="update_slide('keyint',' key interval','')" oninput="update_slide('keyint',' key interval','')"><br/>
+    <td><input type="range" min="5" max="200" step="1" value="100" class="h265box-gop" name="keyint" onchange="update_slide('keyint',' key interval','')" oninput="update_slide('keyint',' key interval','')"><br/>
        <span id="keyint-value"></span>
     </td>
     <td>Framerate
@@ -748,6 +768,9 @@ ol.gen-ress li.placeholder:before {
 <td><br><b>Warning : <i>Select ON if you have trouble receiving with continuous blocks</b></i></td>
 <br><br>
 
+<?php
+} //end H265box filtering
+?>
 
 <br><br>
 <h2>Save for next reboot</h2>
@@ -1050,7 +1073,33 @@ function update_slide(id,text, tab) {
 
 function update_slidertxt()
 {
- $(t+'#powertext').text($(t+'input[name ="power"]').val()+'dB')  ;
+<?php 
+  if (($general_ini!=false) && (isset($datv_config['DATV']['abs_gain']))) {
+    echo "abs_gain=".$datv_config['DATV']['abs_gain'].";";
+  }
+  else
+  {
+    echo "abs_gain=0";
+  }
+?>
+ if (abs_gain!=0) {
+  abs= (parseFloat($(t+'input[name ="power"]').val())+parseFloat(abs_gain));
+  watt = Math.pow(10,(abs/10))/1000;
+  if (watt<1.000) {
+    text_watt = (Math.pow(10,(abs/10))).toFixed(1)+'mW'
+  }
+  else
+  {
+    text_watt = (Math.pow(10,(abs/10))/1000).toFixed(1)+'W'
+  }
+  $(t+'#powertext').text(parseFloat($(t+'input[name ="power"]').val()).toFixed(1)+'dB (Abs: '+abs.toFixed(1)+'dB / '+text_watt+')' ) ;
+ }
+ else {
+  $(t+'#powertext').text(parseFloat($(t+'input[name ="power"]').val()).toFixed(1)+'dB')  ;
+ }
+
+
+
 }
 
 function update_slider()
