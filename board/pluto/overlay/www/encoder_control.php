@@ -27,7 +27,7 @@ function set_enc_network($auth){
 		
 	$server = $_POST['h265box'].'/action/set?subject=multicast';
 	
-	if($_POST['enabled']=="true"){
+	if(($_POST['enabled']=="true") || ($_POST['enabled']==NULL)){
 		$enabled=1;
 		//enable
 	}else{
