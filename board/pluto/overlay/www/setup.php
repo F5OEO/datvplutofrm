@@ -36,7 +36,59 @@
     <link type="text/css" href="./img/style.css" rel="stylesheet">
     <script src="lib/jquery-3.5.1.min.js"></script>
     <script src="lib/tooltip.js"></script>
+    <script src="lib/mqttws31.js" type="text/javascript"></script>  
     <link type="text/css" href="./lib/tooltip.css" rel="stylesheet">
+       <script type = "text/javascript" language = "javascript">
+    var mqtt;
+    var reconnectTimeout = 2000;
+    var host="<?php echo shell_exec('echo -n $(ip -f inet -o addr show eth0 | cut -d\  -f 7 | cut -d/ -f 1)'); ?>";
+    //var host='192.168.1.8';
+    var port=9001;
+    
+    function onFailure(message) {
+      mqtt_connected = false;
+      console.log("MQTT connection attempt to Host "+host+"Failed");
+      setTimeout(MQTTconnect, reconnectTimeout);
+        }
+    function onMessageArrived(msg){
+      out_msg="MQTT Message received "+msg.payloadString+"<br>";
+      out_msg=out_msg+" MQTT Message received Topic "+msg.destinationName;
+      console.log(out_msg);
+
+    }
+    
+    function sendmqtt(destination,messagestr) {
+          message = new Paho.MQTT.Message(messagestr);
+          message.destinationName = destination;
+          mqtt.send(message);
+    }
+
+    function onConnect() {
+    // Once a connection has been made, make a subscription and send a message.
+    mqtt_connected = true;
+    console.log("MQTT connected");
+
+    mqtt.subscribe("plutodvb/started");
+    message = new Paho.MQTT.Message('{ "page" : "<?php echo basename($_SERVER['REQUEST_URI']); ?>" }');
+    message.destinationName = "plutodvb/page";
+    mqtt.send(message);
+    
+    }
+    function MQTTconnect() {
+    console.log("connecting to "+ host +" "+ port);
+    mqtt = new Paho.MQTT.Client(host,port,"uii-ihm");
+    //document.write("connecting to "+ host);
+    var options = {
+      timeout: 3,
+      onSuccess: onConnect,
+      onFailure: onFailure,
+       };
+    mqtt.onMessageArrived = onMessageArrived
+    
+    mqtt.connect(options); //connect
+    }
+   
+    </script>
   </head>
   <header id="top">
     <div class="anchor">
@@ -112,7 +164,7 @@
 
      
     <div class="xpert" style="display: none;">
-        <h2>Advanced <i>( ⚠️ Be carefull, expert use only)</i> </h3>
+        <h2>Advanced <i>( ⚠️ Be carefull, expert use only)</i> </h2>
     <p></p>
 
     <h3>System, Radio </h3>
@@ -206,6 +258,115 @@
      </tr>
     
    </table>
+  <h2>Strategy Setting table</h2>
+  <style type="text/css">
+.tg  {border-collapse:collapse;border-color:#9ABAD9;border-spacing:0;}
+.tg td{background-color:#EBF5FF;border-color:#ddd;border: 1px dashed ;color:#444;
+  font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg th{background-color:#409cff;border-color:#9ABAD9;border: 1px dashed ;color:#fff;
+  font-family:Arial, sans-serif;font-size:14px;font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg .tg-88b2{background-color:#33b3ca;border-color:inherit;text-align:center;vertical-align:top}
+.tg .tg-wpev{border-color:#ddd;text-align:center;vertical-align:top}
+
+[contenteditable] { padding: 5px; outline: 0px solid transparent; border-radius: 3px; }
+[contenteditable]:not(:focus) { border: 1px dashed #ddd; }
+[contenteditable]:focus { border: 1px solid #51a7e8; box-shadow: inset 0 1px 2px rgba(0,0,0,0.075),0 0 5px rgba(81,167,232,0.5); }
+</style>
+<table class="tg" style="undefined;table-layout: fixed; width: 745px">
+<colgroup>
+<col style="width: 26px">
+<col style="width: 89px">
+<col style="width: 90px">
+<col style="width: 90px">
+<col style="width: 90px">
+<col style="width: 90px">
+<col style="width: 90px">
+<col style="width: 90px">
+<col style="width: 90px">
+</colgroup>
+<thead>
+  <tr>
+    <th class="tg-88b2"></th>
+    <th class="tg-88b2">Total bitrate available (deciding factor)</th>
+    <th class="tg-88b2">Audio channels</th>
+    <th class="tg-88b2">Audio Bitrate<br>(kb/s)</th>
+    <th class="tg-88b2">GOP</th>
+    <th class="tg-88b2">Video Width</th>
+    <th class="tg-88b2">Video Height</th>
+    <th class="tg-88b2">FPS</th>
+    <th class="tg-88b2">Video Rate<br>(kb/s)</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-wpev">1</td>
+    <td class="tg-wpev" contenteditable="true">5000</td>
+    <td class="tg-wpev" contenteditable="true">2</td>
+    <td class="tg-wpev" contenteditable="true">64</td>
+    <td class="tg-wpev" contenteditable="true">200</td>
+    <td class="tg-wpev" contenteditable="true">1920</td>
+    <td class="tg-wpev" contenteditable="true">1080</td>
+    <td class="tg-wpev" contenteditable="true">30</td>
+    <td class="tg-wpev" contenteditable="true">1000</td>
+  </tr>
+  <tr>
+    <td class="tg-wpev">2</td>
+    <td class="tg-wpev" contenteditable="true">1200</td>
+    <td class="tg-wpev" contenteditable="true">2</td>
+    <td class="tg-wpev" contenteditable="true">64</td>
+    <td class="tg-wpev" contenteditable="true">50</td>
+    <td class="tg-wpev" contenteditable="true">1920</td>
+    <td class="tg-wpev" contenteditable="true">1080</td>
+    <td class="tg-wpev" contenteditable="true">25</td>
+    <td class="tg-wpev" contenteditable="true">999</td>
+  </tr>
+  <tr>
+    <td class="tg-wpev">3</td>
+    <td class="tg-wpev" contenteditable="true">400</td>
+    <td class="tg-wpev" contenteditable="true">2</td>
+    <td class="tg-wpev" contenteditable="true">32</td>
+    <td class="tg-wpev" contenteditable="true">50</td>
+    <td class="tg-wpev" contenteditable="true">768</td>
+    <td class="tg-wpev" contenteditable="true">432</td>
+    <td class="tg-wpev" contenteditable="true">25</td>
+    <td class="tg-wpev" contenteditable="true">300</td>
+  </tr>
+  <tr>
+    <td class="tg-wpev">4</td>
+    <td class="tg-wpev" contenteditable="true">250</td>
+    <td class="tg-wpev" contenteditable="true">1</td>
+    <td class="tg-wpev" contenteditable="true">32</td>
+    <td class="tg-wpev" contenteditable="true">30</td>
+    <td class="tg-wpev" contenteditable="true">756</td>
+    <td class="tg-wpev" contenteditable="true">324</td>
+    <td class="tg-wpev" contenteditable="true">15</td>
+    <td class="tg-wpev" contenteditable="true">200</td>
+  </tr>
+  <tr>
+    <td class="tg-wpev">5</td>
+    <td class="tg-wpev" contenteditable="true">200</td>
+    <td class="tg-wpev" contenteditable="true">1</td>
+    <td class="tg-wpev" contenteditable="true">32</td>
+    <td class="tg-wpev" contenteditable="true">30</td>
+    <td class="tg-wpev" contenteditable="true">384</td>
+    <td class="tg-wpev" contenteditable="true">216</td>
+    <td class="tg-wpev" contenteditable="true">15</td>
+    <td class="tg-wpev" contenteditable="true">120</td>
+  </tr>
+  <tr>
+    <td class="tg-wpev">6</td>
+    <td class="tg-wpev" contenteditable="true">100</td>
+    <td class="tg-wpev" contenteditable="true">1</td>
+    <td class="tg-wpev" contenteditable="true">32</td>
+    <td class="tg-wpev" contenteditable="true">20</td>
+    <td class="tg-wpev" contenteditable="true">384</td>
+    <td class="tg-wpev" contenteditable="true">216</td>
+    <td class="tg-wpev" contenteditable="true">10</td>
+    <td class="tg-wpev" contenteditable="true">64</td>
+  </tr>
+</tbody>
+</table>
+
    <h2>Avanced for expert use only</h2>
 
    <table>
@@ -313,16 +474,18 @@ This is needed for apply your saved modifications made in Pluto Configuration se
 };
 
 function update_slide(id,decimal,text) {
- 
-
   $('#'+id+'-value').text(Number.parseFloat($('#'+id).val()).toFixed(decimal)+text)  ;
-
+  if (mqtt_connected == true) {
+    sendmqtt("plutodvb/var", "{'"+id+"':'"+$('#'+id).val()+"'}" ) ;
+  }
 }
-
 
 </script>
 
 
-
+<script>
+  var mqtt_connected = false;
+  MQTTconnect();
+</script>
 </body>
 </html>
