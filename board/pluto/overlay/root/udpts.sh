@@ -75,7 +75,7 @@ echo VideoRate $VIDEORATE
 if [ "$H265BOX" = "" ] || [ "$H265BOX" = "h265box" ]; then
         echo H265BOX not present
 else        
-com="enc_ip=$H265BOX&codec=$CODEC&res=$RESOLUTION&fps=$VIDEOFPS&keyint=$GOPSIZE&v_bitrate=$VIDEORATE&sound=$SOUND&audio_input=$AUDIOINPUT&audio_channels=$AUDIOCHANNELS&audio_bitrate=$AUDIORATE&enabled=$PTT&pluto_ip=$myip&pluto_port=8282"
+com="h265box=$H265BOX&codec=$CODEC&res=$RESOLUTION&fps=$VIDEOFPS&keyint=$GOPSIZE&v_bitrate=$VIDEORATE&sound=$SOUND&audioinput=$AUDIOINPUT&audio_channels=$AUDIOCHANNELS&audio_bitrate=$AUDIORATE&enabled=$PTT&pluto_ip=$myip&pluto_port=8282"
 echo $com
 php-cgi /www/encoder_control.php $com
 fi

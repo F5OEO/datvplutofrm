@@ -1,5 +1,9 @@
   <?php
   session_start();
+  //require ('./lib/functions.php');
+  //$file_general = '/mnt/jffs2/etc/settings-datv.txt';
+  //$general_ini = readinifile($file_general);
+  //$ini2_array = $general_ini[1];  
   ?>
   <?php
   if ( isset( $_POST[ 'savefw' ] ) ) {
@@ -48,6 +52,50 @@
 
       .default {background-color: #e7e7e7; color: black;} /* Gray */
       .default:hover {background: #ddd;}
+
+      .h265box-manual {display: none;}
+
+      body.dragging, body.dragging * {
+  cursor: move !important;
+}
+
+body.dragging, body.dragging * {
+  cursor: move !important;
+}
+
+.dragged {
+  position: absolute;
+  opacity: 0.5;
+  z-index: 2000;
+}
+
+ol {
+  list-style: none;
+}
+ol.vertical {
+    margin: 0 0 9px 0;
+    min-height: 10px;
+}
+
+ol.vertical li {
+    display: block;
+    margin: 5px;
+    padding: 5px;
+    border: 1px solid #cccccc;
+    color: #0088cc;
+    background: #eeeeee;
+    cursor: pointer;
+}
+
+ol.gen-ress li.placeholder {
+  position: relative;
+  /** More li styles **/
+}
+ol.gen-ress li.placeholder:before {
+  position: absolute;
+  /** Define arrowhead **/
+}
+
     </style>
 
     <title>ADALM-PLUTO DVB Controller</title>
@@ -58,6 +106,7 @@
     <script src="lib/u16Websocket.js"></script>
     <script src="lib/js.cookie.min.js"></script>
     <script src="lib/tooltip.js"></script>
+    <script src="lib/jquery-sortable-min.js"></script>
     <link type="text/css" href="./lib/tooltip.css" rel="stylesheet">
     <link href="lib/favicon.ico" rel="icon" type="image/x-icon" />
   </head>
@@ -69,6 +118,8 @@
       <li data-action="unlock">🔓 Unlock modulator</li>
       <li data-action="duplicate">➕ Duplicate this modulator</li>
       <li data-action="copydata">📋 <span  class="note tooltip" style="color: #333;" title="Copies the callsign, program name and power from the active modulator to all unlocked modulators">Copy Callsign, Program Name, Power</span></li>
+      <li data-action="export">📤 Export tabs to a backup file</li>
+      <li data-action="import"><div id="file">📥 Import tabs from a backup file</div><input type="file" name="file_import" id="file_import" accept=".pluto" onchange='showFile(event)'></input></li>       
    </ul>
 
 
@@ -104,8 +155,8 @@
 
 
                 <div >Mods by Chris <a href="https://www.f5uii.net/?o=2110
-" title="Go to Chris blog and ressources" target="_blank">F5UII.net</a>&nbsp; <a href="https://twitter.com/f5uii/" title="Go to f5uii profile on twitter"><img style="width: 20px;" src="./img/tw.png" alt="Twitter Logo"></a> version <i id='patch-uii'>UII2.3</i><div id="note">A new UII patch is available<span id = 'uii-new-version'></span>. Follow <a href= "https://www.f5uii.net/en/patch-plutodvb/?ori=update" target="_blank">this link</a>.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <a id="close">❌</a></div>: <span class="note tooltip" title="
-        <strong>Version UII2.3 - 22/11/2020</strong><ul><li>Multiple modulator memory (tabbed system) <i>big program evolution</i>🤯</li><li>Transmission time counter with totalizer of the switchover and duration</li><li>Internal temperatures of the PlutoSDR (Suggested by <a href='https://www.f5uii.net/en/patch-plutodvb/#div-comment-18162' target='_blank'> Greg SV2RR</a>)</li><li>Focus on null packets on the <a href='analysis.php'>analysis page</a>, with some formatting</li><li>Github commits history on <a href='index.html#releasenote'>Documentation page</a> </li></ul>
+" title="Go to Chris blog and ressources" target="_blank">F5UII.net</a>&nbsp; <a href="https://twitter.com/f5uii/" title="Go to f5uii profile on twitter"><img style="width: 20px;" src="./img/tw.png" alt="Twitter Logo"></a> version <i id='patch-uii'>UII2.4</i><div id="note">A new UII patch is available<span id = 'uii-new-version'></span>. Follow <a href= "https://www.f5uii.net/en/patch-plutodvb/?ori=update" target="_blank">this link</a>.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <a id="close">❌</a></div>: <span class="note tooltip" title="
+        <strong>Version UII2.4 - 29/11/2020</strong><ul><li>Right click on modulator profiles (lock/unlock + Duplicate + Copy 3 items crosswise)</li><li>Keyboard shortcuts (F9=Apply modulator settings, F10=PTT toggle)</li><li>Analysis page, reception with crossfade display</li></ul><strong>Version UII2.3 - 22/11/2020</strong><ul><li>Multiple modulator memory (tabbed system) <i>big program evolution</i>🤯</li><li>Transmission time counter with totalizer of the switchover and duration</li><li>Internal temperatures of the PlutoSDR (Suggested by <a href='https://www.f5uii.net/en/patch-plutodvb/#div-comment-18162' target='_blank'> Greg SV2RR</a>)</li><li>Focus on null packets on the <a href='analysis.php'>analysis page</a>, with some formatting</li><li>Github commits history on <a href='index.html#releasenote'>Documentation page</a> </li></ul>
         <strong>Version UII2.2 - 18/10/2020</strong><ul><li>Copy to clipboard the RTMP URL string (<i>Detailed on Help tab</i>)</li></ul>
         <strong>Version UII2.1c - 15/10/2020</strong><ul><li>Saving parameters (Spectrum & Minitiouner Receiver control panel)</li><li>Minitiouner steering, Gateway address</li></ul>
         <strong>Version UII2 - 29/08/2020</strong> <ul><li>Minitiouner Receiver control by clicking on a channel of the spectrum with its setup fields and Help tab, Retractable spectrum</li></ul><strong>Version UII1 - 23/08/2020</strong> <ul><li>BATC spectrum (only if client is online) with transmit frequency choose by click on a channel</li><li>Reboot command, Delete patch, html format compliance mods...</li></ul> <hr>🛈 Link to <a href='https://www.f5uii.net/en/patch-plutodvb/?o=2110
@@ -254,7 +305,7 @@
   <section>
    <table>
     <tr>
-      <td>PTT
+      <td>PTT <i>(F10)</i><br>Apply mod. settings <i>(F9)</i>
         <td>
 
           <button id="ptt" onClick="request_ptt();"></button>
@@ -580,11 +631,109 @@
   <tr> <td>Codec</td> <td><select name="codec"> <option value= "H264">H264</option> <option value= "H265">H265</option> </select> </td> </tr>
   <tr> <td>Sound</td> <td> <select name="sound"> <option value="On">On</option> <option value="Off">Off</option> </select> </td> </tr>
   <tr> <td>Audio Input</td> <td> <select name="audioinput"> <option value="line">Line</option> <option value="HDMI">HDMI</option> </select> </td> </tr>
+  <tr>
+    <td><span class="note tooltip" style="color: #636363;" title="In manual mode, all the changes in this section are sent directly to the decoder without having to apply them via the <i>Apply Settings</i> button. They can be applied even when your transmission is running. Please keep an eye on your buffer and null packets when driving the CBR.">Manual control</span></td>
+    <td>
+      <div class="checkcontainer">
+        <input type="checkbox" id="h265box-manualmode" name="h265box-manualmode"  onchange="upd_h265box()">
+        <label for="h265box-manualmode" aria-describedby="label"><span class="ui"></span> manual</label>
+      </div>
+    </td>
+
+  </tr>
+    <tr class="h265box-manual">
+
+    <td>Definition</td>
+    <td>
+      <!-- https://en.wikipedia.org/wiki/List_of_common_resolutions  -->
+      <select name="res">
+        <option value='480x234'>480 × 234 [16∶9]</option>
+        <option value='480x272'>480 × 272 [16∶9]</option>
+        <option value='640x360'>640 × 360 [16∶9]</option>
+        <option value='848x480'>848 × 480 [16∶9]</option>
+        <option value='854x480'>854 × 480 [16∶9]</option>
+        <option value='960x540'>960 × 540 [16∶9]</option>
+        <option value='960x544'>960 × 544 [16∶9]</option>
+        <option value='1024x576'>1024 × 576 [16∶9]</option>
+        <option value='1024x600'>1024 × 600 [16∶9]</option>
+        <option value='1136x640'>1136 × 640 [16∶9]</option>
+        <option value='1138x640'>1138 × 640 [16∶9]</option>
+        <option value='1280x720'>1280 × 720 [16∶9]</option>
+        <option value='1334x750'>1334 × 750 [16∶9]</option>
+        <option value='1366x768'>1366 × 768 [16∶9]</option>
+        <option value='1600x900'>1600 × 900 [16∶9]</option>
+        <option value='1776x1000'>1776 × 1000 [16∶9]</option>
+        <option value='1920x1080'>1920 × 1080 [16∶9]</option>
+        <option value='768x480'>768 × 480 [8∶5]</option>
+        <option value='1024x640'>1024 × 640 [8∶5]</option>
+        <option value='1152x720'>1152 × 720 [8∶5]</option>
+        <option value='1280x800'>1280 × 800 [8∶5]</option>
+        <option value='1440x900'>1440 × 900 [8∶5]</option>
+        <option value='1680x1050'>1680 × 1050 [8∶5]</option>
+        <option value='256x192'>256 × 192 [4∶3]</option>
+        <option value='320x240'>320 × 240 [4∶3]</option>
+        <option value='384x288'>384 × 288 [4∶3]</option>
+        <option value='400x300'>400 × 300 [4∶3]</option>
+        <option value='512x384'>512 × 384 [4∶3]</option>
+        <option value='640x480'>640 × 480 [4∶3]</option>
+        <option value='800x600'>800 × 600 [4∶3]</option>
+        <option value='832x624'>832 × 624 [4∶3]</option>
+        <option value='960x720'>960 × 720 [4∶3]</option>
+        <option value='1024x768'>1024 × 768 [4∶3]</option>
+        <option value='1152x864'>1152 × 864 [4∶3]</option>
+        <option value='1280x960'>1280 × 960 [4∶3]</option>
+        <option value='1400x1050'>1400 × 1050 [4∶3]</option>
+        <option value='1440x1080'>1440 × 1080 [4∶3]</option>
+        <option value='240x160'>240 × 160 [3∶2]</option>
+        <option value='480x320'>480 × 320 [3∶2]</option>
+        <option value='960x640'>960 × 640 [3∶2]</option>      
+        <option value='1152x768'>1152 × 768 [3∶2]</option>
+        <option value='1440x960'>1440 × 960 [3∶2]</option>
+      </select>
+    </td>
+    <td> <span class="note tooltip" style="color: #636363;" title="For fine adjustment, click on the slider and then use the up and down keys<br/>For an adjustment in steps of 10% of the full scale, click on the slider and then use the page up and page down keys.">Constant bitrate</span>
+    </td>
+    <td >
+      <input type="range" min="64" max="12000" step="1" value="150" class="h265box-cbr" name="v_bitrate" onchange="update_slide('v_bitrate',' kb/s','')" oninput="update_slide('v_bitrate',' kb/s','')">
+       <span id="v_bitrate-value"></span>
+    </td>
+   
+  </tr>
+  <tr class="h265box-manual" >
+    <td>GOP <i>Group of pictures</i>
+    </td>
+    <td><input type="range" min="5" max="200" step="1" value="20" class="h265box-gop" name="keyint" onchange="update_slide('keyint',' key interval','')" oninput="update_slide('keyint',' key interval','')"><br/>
+       <span id="keyint-value"></span>
+    </td>
+    <td>Framerate
+    </td>
+    <td><input type="range" min="1" max="30" step="1" value="25" class="h265box-framerate" name="fps" onchange="update_slide('fps',' fps','')" oninput="update_slide('fps',' fps','')"> <span id="fps-value"></span>
+    </td>    
+  </tr>
+  <tr class="h265box-manual">
+    <td>Audio channel</td>
+    <td><select name="audio_channels" id="audio_channels" value="2">
+                  <option value="2">Stereo</option>
+                  <option value="1">Mono</option>
+      </select></td>
+    <td>Audio Quality</td>
+    <td>
+        <select name="audio_bitrate" id="audio_bitrate" value="32000" onchange="update_h265box_cbr()">
+                  <option value="32000">32K</option>
+                  <option value="48000">48K</option>
+                  <option value="64000">64K</option>
+                  <option value="128000">128K</option>
+      </select>
+    </td> 
+  </tr>  
+
 </table><br>
+<input id="enabled" name="enabled" type="hidden" value="true">
 <input type="submit" value="Apply Settings"><span id="saved_h264h265" class="saved" style="display: none;"> Saved !</span>
 <br><br>
 <h2>Advanced (Remux)</h2>
 <hr>
+<table>
 <tr id="remux">
   <td>Force compliant (H265box)</td>
   <td><select name="remux">
@@ -592,9 +741,13 @@
     <option value="0">off</option>
   </select></td>
 </tr>
+</table>
+<br/>
 <input type="submit" value="Apply Settings"><span id="saved_h265compliant" class="saved"  style="display: none;"> Saved !</span>
 </form>
 <td><br><b>Warning : <i>Select ON if you have trouble receiving with continuous blocks</b></i></td>
+<br><br>
+
 
 <br><br>
 <h2>Save for next reboot</h2>
@@ -605,6 +758,7 @@ Warning : In order to write permanently, you need first to apply setting then Sa
     <button name="savefw">Save to flash</button>
   </p>
 </form>
+
 
 <br>
 
@@ -619,7 +773,7 @@ if ( isset( $_SESSION[ 'message' ] ) && $_SESSION[ 'message' ] ) {
 ?>
 <form method="POST" action="upload.php" enctype="multipart/form-data">
   <div> <span>Upload a File (pluto.frm or patch.zip):</span>&nbsp;
-    <input type="file" name="uploadedFile" />
+    <input type="file" name="uploadedFile" id="file_firm" />
   </div><br>
   <input type="submit" name="uploadBtn" value="Upload" />
 </form>
@@ -696,9 +850,11 @@ var t = '#tab1C ';
         data : $("#modulator"+n+", #h264h265").serialize(), // post data || get data
         success : function(result) {
           $(".saved").fadeIn(250).fadeOut(1500);
+          return true;
         },
         error: function(xhr, resp, text) {
           console.log(xhr, resp, text);
+          return false;
         }
       })
 
@@ -886,6 +1042,12 @@ var t = '#tab1C ';
       xmlhttp.send();
     }
 
+function update_slide(id,text, tab) {
+ 
+  $(tab +' #'+id+'-value').text($(tab+'input[name ="'+id+'"]').val()+text)  ;
+
+}
+
 function update_slidertxt()
 {
  $(t+'#powertext').text($(t+'input[name ="power"]').val()+'dB')  ;
@@ -987,6 +1149,36 @@ function calc_ts(){
   else{
     $(t+'#tsrate').html(($(t+'input[name ="sr"]').val()*2*(188.0/204.0)*($(t+'select[name ="fec"]').val().substring(0, 1)/$(t+'select[name ="fec"]').val().substring(1, 2))).toFixed(3));
   }
+  update_h265box_cbr();
+}
+
+function update_h265box_cbr() {
+    if ($('#h265box-manualmode').is(':checked')==true) //H265BOX in manual mode - intialise the CBR on change modultaor
+     {
+        total_ts = parseFloat($(t+'#tsrate').html());
+        $('input[name="v_bitrate"]').attr('max',total_ts); //CBR max for H265box
+        //Iniate CBR value like F4HSL has it written in strategy.sh
+        factor = 0.85;
+        if (total_ts < 1200 ) {
+          factor = 0.8;
+        }
+        if  (total_ts < 400 ) {
+          factor = 0.75;
+        }
+        if  (total_ts < 250 ) {
+          factor = 0.7;
+        }
+        if  (total_ts < 200 ) {
+          factor = 0.65;
+        }
+        cbr = (total_ts)*factor-10-$('#audio_bitrate').val()/1000;
+        if (total_ts<100) {
+          cbr = 64;
+        }
+        $('input[name="v_bitrate"]').val(cbr);
+        update_slide('v_bitrate',' kb/s','');
+      }
+  
 }
 
 function get_usable_data_bits(){
@@ -1065,6 +1257,14 @@ function get_usable_data_bits(){
     }
   }
   return kbch;
+}
+
+function upd_h265box() {
+  if ($( "#h265box-manualmode" ).is(":checked")== true ) {
+      $('.h265box-manual').show();
+  } else {
+     $('.h265box-manual').hide();
+  }
 }
 
 function upd_mod() {
@@ -1192,6 +1392,10 @@ function update_tab(id) {
      update_slidertxt()
      update_slider_pat();
      update_slider_pts();
+      update_slide('keyint',' key interval','');
+      update_slide('fps',' fps','');
+      update_slide('v_bitrate',' kb/s','');
+
 }
 
 var max_id_modulator =1;
@@ -1222,6 +1426,32 @@ function get_local_modulator() {
   }
 }
 
+$('#h264h265').on('change', function () {
+
+
+if ($( "#h265box-manualmode" ).is(":checked")== true ) {
+
+    $.ajax({
+        url: 'encoder_control.php', // url where to submit the request
+        type : "POST", // type of action POST || GET
+        dataType : 'html', // data type
+        processData: false,
+        //data : $(".h265box-manual").find("select, input").serialize(), // post data || get data
+
+        data :  $("#h264h265").find("select, input").serialize(),
+        success : function(result) {
+         // $(".saved").fadeIn(250).fadeOut(1500);
+          return true;
+        },
+        error: function(xhr, resp, text) {
+          console.log(xhr, resp, text);
+          return false;
+        }
+      })
+  }
+
+});
+
 
 
 function get_config_modulator(only_part) {
@@ -1230,21 +1460,55 @@ function get_config_modulator(only_part) {
   var datalines = (data.split('\n'));
   for (var i in datalines) {        
     var datal =(datalines[i].split(' '));
+    var $el = $('[name="'+datal[0]+'"]');
+    type = $el.attr('type');
 
-     if (['h265box','codec','sound','audioinput','remux'].indexOf(datal[0]) >=0) {
-        var $el = $('[name="'+datal[0]+'"]');
-        $el.val(datal[1]);
+     if (['h265box','codec','sound','audioinput','remux','h265box-manualmode','res','v_bitrate','keyint','fps','audio_channels','audio_bitrate','remux','v_bitrate'].indexOf(datal[0]) >=0) {
+
+      switch(type){
+        case 'checkbox':
+        $el.attr('checked', 'checked'); upd_h265box();
+        break;
+        case 'radio':
+        $el.filter('[value="'+datal[1]+'"]').attr('checked',  'checked');
+        break;
+        case 'option':
+          //$('select[name="minitiouner-22khz"]').find('option:contains("On")').attr("selected",true);
+          $el.removeAttr("selected");
+          $el.filter('[value="'+datal[1]+'"]').find('option:contains("'+datal[0]+'")').attr('selected', true);
+          break;                    
+          default:
+          $el.val(datal[1]);
+        }
     }
      if (only_part !== true) {
-       if (['h265box','codec','sound','audioinput','remux'].indexOf(datal[0]) <0) {
+       if (['h265box','codec','sound','audioinput','remux','h265box-manualmode','res','v_bitrate','keyint','fps','audio_channels','audio_bitrate','remux','v_bitrate'].indexOf(datal[0]) <0) {
         var $el = $('#tab1C '+'[name="'+datal[0]+'"]');
+        type = $el.attr('type');
         }
-       $el.val(datal[1]);
+        switch(type){
+          case 'checkbox':
+          $el.attr('checked', 'checked'); upd_h265box();
+          break;
+          case 'radio':
+          $el.filter('[value="'+datal[1]+'"]').attr('checked',  'checked');
+          break;
+          case 'option':
+            //$('select[name="minitiouner-22khz"]').find('option:contains("On")').attr("selected",true);
+            $el.removeAttr("selected");
+            $el.filter('[value="'+datal[1]+'"]').find('option:contains("'+datal[0]+'")').attr('selected', true);
+            break;                    
+            default:
+            $el.val(datal[1]);
+          }
      if (datal[0] == 'mod')  {
         upd_mod();
       }
     }
   }
+  update_slide('v_bitrate',' kb/s','');
+  update_slide('keyint',' key interval','');
+  update_slide('fps',' fps','');
 })
  .fail(function() {
   console.log('modulator settings read failed. It may be normal if never saved Modulator section');
@@ -1274,8 +1538,8 @@ if ((localStorage.getItem('ActivTab')!=null) && ($('#tabs #tab'+localStorage.get
 }
 transmission_tooltip();
 
-$('input[type=file]').change(function(e){
-  var filen = $('input[type=file]')[0].files[0].name;
+$('#file_firm').change(function(e){
+  var filen = $('#file_firm')[0].files[0].name;
   if ((filen!='patch.zip')&&(filen!='pluto.frm')){
     alert('The file "' + filen +  '" is incorrect. Only pluto.frm and patch.zip are allowed. File names must be in lower case'); }
   });
@@ -1403,6 +1667,65 @@ function reset_counter() {
   }
  }
 
+ function download(filename, text) {
+  var element = document.createElement('a');
+  var universalBOM = "\uFEFF";
+  element.setAttribute('href', 'data:text/csv; charset=utf-8,' + encodeURIComponent(universalBOM+text));
+  element.setAttribute('download', filename);
+  element.style.display = 'none';
+  document.body.appendChild(element);
+  element.click();
+  document.body.removeChild(element);
+}
+
+function export_tabs() {
+  var text = "";
+  for (var j = 0; j < localStorage.length; j++) {
+     text+=localStorage.key(j)+';'+localStorage.getItem(localStorage.key(j))+"\n";
+  }
+  download('backup.pluto',text)
+}
+
+var wrapper = $('<div/>').css({height:0,width:0,'overflow':'hidden'});
+var fileInput = $('#file_import').wrap(wrapper);
+
+$('#file').click(function(){
+    fileInput.click();
+}).show();
+
+
+ function readSingleFile(evt) {
+    var f = evt.target.files[0]; 
+    console.log('type = '+f.name.split(".").pop() );
+    if (f.name.split(".").pop()=='pluto') {
+      if (f) {
+        var r = new FileReader();
+        r.onload = function(e) { 
+            var contents = e.target.result;
+            var lines = contents.split("\n"), output = [];
+            localStorage.clear();
+            for (var i=0; i<lines.length; i++){            
+              if (lines[i].split(";")[0] !='') {
+                localStorage.setItem(lines[i].split(";")[0],lines[i].split(";")[1])
+              }
+            }
+      }
+
+      r.readAsText(f);
+      location.reload();
+    }
+
+     else { 
+      alert("Failed to load file");
+    }
+  }   else {
+      alert("Failed import.\nOnly backup files with extension .pluto are expected.");
+      $('#file_import').val('');
+    }
+  }
+  document.getElementById('file_import').addEventListener('change', readSingleFile);
+
+
 
   $('#addtab').click(function (e) {
     e.preventDefault();
@@ -1410,6 +1733,20 @@ function reset_counter() {
     add_tab();
 
  });
+
+//F10 F10 shortcuts for PTT toggle
+  $(document).keydown(function(evt){ 
+    
+      if (evt.keyCode==121){
+        evt.preventDefault();
+        request_ptt();
+    }
+      if (evt.keyCode==120){
+        evt.preventDefault();
+         save_modulator_setup();
+    }    
+});
+
 
   $("body").on("keydown", "[contenteditable='true'], [name='comment']", function (e) { 
   if(e.keyCode == 13) {   
@@ -1463,6 +1800,12 @@ $(".right-c-menu li").on('click', function(){
       break;
       case "copydata": 
         copy_data(tab);
+      break;    
+      case "export": 
+        export_tabs();
+      break;
+      case "import": 
+       // import_tab();
       break;      
   }
   // Hide after the action was triggered
@@ -1473,4 +1816,3 @@ $(".right-c-menu li").on('click', function(){
 </script>
 </body>
 </html>
-
