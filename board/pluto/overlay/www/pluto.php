@@ -98,11 +98,9 @@ ol.gen-ress li.placeholder:before {
     <meta name="description" content="ADALM-PLUTO DVB Controller ">
     <link type="text/css" href="./img/style.css" rel="stylesheet">
     <script src="lib/jquery-3.5.1.min.js"></script>
-    <script src="lib/socket.io-2.3.0.min.js"></script>
     <script src="lib/u16Websocket.js"></script>
     <script src="lib/js.cookie.min.js"></script>
     <script src="lib/tooltip.js"></script>
-    <script src="lib/jquery-sortable-min.js"></script>
     <link type="text/css" href="./lib/tooltip.css" rel="stylesheet">
     <link href="lib/favicon.ico" rel="icon" type="image/x-icon" />
   </head>
