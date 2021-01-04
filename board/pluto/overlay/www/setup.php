@@ -54,6 +54,32 @@
  -->
    <h1>PlutoDVB General setup</h1> 
    <hr>
+   <h2> Main mode selection</h2>
+   should be able to be more attractive<br/>
+   <input type="radio" id="mainmode"
+     name="mainmode" value="datv">
+    <label for="datv">DATV</label>
+
+    <input type="radio" id="mainmode"
+     name="mainmode" value="pass">
+    <label for="pass">Passthrough (SDR Console,...)</label>
+
+  </div>
+  <h2> DATV operating mode</h2>
+
+   <input type="radio" id="datvmode"
+     name="datvmode" value="rtmp">
+    <label for="rtmp">RTMP</label>
+
+    <input type="radio" id="datvmode"
+     name="datvmode" value="udp">
+    <label for="udp">UDP</label>
+
+    <input type="radio" id="datvmode"
+     name="datvmode" value="test">
+    <label for="test"><span class="note tooltip" title="Not available" style="color : #636363;">Test pattern</span></label>
+  </div>
+   <hr>
    <h2>Pluto Configuration</h2>
    This section read and save the <pre>/opt/config.txt</pre> file. Take care of your modifications before applying them. Some modifications may make your equipment inaccessible from the network. To apply, please reboot (control button further down the page).
     <h3>USB on Ethernet </h3>
@@ -210,7 +236,8 @@
   This modifiable table makes it easy to set the parameters of the H264/265 encoder automatically according to the stream transport rate (depending on the transmitted signal characteristics).<br/>
 Attention, in this version the editable cells are not verified at all.
   <style type="text/css">
-.tg  {border-collapse:collapse;border-color:#9ABAD9;border-spacing:0;}
+.tg  {border-collapse:collapse;border-color:#9ABAD9;border-spacing:0;   margin-left: auto;
+  margin-right: auto;}
 .tg td{background-color:#EBF5FF;border-color:#ddd;border: 1px dashed ;color:#444;
   font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;word-break:normal;}
 .tg th{background-color:#409cff;border-color:#9ABAD9;border: 1px dashed ;color:#fff;
@@ -411,7 +438,7 @@ myObj.rows = rows;
 function json2table() {
 
     $.ajax({
-        url: "strategy.json",
+        url: "/mnt/jffs2/etc/strategy.json",
         dataType: 'json',
         type: 'get',
         cache:false,
