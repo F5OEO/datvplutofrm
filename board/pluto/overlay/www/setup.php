@@ -236,7 +236,7 @@
 
    <table>
      <tr>
-        <td><span class="note tooltip" title="<ul><li>When enabled (yes position), the H264/H265 section is displayed on the controller page. The automatic or manual control of its parameters are then possible from anywhere in the world. " style="color : #636363;">Use of a H264/H265 box</span><br></td>
+        <td><span class="note tooltip" title="<ul><li>When enabled (yes position), the H264/H265 section is displayed on the controller page. " style="color : #636363;">Use of a H264/H265 box</span><br></td>
         <td><div class="checkcontainer">
 
           <input type="checkbox" id="use_h265box" name="H265BOX[use_h265box]" <?php if (isset($datv_config['H265BOX']['use_h265box']))  echo $datv_config['H265BOX']['use_h265box']=='on' ? " checked" :  "" ?>>
@@ -272,7 +272,7 @@
 [contenteditable]:not(:focus) { border: 1px dashed #ddd; }
 [contenteditable]:focus { border: 1px solid #51a7e8; box-shadow: inset 0 1px 2px rgba(0,0,0,0.075),0 0 5px rgba(81,167,232,0.5); }
 </style>
-<table class="tg" style="undefined;table-layout: fixed; width: 745px">
+<table id="strategy_tab" class="tg" style="undefined;table-layout: fixed; width: 745px">
 <colgroup>
 <col style="width: 26px">
 <col style="width: 89px">
@@ -286,8 +286,12 @@
 </colgroup>
 <thead>
   <tr>
-    <th class="tg-88b2"></th>
-    <th class="tg-88b2">Total bitrate available (deciding factor)</th>
+    <th class="tg-88b2" colspan="2">Deciding factor</th>
+    <th class="tg-88b2" colspan="2">AUDIO</th>
+    <th class="tg-88b2" colspan="5">VIDEO</th>
+  </tr>
+  <tr>
+    <th class="tg-88b2" colspan="2">Total bitrate available</th>
     <th class="tg-88b2">Audio channels</th>
     <th class="tg-88b2">Audio Bitrate<br>(kb/s)</th>
     <th class="tg-88b2">GOP</th>
@@ -298,7 +302,7 @@
   </tr>
 </thead>
 <tbody>
-  <tr>
+  <tr id="tr1">
     <td class="tg-wpev">1</td>
     <td class="tg-wpev" contenteditable="true">5000</td>
     <td class="tg-wpev" contenteditable="true">2</td>
@@ -309,7 +313,7 @@
     <td class="tg-wpev" contenteditable="true">30</td>
     <td class="tg-wpev" contenteditable="true">1000</td>
   </tr>
-  <tr>
+  <tr id="tr2">
     <td class="tg-wpev">2</td>
     <td class="tg-wpev" contenteditable="true">1200</td>
     <td class="tg-wpev" contenteditable="true">2</td>

@@ -72,6 +72,7 @@ function readinifile($file) {
     else 
     {
       echo "The <pre>$file</pre> is not available, the form values are not initialized !<br> ";
+      return false;
      
     }
 	}  

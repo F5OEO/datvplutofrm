@@ -50,48 +50,6 @@
       .default:hover {background: #ddd;}
 
       .h265box-manual {display: none;}
-
-      body.dragging, body.dragging * {
-  cursor: move !important;
-}
-
-body.dragging, body.dragging * {
-  cursor: move !important;
-}
-
-.dragged {
-  position: absolute;
-  opacity: 0.5;
-  z-index: 2000;
-}
-
-ol {
-  list-style: none;
-}
-ol.vertical {
-    margin: 0 0 9px 0;
-    min-height: 10px;
-}
-
-ol.vertical li {
-    display: block;
-    margin: 5px;
-    padding: 5px;
-    border: 1px solid #cccccc;
-    color: #0088cc;
-    background: #eeeeee;
-    cursor: pointer;
-}
-
-ol.gen-ress li.placeholder {
-  position: relative;
-  /** More li styles **/
-}
-ol.gen-ress li.placeholder:before {
-  position: absolute;
-  /** Define arrowhead **/
-}
-
     </style>
 
     <title>ADALM-PLUTO DVB Controller</title>
@@ -752,7 +710,6 @@ if (($general_ini==false) || (isset($datv_config['H265BOX']['use_h265box'])&& $d
   </tr>  
 
 </table><br>
-<input id="enabled" name="enabled" type="hidden" value="true">
 <input type="submit" value="Apply Settings"><span id="saved_h264h265" class="saved" style="display: none;"> Saved !</span>
 <br><br>
 <h2>Advanced (Remux)</h2>
@@ -1490,7 +1447,6 @@ if ($( "#h265box-manualmode" ).is(":checked")== true ) {
         dataType : 'html', // data type
         processData: false,
         //data : $(".h265box-manual").find("select, input").serialize(), // post data || get data
-
         data :  $("#h264h265").find("select, input").serialize(),
         success : function(result) {
          // $(".saved").fadeIn(250).fadeOut(1500);

@@ -6,7 +6,6 @@
 //THIS ASSUMES THE ENCODER BOX IS SET TO SINGLE CHANNEL MODE IN SYSTEM SETTINGS.
 
 //this enables command line arguments to be used the same as http post variables
-
 if (!isset($_SERVER["HTTP_HOST"])) {
   parse_str($argv[1], $_POST);
 }
