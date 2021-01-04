@@ -9,7 +9,7 @@
   
     $file_config ='/opt/config.txt';
     $file_general = '/mnt/jffs2/etc/settings-datv.txt';
-    if (true==true) // replace false by true for developping on debug server
+    if (true==false) // replace false by true for developping on debug server
     {
       echo "<i>Attention, in developping mode </i><br>";
       $file_config ='config.txt';
