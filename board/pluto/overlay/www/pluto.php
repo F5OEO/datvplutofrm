@@ -728,12 +728,9 @@ if (($general_ini==false) || (isset($datv_config['H265BOX']['use_h265box'])&& $d
 </form>
 <td><br><b>Warning : <i>Select ON if you have trouble receiving with continuous blocks</b></i></td>
 <br><br>
-
 <?php
 } //end H265box filtering
 ?>
-
-<br><br>
 <h2>Save for next reboot</h2>
 <hr>
 Warning : In order to write permanently, you need first to apply setting then Save to flash. <br>
@@ -1487,7 +1484,7 @@ function get_config_modulator(only_part) {
           $el.filter('[value="'+datal[1]+'"]').find('option:contains("'+datal[0]+'")').attr('selected', true);
           break;                    
           default:
-          if ((datal[0]=='h265box') && (<?php echo (($general_ini!=false) && (isset($datv_config['H265BOX']['ipaddr_h265box']))) ?>==1)) {
+          if ((datal[0]=='h265box') && (<?php if  (($general_ini!=false) && (isset($datv_config['H265BOX']['ipaddr_h265box']))) {echo 1;} else {echo 0;} ?>==1)) {
             $el.val('<?php echo $datv_config['H265BOX']['ipaddr_h265box']; ?>')
           } else {
           $el.val(datal[1]);
