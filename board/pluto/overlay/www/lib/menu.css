@@ -1,0 +1,77 @@
+/* nav */
+.nav-menu,.nav-menu ul,.nav-menu li,.nav-menu a { margin: 0; padding: 0; line-height: normal; list-style: none; display: block; position: relative; }
+.nav-menu ul { opacity: 0; position: absolute; top: 100%; left: -9999px; z-index: 999; -webkit-transition: opacity .3s; transition: opacity .3s; }
+.nav-menu li:hover > ul { left: 0; opacity: 1; z-index: 1000; }
+.nav-menu ul li:hover > ul { top: 0; left: 100%; }
+.nav-menu li { cursor: default; float: left; white-space: nowrap; }
+.nav-menu ul li { float: none; }
+
+/* sub width */
+.nav-menu ul { min-width: 12em; -webkit-box-shadow: 3px 3px 3px rgba(0,0,0,0.25); box-shadow: 3px 3px 3px rgba(0,0,0,0.25); }
+
+/* center */
+.nav-center { float: right; right: 50%; }
+.nav-center > li { left: 50%; }
+
+/* root */
+.nav-menu a {
+  padding: 0 10px;
+  color: #33b3ca;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 40px;
+  text-decoration: none;
+}
+
+/* root: active */
+.nav-menu > li > .nav-active { background-color: rgba(91,192,222,0.15);; }
+
+/* root: hover/persistence */
+.nav-menu a:hover,.nav-menu a:focus,.nav-menu li:hover a {
+  background: #33b3ca;
+  color: #FFF;
+}
+
+/* 2 */
+.nav-menu li li a,.nav-menu li:hover li a {
+  padding: 8px 10px;
+  background: #2ea1b6;
+  color: #FFF;
+  font-size: 12px;
+  line-height: normal;
+}
+
+/* 2: hover/persistence */
+.nav-menu li:hover li a:hover,.nav-menu li:hover li a:focus,.nav-menu li:hover li:hover a {
+  background: #298fa2;
+}
+
+/* 3 */
+.nav-menu li:hover li:hover li a {
+  background: #298fa2;
+}
+
+/* 3: hover/persistence */
+.nav-menu li:hover li:hover li a:hover,.nav-menu li:hover li:hover li a:focus,.nav-menu li:hover li:hover li:hover a {
+  background: #247d8d;
+}
+
+/* 4 */
+.nav-menu li:hover li:hover li:hover li a {
+  background: #247d8d;
+}
+
+/* 4: hover */
+.nav-menu li:hover li:hover li:hover li a:hover,.nav-menu li:hover li:hover li:hover li a:focus {
+  background: #1f6b79;
+}
+
+/* vertical */
+.nav-vertical { max-width: 220px; }
+.nav-vertical ul { top: 0; left: -9999px; }
+.nav-vertical li { width: 100%; float: none; }
+.nav-vertical li:hover > ul { left: 100%; }
+
+#top {
+  display: flex;
+}
