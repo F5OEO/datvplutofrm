@@ -9,7 +9,12 @@ This allows the parameters changed by the operator to be taken into account with
 ## Implemented messages 
 
 - ```plutodvb/var``` All the variables available on a page are sent in the following form ``` { "id or name" : value }```
+	-  ```'{"fec":"13"}``` Ask to change FEC to 1/3
+	-  ```'{"ptt":"false"}``` Ask to stop transmission
+	-  ```'{"ptt":"true"}``` Ask to go to transmission	
+	-  ```'{"page":"setup.php"}``` Tell the user is (re)load this page
 - ```plutodvb/started``` Sended by the PlutoDVB when is started
+- ```plutodvb/ts/netbitrate``` Transport Stream Bitrate in bits/s
 
 
 # Feedbacks and discussions
