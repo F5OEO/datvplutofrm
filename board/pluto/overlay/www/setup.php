@@ -480,7 +480,7 @@ This is needed for apply your saved modifications made in Pluto Configuration se
 function update_slide(id,decimal,text) {
   $('#'+id+'-value').text(Number.parseFloat($('#'+id).val()).toFixed(decimal)+text)  ;
   if (mqtt_connected == true) {
-    sendmqtt("plutodvb/var", "{\""+id+"\":\""+$('#'+id).val()+"\"}" ) ;
+    sendmqtt('plutodvb/var', '{"'+id+'":"'+$('#'+id).val()+'"}' ) ;
   }
 }
 
