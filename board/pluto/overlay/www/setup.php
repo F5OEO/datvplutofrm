@@ -207,6 +207,8 @@
     
    </table>
   <h2>Strategy Setting table</h2>
+  This modifiable table makes it easy to set the parameters of the H264/265 encoder automatically according to the stream transport rate (depending on the transmitted signal characteristics).<br/>
+Attention, in this version the editable cells are not verified at all.
   <style type="text/css">
 .tg  {border-collapse:collapse;border-color:#9ABAD9;border-spacing:0;}
 .tg td{background-color:#EBF5FF;border-color:#ddd;border: 1px dashed ;color:#444;
@@ -222,7 +224,7 @@
 </style>
 <table id="strategy_tab" class="tg" style="undefined;table-layout: fixed; width: 745px">
 <colgroup>
-<col style="width: 26px">
+<col style="width: 58px">
 <col style="width: 89px">
 <col style="width: 90px">
 <col style="width: 90px">
@@ -233,13 +235,10 @@
 <col style="width: 90px">
 </colgroup>
 <thead>
+
   <tr>
-    <th class="tg-88b2" colspan="2">Deciding factor</th>
-    <th class="tg-88b2" colspan="2">AUDIO</th>
-    <th class="tg-88b2" colspan="5">VIDEO</th>
-  </tr>
-  <tr>
-    <th class="tg-88b2" colspan="2">Total bitrate available</th>
+    <th class="tg-88b2" >Priority</th>
+    <th class="tg-88b2" >Total bitrate available</th>
     <th class="tg-88b2">Audio channels</th>
     <th class="tg-88b2">Audio Bitrate<br>(kb/s)</th>
     <th class="tg-88b2">GOP</th>
@@ -318,6 +317,8 @@
   </tr>
 </tbody>
 </table>
+<br/>
+    <input type="submit" value="Apply Settings" id ="st" onclick="table2json()"><span id="aa"   style="display: none;"> Saved !</span>
 
    <h2>Avanced for expert use only</h2>
 
@@ -387,6 +388,61 @@ This is needed for apply your saved modifications made in Pluto Configuration se
         });
     });
 
+function table2json (){
+var rows = [];
+var $headers = $("th");
+var $rows = $("#strategy_tab tbody tr").each(function(index) {
+  $cells = $(this).find("td");
+  rows[index] = {};
+  $cells.each(function(cellIndex) {
+    rows[index][$($headers[cellIndex]).text()] = $(this).text();
+  });    
+});
+var myObj = {};
+myObj.rows = rows;
+//alert(JSON.stringify(myObj));
+        $.get( "requests.php?cmd="+encodeURIComponent('echo '+JSON.stringify(myObj)+' > /mnt/jffs2/etc/strategy.json'), function( data ) {
+            if (status=='success') { 
+              $('#aa').fadeIn(250).fadeOut(1500);
+            }
+          });
+}
+
+function json2table() {
+
+    $.ajax({
+        url: "strategy.json",
+        dataType: 'json',
+        type: 'get',
+        cache:false,
+        success: function(data){
+            /*console.log(data);*/
+            var event_data = '';
+            $.each(data.rows, function(index, value){
+                /*console.log(value);*/
+                event_data += '<tr>';
+                event_data += '<td class="tg-wpev">'+value['Priority']+'</td>';
+                event_data += '<td class="tg-wpev" contenteditable="true">'+value['Total bitrate available']+'</td>';
+                event_data += '<td class="tg-wpev" contenteditable="true">'+value['Audio channels']+'</td>';
+                event_data += '<td class="tg-wpev" contenteditable="true">'+value['Audio Bitrate(kb/s)']+'</td>';
+                event_data += '<td class="tg-wpev" contenteditable="true">'+value['GOP']+'</td>';
+                event_data += '<td class="tg-wpev" contenteditable="true">'+value['Video Width']+'</td>';
+                event_data += '<td class="tg-wpev" contenteditable="true">'+value['Video Height']+'</td>';
+                event_data += '<td class="tg-wpev" contenteditable="true">'+value['FPS']+'</td>';
+                event_data += '<td class="tg-wpev" contenteditable="true">'+value['Video Rate(kb/s)']+'</td>';
+                
+                
+                event_data += '</tr>';
+            });
+            $("#strategy_tab tbody").html(event_data);
+        },
+        error: function(d){
+            /*console.log("error");*/
+            console.log("strategy.json not found. Can be normal if table never modified.");
+        }
+
+    })
+}
 
   function dhcp () {
     if ($("#dhcp_eth").is(":checked")==true) {
@@ -451,6 +507,7 @@ $('body').on('change', 'input,select', function () {
 
 </script>
 <script>
+  json2table(); // load the json table definition
   var mqtt_connected = false;
   MQTTconnect();
 </script>
