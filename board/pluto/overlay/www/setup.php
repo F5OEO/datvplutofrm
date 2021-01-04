@@ -39,21 +39,19 @@
     <script src="lib/mqttws31.js"></script>  
     <script src="lib/mqtt.js.php?page=<?php echo basename($_SERVER["SCRIPT_FILENAME"]); ?>"></script>  
     <link type="text/css" href="./lib/tooltip.css" rel="stylesheet">
+    <link type="text/css" href="./lib/menu.css" rel="stylesheet">
   </head>
-  <header id="top">
-    <div class="anchor">
-      <a href="https://twitter.com/F5OEOEvariste/" title="Go to Tweeter">F5OEO: <img style="width: 32px;" src="./img/tw.png" alt="Twitter Logo"></a>
-    </div>
-  </header> 
+
   <body>
 
-    
-
+       <?php include ('lib/menu_header.php'); ?>
+<!--
     <nav style="text-align: center;">
      <a class="button" href="analysis.php">Analysis</a>
      <a class="button" href="pluto.php">Controller</a>
      <a class="button" href="index.html">Documentation</a>
    </nav>
+ -->
    <h1>PlutoDVB General setup</h1> 
    <hr>
    <h2>Pluto Configuration</h2>

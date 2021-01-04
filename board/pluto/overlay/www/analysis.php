@@ -3,18 +3,16 @@
     session_start();
 
     ?>
-
-
     <!doctype html>
     <html>
     <head>
     <meta charset="UTF-8">
-
     <title>ADALM-PLUTO DVB Analyzer</title>
     <meta name="description" content="ADALM-PLUTO DVB Analyzer ">
     <link href="lib/analysis.ico" rel="icon" type="image/x-icon" />
     <link type="text/css" href="./img/style.css" rel="stylesheet">
     <link type="text/css" href="./lib/tooltip.css" rel="stylesheet">
+    <link type="text/css" href="./lib/menu.css" rel="stylesheet">    
     <script src="lib/jquery-3.5.1.min.js"></script>
     <script src="lib/tooltip.js"></script>
     <style>
@@ -56,35 +54,7 @@
 
     </style>
     </head>
-    <header id="top">
-
-      <div id="col1">
-        &nbsp;
-      </div>
-      <div id='col3'>   
-      <div class="anchor">
-        Firmware version : <?php
-        $fwver = shell_exec ( 'cat /www/fwversion.txt' );
-        echo "$fwver";
-        ?><br/> 
-        Mods by Chris <a href="https://www.f5uii.net/?o=<?php
-            $fwver = shell_exec ( 'cat /www/fwversion.txt' );
-            echo "$fwver";
-            ?>" title="Go to Chris blog and ressources" target="_blank">F5UII.net</a>&nbsp; <a href="https://twitter.com/f5uii/" title="Go to f5uii profile on twitter"><img style="width: 20px;" src="./img/tw.png" alt="Twitter Logo"></a> ▪️ <a href="https://twitter.com/F5OEOEvariste/" title="Go to Tweeter">F5OEO: <img style="width: 20px;" src="./img/tw.png" alt="Twitter Logo"></a>
-      </div>
-    </div>
-    
-    <div id="col2">
-    <nav style="text-align: center;">
-        <a class="button" href="pluto.php">Controller</a>
-        <a class="button" href="index.html">Documentation</a>
-      
-    </nav>
-  </div>
-
-
-
-    </header>
+      <?php include ('lib/menu_header.php'); ?>
     <table style="padding-top: 21px;">
         <tr>
         <td>Receiver analysis <span  class="note tooltip" title="Allows you to set the stream source of the analysis<br>no = transmitter analysis / yes = receiver analysis <ul><li>In the Controller panel, on Setup Receiver tab, specify the IP address and port of the UDP broadcast.</li><li>For those who use Minitiouner by author F6DZP, this information can be found in the <i>minitiouneConfig.ini</i> file, in section <i>[UDP]</i>, and variables <i>TS_AddrUDP</i>, <i>TS_Port</i></li><li>Remember to enable UDP broadcasting either from the Minitiouner control panel (UDP button), or by activating it by default, with udp_switch=1 (Section buttons) in <i>minitiouneConfig.ini</i>.</li> "> ( ℹ️ ) </span></td>
