@@ -1,10 +1,5 @@
 <?php
 header("Access-Control-Allow-Origin: *"); //for developping & testing purposes
-//set and return requested gain
-if(isset($_GET['gain'])){
-    $cmd = 'echo '.$_GET['gain'].' >  /sys/bus/iio/devices/iio:device1/out_voltage0_hardwaregain';
-    exec($cmd);
-}
 
 if(isset($_GET['onair'])){
     $cmd = 'cat /sys/bus/iio/devices/iio:device1/out_altvoltage1_TX_LO_powerdown';
