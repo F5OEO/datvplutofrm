@@ -62,6 +62,7 @@
     <script src="lib/mqttws31.js"></script>      
     <script src="lib/mqtt.js.php?page=<?php echo basename($_SERVER["SCRIPT_FILENAME"]); ?>"></script>        
     <link type="text/css" href="./lib/tooltip.css" rel="stylesheet">
+    <link type="text/css" href="./lib/menu.css" rel="stylesheet">
     <link href="lib/favicon.ico" rel="icon" type="image/x-icon" />
   </head>
 
@@ -75,51 +76,13 @@
       <li data-action="export">📤 Export tabs to a backup file</li>
       <li data-action="import"><div id="file">📥 Import tabs from a backup file</div><input type="file" name="file_import" id="file_import" accept=".pluto" onchange='showFile(event)'></input></li>       
    </ul>
+   <?php include ('lib/menu_header.php'); ?>
 
 
-    <header id="top">
-      <div id="col1">
-        &nbsp;
-      </div>
-      <div id='col3'>   
-      <div class="anchor">
-        Firmware version : <?php
-        $fwver = shell_exec ( 'cat /www/fwversion.txt' );
-        echo "$fwver";
-        ?><br/> 
-        <a href="https://twitter.com/F5OEOEvariste/" title="Go to Tweeter">F5OEO: <img style="width: 32px;" src="./img/tw.png" alt="Twitter Logo"></a>
-      </div>
-    </div>
-    
-    <div id="col2">
-    <nav style="text-align: center;">
-      <a class="button" href="analysis.php" >Analysis</a> 
-
-      <a class="button" href="index.html" >Documentation</a>
-      <a class="button" href="https://wiki.batc.org.uk/QO-100_WB_Bandplan" target="_blank">QO-100 WB Bandplan</a>
-    </nav>
-  </div>
-  </header>
 
 
     <header id="maintitle"> <h1><strong>ADALM-PLUTO</strong> DATV Controller</h1>
-      <section style=" text-align: right;">
-        <div >Thanks Rob M0DTS for help. Mods by G4EML for codec selection and sound enable</div>
-        
 
-
-                <div >Mods by Chris <a href="https://www.f5uii.net/?o=2110
-" title="Go to Chris blog and ressources" target="_blank">F5UII.net</a>&nbsp; <a href="https://twitter.com/f5uii/" title="Go to f5uii profile on twitter"><img style="width: 20px;" src="./img/tw.png" alt="Twitter Logo"></a> version <i id='patch-uii'>UII2.5</i><div id="note">A new UII patch is available<span id = 'uii-new-version'></span>. Follow <a href= "https://www.f5uii.net/en/patch-plutodvb/?ori=update" target="_blank">this link</a>.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <a id="close">❌</a></div>: <span class="note tooltip" title="
-        <strong>Version UII2.5 - 03/01/2021</strong><ul><li>Steering compatible with Longmynd patched with <a href='https://forum.batc.org.uk/viewtopic.php?f=101&t=6594&p=25786&hilit=g7jtt#p22243' target='blank_'>G7JTT script (Thanks to G8UGD)</a></li><li>New PlutoDVB <a href='setup.php'>setup page</a> (under development, not everything is functional yet)</li><li>Maximum adjustable power </li><li>Display of absolute output power expressed in dB and watts</li><li>masking of the H265 encoder control panels if set as such</li><li>Manual control of H265 encoder parameters</li></ul>
-        <strong>Version UII2.4 - 29/11/2020</strong><ul><li>Right click on modulator profiles (lock/unlock + Duplicate + Copy 3 items crosswise)</li><li>Keyboard shortcuts (F9=Apply modulator settings, F10=PTT toggle)</li><li>Analysis page, reception with crossfade display (Not perfect yet)</li></ul>
-        <strong>previous versions, see support page</strong><hr>🛈 Link to <a href='https://www.f5uii.net/en/patch-plutodvb/?o=2110
-' target='_blank'>download, roadmap and support page">
-
-        </a>Details</span></div>
-        <div >Mods by Roberto IS0GRB (Save SpectrumView button state,Show how much patch.zip inserted (August 29th, 2020)</div>
-        <br>
-      </section>
-    </div>
   </header>
 
 
@@ -991,6 +954,7 @@ var t = '#tab1C ';
 
 
   function request_ptt(){
+
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
@@ -1004,11 +968,18 @@ var t = '#tab1C ';
       {
         console.log('PTTON');
         xmlhttp.open("GET", "requests.php?PTT=on", true);
+         if (mqtt_connected == true) {
+          sendmqtt('plutodvb/var', '{"ptt":"true"}' ) ;
+         }
+
       }
       else
       {
         console.log('PTTOFF');
         xmlhttp.open("GET", "requests.php?PTT=off", true);
+        if (mqtt_connected == true) {
+          sendmqtt('plutodvb/var', '{"ptt":"false"}' ) ;
+        }
       }
       xmlhttp.send();
     }
@@ -1831,8 +1802,13 @@ $('body').on('change', 'input,select', function () {
     if (obj==undefined) {
       obj=$(this).attr('name');
     }
-    
-    sendmqtt('plutodvb/var', '{"'+obj+'":"'+ $(this).val()+'"}' ) ;
+    if ($(this).is(':checkbox')) {
+      val= $(this).is(':checked');
+    } else {
+      val=$(this).val();
+    }
+
+    sendmqtt('plutodvb/var', '{"'+obj+'":"'+ val +'"}' ) ;
   }
 });
 
