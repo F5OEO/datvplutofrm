@@ -9,7 +9,7 @@
   
     $file_config ='/opt/config.txt';
     $file_general = '/mnt/jffs2/etc/settings-datv.txt';
-    if (true==false) // replace false by true for developping on debug server
+    if (true==true) // replace false by true for developping on debug server
     {
       echo "<i>Attention, in developping mode </i><br>";
       $file_config ='config.txt';
@@ -36,59 +36,9 @@
     <link type="text/css" href="./img/style.css" rel="stylesheet">
     <script src="lib/jquery-3.5.1.min.js"></script>
     <script src="lib/tooltip.js"></script>
-    <script src="lib/mqttws31.js" type="text/javascript"></script>  
+    <script src="lib/mqttws31.js"></script>  
+    <script src="lib/mqtt.js.php?page=<?php echo basename($_SERVER["SCRIPT_FILENAME"]); ?>"></script>  
     <link type="text/css" href="./lib/tooltip.css" rel="stylesheet">
-       <script type = "text/javascript" language = "javascript">
-    var mqtt;
-    var reconnectTimeout = 2000;
-    var host="<?php echo shell_exec('echo -n $(ip -f inet -o addr show eth0 | cut -d\  -f 7 | cut -d/ -f 1)'); ?>";
-    //var host='192.168.1.8';
-    var port=9001;
-    
-    function onFailure(message) {
-      mqtt_connected = false;
-      console.log("MQTT connection attempt to Host "+host+"Failed");
-      setTimeout(MQTTconnect, reconnectTimeout);
-        }
-    function onMessageArrived(msg){
-      out_msg="MQTT Message received "+msg.payloadString+"<br>";
-      out_msg=out_msg+" MQTT Message received Topic "+msg.destinationName;
-      console.log(out_msg);
-
-    }
-    
-    function sendmqtt(destination,messagestr) {
-          message = new Paho.MQTT.Message(messagestr);
-          message.destinationName = destination;
-          mqtt.send(message);
-    }
-
-    function onConnect() {
-    // Once a connection has been made, make a subscription and send a message.
-    mqtt_connected = true;
-    console.log("MQTT connected");
-
-    mqtt.subscribe("plutodvb/started");
-    message = new Paho.MQTT.Message('{ "page" : "<?php echo basename($_SERVER['REQUEST_URI']); ?>" }');
-    message.destinationName = "plutodvb/page";
-    mqtt.send(message);
-    
-    }
-    function MQTTconnect() {
-    console.log("connecting to "+ host +" "+ port);
-    mqtt = new Paho.MQTT.Client(host,port,"uii-ihm");
-    //document.write("connecting to "+ host);
-    var options = {
-      timeout: 3,
-      onSuccess: onConnect,
-      onFailure: onFailure,
-       };
-    mqtt.onMessageArrived = onMessageArrived
-    
-    mqtt.connect(options); //connect
-    }
-   
-    </script>
   </head>
   <header id="top">
     <div class="anchor">
@@ -479,14 +429,29 @@ This is needed for apply your saved modifications made in Pluto Configuration se
 
 function update_slide(id,decimal,text) {
   $('#'+id+'-value').text(Number.parseFloat($('#'+id).val()).toFixed(decimal)+text)  ;
-  if (mqtt_connected == true) {
-    sendmqtt('plutodvb/var', '{"'+id+'":"'+$('#'+id).val()+'"}' ) ;
-  }
+  //if (mqtt_connected == true) {
+  // sendmqtt('plutodvb/var', '{"'+id+'":"'+$('#'+id).val()+'"}' ) ;
+  //}
 }
 
+//MQTT send messages
+$('body').on('change', 'input,select', function () {
+  if (mqtt_connected == true) {
+    obj= $(this).attr('id');
+    if (obj==undefined) {
+      obj=$(this).attr('name');
+    }
+    if ($(this).is(':checkbox')) {
+      val= $(this).is(':checked');
+    } else {
+      val=$(this).val();
+    }
+
+    sendmqtt('plutodvb/var', '{"'+obj+'":"'+ val +'"}' ) ;
+  }
+});
+
 </script>
-
-
 <script>
   var mqtt_connected = false;
   MQTTconnect();

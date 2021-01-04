@@ -59,6 +59,8 @@
     <script src="lib/u16Websocket.js"></script>
     <script src="lib/js.cookie.min.js"></script>
     <script src="lib/tooltip.js"></script>
+    <script src="lib/mqttws31.js"></script>      
+    <script src="lib/mqtt.js.php?page=<?php echo basename($_SERVER["SCRIPT_FILENAME"]); ?>"></script>        
     <link type="text/css" href="./lib/tooltip.css" rel="stylesheet">
     <link href="lib/favicon.ico" rel="icon" type="image/x-icon" />
   </head>
@@ -1822,7 +1824,22 @@ $(".right-c-menu li").on('click', function(){
   $(".right-c-menu").hide(100);
 });
 
+//MQTT send messages
+$('body').on('change', 'input,select', function () {
+  if (mqtt_connected == true) {
+    obj= $(this).attr('id');
+    if (obj==undefined) {
+      obj=$(this).attr('name');
+    }
+    
+    sendmqtt('plutodvb/var', '{"'+obj+'":"'+ $(this).val()+'"}' ) ;
+  }
+});
 
+</script>
+<script>
+  var mqtt_connected = false;
+  MQTTconnect();
 </script>
 </body>
 </html>
