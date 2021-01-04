@@ -985,17 +985,6 @@ var t = '#tab1C ';
     }
 
 
-    function request_gain_change(level){
-      var xmlhttp = new XMLHttpRequest();
-      xmlhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-          //document.getElementsByName("power")[0].value = this.responseText;
-        }
-      };
-      xmlhttp.open("GET", "requests.php?gain=" + level, true);
-      xmlhttp.send();
-    }
-
 function update_slide(id,text, tab) {
  
   $(tab +' #'+id+'-value').text($(tab+'input[name ="'+id+'"]').val()+text)  ;
@@ -1036,7 +1025,7 @@ function update_slidertxt()
 function update_slider()
 {
   update_slidertxt();
-  request_gain_change( $(t+'input[name ="power"]').val());
+
 }
 
 function update_slider_pts()
