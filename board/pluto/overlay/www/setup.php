@@ -34,8 +34,10 @@
     <title>PlutoDVB General setup</title>
     <meta name="description" content="ADALM-PLUTO DVB General Setup ">
     <link type="text/css" href="./img/style.css" rel="stylesheet">
+    <link type="text/css" href="lib/nestable.css" rel="stylesheet">
     <script src="lib/jquery-3.5.1.min.js"></script>
     <script src="lib/tooltip.js"></script>
+    <script src="lib/jquery.nestable.js"></script> 
     <script src="lib/mqttws31.js"></script>  
     <script src="lib/mqtt.js.php?page=<?php echo basename($_SERVER["SCRIPT_FILENAME"]); ?>"></script>  
     <link type="text/css" href="./lib/tooltip.css" rel="stylesheet">
@@ -373,7 +375,101 @@ Attention, in this version the editable cells are not verified at all.
    </table><br>
    <input type="submit" value="Apply Settings" id ="general"><span id="general_saved" class="saved"  style="display: none;"> Saved !</span>
  </form>
+<br>
+<h2>Text generator</h2>
+Drag and drop the items to construct the text as you want it to be composed. It can be directly integrated into your video streaming software and thus be used to animate a banner updated in real time.<i>under developpement</i>
+<div class="cf nestable-lists">
 
+        <div class="dd" id="nestable"><strong>Items available</strong>
+            <ol class="dd-list">
+                
+                
+
+                <li class="dd-item" data-id="power_rel">
+                    <div class="dd-handle">Power - Pluto relative output (dB)</div>
+                </li>     
+                <li class="dd-item" data-id="power_abs">
+                    <div class="dd-handle">Power - Absolute output (dB)</div>
+                </li>       
+                <li class="dd-item" data-id="power_abs_watt">
+                    <div class="dd-handle">Power - Absolute output (W)</div>
+                </li>
+                <li class="dd-item" data-id="sr">
+                    <div class="dd-handle">Symbol Rate</div>
+                </li>
+                <li class="dd-item" data-id="freq">
+                    <div class="dd-handle">Transmission frequency</div>
+                </li>
+                <li class="dd-item" data-id="pcrpts">
+                    <div class="dd-handle">PCR/PTS</div>
+                </li>
+                <li class="dd-item" data-id="patperiod">
+                    <div class="dd-handle">PAT period</div>
+                </li>
+                <li class="dd-item" data-id="mode">
+                    <div class="dd-handle">DVBS mode</div>
+                </li>
+                <li class="dd-item" data-id="mod">
+                    <div class="dd-handle">Modulation</div>
+                </li>
+                <li class="dd-item" data-id="fec">
+                    <div class="dd-handle">FEC forward error correction</div>
+                </li>
+                <li class="dd-item" data-id="sr">
+                    <div class="dd-handle">Symbol Rate</div>
+                </li>
+                <li class="dd-item" data-id="pilots">
+                    <div class="dd-handle">Pilots</div>
+                </li>
+                <li class="dd-item" data-id="frame">
+                    <div class="dd-handle">Frame</div>
+                </li>
+                <li class="dd-item" data-id="rolloff">
+                    <div class="dd-handle">Rolloff</div>
+                </li>
+                <li class="dd-item" data-id="trvlo">
+                    <div class="dd-handle">Transverter frequency</div>
+                </li>
+                <li class="dd-item" data-id="comment">
+                    <div class="dd-handle">Channel comment</div>
+                </li>
+
+
+
+                <li class="dd-item" data-id="phase_correction">
+                    <div class="dd-handle">Phase correction</div>
+                </li>  
+                <li class="dd-item" data-id="module_correction">
+                    <div class="dd-handle">Module correction</div>
+                </li>
+                <li class="dd-item" data-id="watchdog">
+                    <div class="dd-handle">Watchdog duration (setting)</div>
+                </li>       
+                <li class="dd-item" data-id="text1">
+                    <div class="dd-handle">Free text #1</div>
+                </li>
+                <li class="dd-item" data-id="text2">
+                    <div class="dd-handle">Free text #2</div>
+                </li>
+                <li class="dd-item" data-id="text3">
+                    <div class="dd-handle">Free text #3</div>
+                </li>                      
+              </ol>
+        </div>
+
+        <div class="dd" id="nestable2"><strong>Generated text</strong>
+            <ol class="dd-list">
+                <li class="dd-item" data-id="callsign">
+                    <div class="dd-handle">Callsign</div>
+                </li>
+                <li class="dd-item" data-id="provider">
+                    <div class="dd-handle">Provider name</div>
+                </li>
+            </ol>
+        </div>
+
+    </div>
+    <span id='jsonresult'></span>
 <br>
 <h2>Reboot</h2>
 
@@ -514,6 +610,76 @@ function update_slide(id,decimal,text) {
    sendmqtt('plutodvb/var', '{"'+id+'":"'+$('#'+id).val()+'"}' ) ;
   }
 }
+
+
+
+
+
+    var updateOutput = function(e)
+    {
+        var list   = e.length ? e : $(e.target),
+            output = list.data('output');
+        if (window.JSON) {
+            //output.val(window.JSON.stringify(list.nestable('serialize')));//, null, 2));
+           // $('#jsonresult').text(list.nestable('serialize'));
+        } else {
+            //output.val('JSON browser support required for this demo.');
+        }
+    };
+
+    // activate Nestable for list 1
+    $('#nestable').nestable({
+        group: 1,
+        maxDepth :1
+
+    })
+    .on('change', function (){
+
+      //$('#jsonresult').text(JSON.stringify($('#nestable').nestable('serialize')));
+      $.get( "requests.php?cmd="+encodeURIComponent('echo '+JSON.stringify($(this).nestable('serialize'))+' > text_gen_available_items.json'), function( data ) {
+        if (status=='success') { 
+          //$('#aa').fadeIn(250).fadeOut(1500);
+        }
+  });
+
+    });
+
+    // activate Nestable for list 2
+    $('#nestable2').nestable({
+        group: 1,
+        maxDepth :1
+    })
+    .on('change', function (){
+      //console.log ($('#nestable2').nestable('serialize'));
+      $.get( "requests.php?cmd="+encodeURIComponent('echo '+JSON.stringify($(this).nestable('serialize'))+' > /mnt/jffs2/etc/text_gen_set_items.json'), function( data ) {
+        if (status=='success') { 
+          //$('#aa').fadeIn(250).fadeOut(1500);
+            }
+      });
+
+
+    });
+
+    // output initial serialised data
+   // updateOutput($('#nestable').data('output', $('#nestable-output')));
+   // updateOutput($('#nestable2').data('output', $('#nestable2-output')));
+
+    $('#nestable-menu').on('click', function(e)
+    {
+        var target = $(e.target),
+            action = target.data('action');
+        if (action === 'expand-all') {
+            $('.dd').nestable('expandAll');
+        }
+        if (action === 'collapse-all') {
+            $('.dd').nestable('collapseAll');
+        }
+    });
+
+    $('#nestable3').nestable();
+
+
+
 
 //MQTT send messages
 $('body').on('change', 'input,select', function () {
