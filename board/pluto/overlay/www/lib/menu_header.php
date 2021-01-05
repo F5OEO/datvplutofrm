@@ -10,7 +10,7 @@
     activ_menu('tt');
     ?><header id="top">
       <div id="col1">
-        &nbsp;
+        <!--Selector-->
       </div>
       <div id="col2">
     <nav style="text-align: center;">
@@ -30,9 +30,9 @@
           </ul> -->
         </li>
         <li><a href="analysis.php" <?php activ_menu('analysis.php'); ?> >Analysis</a></li>
-        <li><a href="index.html">Documentation</a>
+        <li><a href="doc.php" <?php activ_menu('doc.php'); ?> >Documentation</a>
           <ul>
-            <li><a href="index.html">PlutoDVB documentation</a></li>
+            <li><a href="doc.php" >PlutoDVB documentation</a></li>
             <li><a href="https://wiki.batc.org.uk/QO-100_WB_Bandplan" target="_blank">QO-100 Wideband Bandplan</a></li>
           </ul>
         </li>
@@ -55,16 +55,10 @@
 
   </div>
       <div id='col3'>   
-      <div class="anchor">
-        Firmware version : <?php
+      <div class="anchor">version : <?php
         $fwver = shell_exec ( 'cat /www/fwversion.txt' );
         echo "$fwver";
-        ?>
-
-        <!--<br/> 
-        <a href="https://twitter.com/F5OEOEvariste/" title="Go to Tweeter">F5OEO: <img style="width: 32px;" src="./img/tw.png" alt="Twitter Logo"></a>
-      -->
-      </div>
+        ?></div>
     </div>
     
     

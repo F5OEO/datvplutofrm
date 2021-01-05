@@ -702,6 +702,11 @@ a {cursor:pointer;}
   float: left;
   width: 20%;
   padding-top: 20px;
+  text-align:   left;
+  vertical-align: middle;
+  align-items: center;
+  line-height: 40px;
+
 
 }
 #col2 {
@@ -714,8 +719,8 @@ a {cursor:pointer;}
   padding-top: 20px;
   text-align:   right;
   vertical-align: middle;
-  display: inline-block;
-  height: 100%;
+  align-items: center;
+  line-height: 40px;
 
 }
 /*right-click right-c-menu*/
