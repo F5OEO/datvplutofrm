@@ -13,8 +13,12 @@ This allows the parameters changed by the operator to be taken into account with
 	-  ```'{"ptt":"false"}``` Ask to stop transmission
 	-  ```'{"ptt":"true"}``` Ask to go to transmission	
 	-  ```'{"page":"setup.php"}``` Tell the user is (re)load this page, or client is reconnected
+	-  ```'{"file_firm":"C:\fakepath\pluto.frm"}``` A firmware file is uploaded	
 - ```plutodvb/started``` Sended by the PlutoDVB when is started
 - ```plutodvb/ts/netbitrate``` Transport Stream Bitrate in bits/s
+
+"file_firm":"C:\fakepath\pluto.frm"}
+
 
 
 # Feedbacks and discussions
