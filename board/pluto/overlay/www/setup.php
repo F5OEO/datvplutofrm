@@ -56,6 +56,7 @@
  -->
    <h1>PlutoDVB General setup</h1> 
    <hr>
+      <form id="general" name="datv_config" method="post" action = "javascript:save_config_setup('general','<?php echo urlencode($file_general)?>', '<?php echo rawurlencode($general_ini[0]) ?>');">
    <h2> Main mode selection</h2>
    should be able to be more attractive<br/>
    <input type="radio" id="mainmode"
@@ -82,111 +83,10 @@
     <label for="test"><span class="note tooltip" title="Not available" style="color : #636363;">Test pattern</span></label>
   </div>
    <hr>
-   <h2>Pluto Configuration</h2>
-   This section read and save the <pre>/opt/config.txt</pre> file. Take care of your modifications before applying them. Some modifications may make your equipment inaccessible from the network. To apply, please reboot (control button further down the page).
-    <h3>USB on Ethernet </h3>
-    <p>This <i>USB on Ethernet</i> setup section corresponds to the IP address mounted when the pluto is plugged in USB on a computer.</p>
-<form id="configtxt" name="config" method="post" action = "javascript:save_config_setup('configtxt','<?php echo urlencode($file_config)?>', '<?php echo urlencode($config_ini[0]) ?>');">
-    <table>
-      <tr>
-        <td><span class="note tooltip" title="Name the Pluto will have on your network. This setting is also valid when the pluto is accessed using a network adapter. <br/> Factory default value is 192.168.2.1" style="color : #636363;">Hostname</span></td>
-        <td><input type="text" id="hostname" name="NETWORK[hostname]" value="<?php echo $network_config['NETWORK']['hostname']; ?>" maxlength="15" size="16"></td>
-        <td><span class="note tooltip" title="IP address that the pluto will take when plugged in one of its USB port. <br/> Factory default value is 192.168.2.10" style="color : #636363;">IP address</span></td>
-        <td><input type="text" id="ipaddr" name="NETWORK[ipaddr]" value="<?php echo $network_config['NETWORK']['ipaddr']; ?>" maxlength="15" size="16"></td>        
-      </tr>
-      <tr>
-        <td><span class="note tooltip" title="IP address that the PC will take when plugged the Pluto is plugged into a USB port." style="color : #636363;">Host IP address (computer)</span><br></td>
-        <td><input type="text" id="ipaddr_host" name="NETWORK[ipaddr_host]"value="<?php echo $network_config['NETWORK']['ipaddr_host']; ?>" maxlength="15" size="16"> </td>
-        <td><span class="note tooltip" title="Factory default value is 255.255.255.0" style="color : #636363;">Network mask</span></td>
-        <td><input type="text" id="netmask" name="NETWORK[netmask]"value="<?php echo $network_config['NETWORK']['netmask']; ?>" maxlength="15" size="16"></td>
-      </tr>
-    </table>
-    <h3>Ethernet </h3>
-    <p>This <i>Ethernet</i> setup section corresponds to the IP address mounted when the pluto is plugged over an Ethernet USB adapter on a local area network.</p>
-
-    <table>
-      <tr>
-        <td><span class="note tooltip" title="Automatic determination of an IP address by your network router." style="color : #636363;">DHCP (dynamic IP)</span><br></td>
-        <td><div class="checkcontainer">
-          <input type="checkbox" id="dhcp_eth" name="USB_ETHERNET[dhcp_eth]" <?php if (isset($network_config['USB_ETHERNET']['dhcp_eth']))  echo $network_config['USB_ETHERNET']['dhcp_eth']=='on' ? " checked" :  "" ?>>
-          <label for="dhcp_eth" aria-describedby="label"><span class="ui"></span> <span id='dhcp_eth_label'> static</span></label>
-        </div> </td>
-        <td class="toggle1"> <span class="note tooltip" title="Enter a free IP address according to your network plan (LAN router)." style="color : #636363;">IP address</span></td>
-        <td class="toggle1"><input type="text" id="ipaddr_eth" name="USB_ETHERNET[ipaddr_eth]"value="<?php if (isset($network_config['USB_ETHERNET']['ipaddr_eth'])) echo $network_config['USB_ETHERNET']['ipaddr_eth']; ?>" maxlength="15" size="16"></td>
-      </tr>
-      <tr class="toggle1">
-        <td>Network mask</td>
-        <td><input type="text" id="netmask_eth" name="USB_ETHERNET[netmask_eth]" value="<?php if (isset($network_config['USB_ETHERNET']['netmask_eth'])) echo $network_config['USB_ETHERNET']['netmask_eth']; ?>" maxlength="15" size="16"></td>
-        <td><span class="note tooltip" title="LAN Router address : Necessary to control the network equipment from the Pluto (Longmynd, Minitiouner)" style="color : #636363;">Gateway IP address</span><br></td>
-        <td><input type="text" id="gateway_eth" name="USB_ETHERNET[gateway_eth]" value="<?php if (isset($network_config['USB_ETHERNET']['gateway_eth'])) echo $network_config['USB_ETHERNET']['gateway_eth']; ?>" maxlength="15" size="16"> </td>
-      </tr>
-
-    </table><br>
-    <h3>Wifi or Access Point </h3>
-    <table>
-      <tr>
-        <td>WLAN SSID</td>
-        <td><input type="text" id="ssid_wlan" name="WLAN[ssid_wlan]" value="<?php if (isset($network_config['WLAN']['ssid_wlan'])) echo $network_config['WLAN']['ssid_wlan']; ?>" maxlength="15" size="16"></td>
-        <td>WLAN Password<br></td>
-        <td><input type="text" id="pwd_wlan" name="WLAN[pwd_wlan]" value="<?php if (isset($network_config['WLAN']['pwd_wlan'])) echo $network_config['WLAN']['pwd_wlan']; ?>" maxlength="15" size="16"> </td>
-      </tr>
-      <tr>
-        <td>WLAN IP address</td>
-        <td><input type="text" id="ssid_wlan" name="WLAN[ipaddr_wlan]" value="<?php if (isset($network_config['WLAN']['ipaddr_wlan'])) echo $network_config['WLAN']['ipaddr_wlan']; ?>" maxlength="15" size="16"></td>
-      </tr>               
-    </table>
-    <br>
-
-
-     
-    <div class="xpert" style="display: none;">
-        <h2>Advanced <i>( ⚠️ Be carefull, expert use only)</i> </h2>
-    <p></p>
-
-    <h3>System, Radio </h3>
-    <p></p>
-
-    <table>
-
-      <tr>
-        <td>Xo Correction</td>
-        <td><input type="text" id="xo_correction" name="SYSTEM[xo_correction]" value="<?php if (isset($network_config['SYSTEM']['xo_correction'])) echo $network_config['SYSTEM']['xo_correction']; ?>" maxlength="4" size="4"></td>
-        <td>UDC Handle suspend </td>
-        <td><input type="text" id="udc_handle_suspend" name="SYSTEM[udc_handle_suspend]" value="<?php if (isset($network_config['SYSTEM']['udc_handle_suspend'])) echo $network_config['SYSTEM']['udc_handle_suspend']; ?>" maxlength="4" size="4"></td>
-
-      </tr>
-
-    </table>
-    <table>
-
-      <tr>
-        <td>Diagnostic report</td>
-        <td><input type="text" id="diagnostic_report" name="ACTIONS[diagnostic_report]" value="<?php if (isset($network_config['ACTIONS']['diagnostic_report'])) echo $network_config['ACTIONS']['diagnostic_report']; ?>" maxlength="4" size="4"></td>
-        <td>DFU (Device Firmware Update) </td>
-        <td><input type="text" id="dfu" name="ACTIONS[dfu]" value="<?php if (isset($network_config['ACTIONS']['dfu'])) echo $network_config['ACTIONS']['dfu']; ?>" maxlength="4" size="4"></td>
-      </tr>
-      <tr>
-        <td>Reset</td>
-        <td><input type="text" id="reset" name="ACTIONS[reset]" value="<?php if (isset($network_config['ACTIONS']['reset'])) echo $network_config['ACTIONS']['reset']; ?>" maxlength="4" size="4"></td>
-        <td>Calibrate </td>
-        <td><input type="text" id="calibrate" name="ACTIONS[calibrate]" value="<?php if (isset($network_config['ACTIONS']['calibrate'])) echo $network_config['ACTIONS']['calibrate']; ?>" maxlength="4" size="4"></td>
-
-      </tr>
-  
-    </table>
-  
-
-   </div>
-
-    <br>      
-    <input type="submit" value="Apply Settings" id ="configtxt"><span id="configtxt_saved" class="saved"  style="display: none;"> Saved !</span>
-  </form>
-
-<hr>
    <h2>DATV transmission settings</h2>
    <h3>General use</h3>
    <br>
-   <form id="general" name="datv_config" method="post" action = "javascript:save_config_setup('general','<?php echo urlencode($file_general)?>', '<?php echo rawurlencode($general_ini[0]) ?>');">
+
    <table>
      <tr>
         <td><span class="note tooltip" title="<ul><li>When enabled (yes position), at (re)start of the Pluto, the transmit is activated. This feature is welcome for restart quickly transmission after an unexpected power cut.</li><li>When disabled (no position), the Pluto stay stand-by at (re)start.</li></ul>" style="color : #636363;">Transmission permitted at start-up</span><br></td>
@@ -471,6 +371,106 @@ Drag and drop the items to construct the text as you want it to be composed. It 
     </div>
     <span id='jsonresult'></span>
 <br>
+   <h2>Pluto Configuration</h2>
+   This section read and save the <pre>/opt/config.txt</pre> file. Take care of your modifications before applying them. Some modifications may make your equipment inaccessible from the network. To apply, please reboot (control button further down the page).
+    <h3>USB on Ethernet </h3>
+    <p>This <i>USB on Ethernet</i> setup section corresponds to the IP address mounted when the pluto is plugged in USB on a computer.</p>
+<form id="configtxt" name="config" method="post" action = "javascript:save_config_setup('configtxt','<?php echo urlencode($file_config)?>', '<?php echo urlencode($config_ini[0]) ?>');">
+    <table>
+      <tr>
+        <td><span class="note tooltip" title="Name the Pluto will have on your network. This setting is also valid when the pluto is accessed using a network adapter. <br/> Factory default value is 192.168.2.1" style="color : #636363;">Hostname</span></td>
+        <td><input type="text" id="hostname" name="NETWORK[hostname]" value="<?php echo $network_config['NETWORK']['hostname']; ?>" maxlength="15" size="16"></td>
+        <td><span class="note tooltip" title="IP address that the pluto will take when plugged in one of its USB port. <br/> Factory default value is 192.168.2.10" style="color : #636363;">IP address</span></td>
+        <td><input type="text" id="ipaddr" name="NETWORK[ipaddr]" value="<?php echo $network_config['NETWORK']['ipaddr']; ?>" maxlength="15" size="16"></td>        
+      </tr>
+      <tr>
+        <td><span class="note tooltip" title="IP address that the PC will take when plugged the Pluto is plugged into a USB port." style="color : #636363;">Host IP address (computer)</span><br></td>
+        <td><input type="text" id="ipaddr_host" name="NETWORK[ipaddr_host]"value="<?php echo $network_config['NETWORK']['ipaddr_host']; ?>" maxlength="15" size="16"> </td>
+        <td><span class="note tooltip" title="Factory default value is 255.255.255.0" style="color : #636363;">Network mask</span></td>
+        <td><input type="text" id="netmask" name="NETWORK[netmask]"value="<?php echo $network_config['NETWORK']['netmask']; ?>" maxlength="15" size="16"></td>
+      </tr>
+    </table>
+    <h3>Ethernet </h3>
+    <p>This <i>Ethernet</i> setup section corresponds to the IP address mounted when the pluto is plugged over an Ethernet USB adapter on a local area network.</p>
+
+    <table>
+      <tr>
+        <td><span class="note tooltip" title="Automatic determination of an IP address by your network router." style="color : #636363;">DHCP (dynamic IP)</span><br></td>
+        <td><div class="checkcontainer">
+          <input type="checkbox" id="dhcp_eth" name="USB_ETHERNET[dhcp_eth]" <?php if (isset($network_config['USB_ETHERNET']['dhcp_eth']))  echo $network_config['USB_ETHERNET']['dhcp_eth']=='on' ? " checked" :  "" ?>>
+          <label for="dhcp_eth" aria-describedby="label"><span class="ui"></span> <span id='dhcp_eth_label'> static</span></label>
+        </div> </td>
+        <td class="toggle1"> <span class="note tooltip" title="Enter a free IP address according to your network plan (LAN router)." style="color : #636363;">IP address</span></td>
+        <td class="toggle1"><input type="text" id="ipaddr_eth" name="USB_ETHERNET[ipaddr_eth]"value="<?php if (isset($network_config['USB_ETHERNET']['ipaddr_eth'])) echo $network_config['USB_ETHERNET']['ipaddr_eth']; ?>" maxlength="15" size="16"></td>
+      </tr>
+      <tr class="toggle1">
+        <td>Network mask</td>
+        <td><input type="text" id="netmask_eth" name="USB_ETHERNET[netmask_eth]" value="<?php if (isset($network_config['USB_ETHERNET']['netmask_eth'])) echo $network_config['USB_ETHERNET']['netmask_eth']; ?>" maxlength="15" size="16"></td>
+        <td><span class="note tooltip" title="LAN Router address : Necessary to control the network equipment from the Pluto (Longmynd, Minitiouner)" style="color : #636363;">Gateway IP address</span><br></td>
+        <td><input type="text" id="gateway_eth" name="USB_ETHERNET[gateway_eth]" value="<?php if (isset($network_config['USB_ETHERNET']['gateway_eth'])) echo $network_config['USB_ETHERNET']['gateway_eth']; ?>" maxlength="15" size="16"> </td>
+      </tr>
+
+    </table><br>
+    <h3>Wifi or Access Point </h3>
+    <table>
+      <tr>
+        <td>WLAN SSID</td>
+        <td><input type="text" id="ssid_wlan" name="WLAN[ssid_wlan]" value="<?php if (isset($network_config['WLAN']['ssid_wlan'])) echo $network_config['WLAN']['ssid_wlan']; ?>" maxlength="15" size="16"></td>
+        <td>WLAN Password<br></td>
+        <td><input type="text" id="pwd_wlan" name="WLAN[pwd_wlan]" value="<?php if (isset($network_config['WLAN']['pwd_wlan'])) echo $network_config['WLAN']['pwd_wlan']; ?>" maxlength="15" size="16"> </td>
+      </tr>
+      <tr>
+        <td>WLAN IP address</td>
+        <td><input type="text" id="ssid_wlan" name="WLAN[ipaddr_wlan]" value="<?php if (isset($network_config['WLAN']['ipaddr_wlan'])) echo $network_config['WLAN']['ipaddr_wlan']; ?>" maxlength="15" size="16"></td>
+      </tr>               
+    </table>
+    <br>
+
+
+     
+    <div class="xpert" style="display: none;">
+        <h2>Advanced <i>( ⚠️ Be carefull, expert use only)</i> </h2>
+    <p></p>
+
+    <h3>System, Radio </h3>
+    <p></p>
+
+    <table>
+
+      <tr>
+        <td>Xo Correction</td>
+        <td><input type="text" id="xo_correction" name="SYSTEM[xo_correction]" value="<?php if (isset($network_config['SYSTEM']['xo_correction'])) echo $network_config['SYSTEM']['xo_correction']; ?>" maxlength="4" size="4"></td>
+        <td>UDC Handle suspend </td>
+        <td><input type="text" id="udc_handle_suspend" name="SYSTEM[udc_handle_suspend]" value="<?php if (isset($network_config['SYSTEM']['udc_handle_suspend'])) echo $network_config['SYSTEM']['udc_handle_suspend']; ?>" maxlength="4" size="4"></td>
+
+      </tr>
+
+    </table>
+    <table>
+
+      <tr>
+        <td>Diagnostic report</td>
+        <td><input type="text" id="diagnostic_report" name="ACTIONS[diagnostic_report]" value="<?php if (isset($network_config['ACTIONS']['diagnostic_report'])) echo $network_config['ACTIONS']['diagnostic_report']; ?>" maxlength="4" size="4"></td>
+        <td>DFU (Device Firmware Update) </td>
+        <td><input type="text" id="dfu" name="ACTIONS[dfu]" value="<?php if (isset($network_config['ACTIONS']['dfu'])) echo $network_config['ACTIONS']['dfu']; ?>" maxlength="4" size="4"></td>
+      </tr>
+      <tr>
+        <td>Reset</td>
+        <td><input type="text" id="reset" name="ACTIONS[reset]" value="<?php if (isset($network_config['ACTIONS']['reset'])) echo $network_config['ACTIONS']['reset']; ?>" maxlength="4" size="4"></td>
+        <td>Calibrate </td>
+        <td><input type="text" id="calibrate" name="ACTIONS[calibrate]" value="<?php if (isset($network_config['ACTIONS']['calibrate'])) echo $network_config['ACTIONS']['calibrate']; ?>" maxlength="4" size="4"></td>
+
+      </tr>
+  
+    </table>
+  
+
+   </div>
+
+    <br>      
+    <input type="submit" value="Apply Settings" id ="configtxt"><span id="configtxt_saved" class="saved"  style="display: none;"> Saved !</span>
+  </form>
+
 <h2>Reboot</h2>
 
 This is needed for apply your saved modifications made in Pluto Configuration section. Take a moment to check your settings before applying them.<br>
