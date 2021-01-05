@@ -636,7 +636,7 @@ function update_slide(id,decimal,text) {
     .on('change', function (){
 
       //$('#jsonresult').text(JSON.stringify($('#nestable').nestable('serialize')));
-      $.get( "requests.php?cmd="+encodeURIComponent('echo '+JSON.stringify($(this).nestable('serialize'))+' > text_gen_available_items.json'), function( data ) {
+      $.get( "requests.php?cmd="+encodeURIComponent('echo '+JSON.stringify($(this).nestable('serialize'))+' > /mnt/jffs2/etc/text_gen_available_items.json'), function( data ) {
         if (status=='success') { 
           //$('#aa').fadeIn(250).fadeOut(1500);
         }
