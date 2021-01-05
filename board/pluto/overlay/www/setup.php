@@ -510,14 +510,14 @@ function json2table() {
 
 function update_slide(id,decimal,text) {
   $('#'+id+'-value').text(Number.parseFloat($('#'+id).val()).toFixed(decimal)+text)  ;
-  //if (mqtt_connected == true) {
-  // sendmqtt('plutodvb/var', '{"'+id+'":"'+$('#'+id).val()+'"}' ) ;
-  //}
+  if (mqtt.isConnected()) {
+   sendmqtt('plutodvb/var', '{"'+id+'":"'+$('#'+id).val()+'"}' ) ;
+  }
 }
 
 //MQTT send messages
 $('body').on('change', 'input,select', function () {
-  if (mqtt_connected == true) {
+  if (mqtt.isConnected()) {
     obj= $(this).attr('id');
     if (obj==undefined) {
       obj=$(this).attr('name');
@@ -535,7 +535,7 @@ $('body').on('change', 'input,select', function () {
 </script>
 <script>
   json2table(); // load the json table definition
-  var mqtt_connected = false;
+  
   MQTTconnect();
 </script>
 </body>

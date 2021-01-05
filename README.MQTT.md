@@ -12,7 +12,7 @@ This allows the parameters changed by the operator to be taken into account with
 	-  ```'{"fec":"13"}``` Ask to change FEC to 1/3
 	-  ```'{"ptt":"false"}``` Ask to stop transmission
 	-  ```'{"ptt":"true"}``` Ask to go to transmission	
-	-  ```'{"page":"setup.php"}``` Tell the user is (re)load this page
+	-  ```'{"page":"setup.php"}``` Tell the user is (re)load this page, or client is reconnected
 - ```plutodvb/started``` Sended by the PlutoDVB when is started
 - ```plutodvb/ts/netbitrate``` Transport Stream Bitrate in bits/s
 

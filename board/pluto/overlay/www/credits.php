@@ -190,7 +190,7 @@ Your browser must have an internet connection. <br>
 
 //MQTT send messages
 $('body').on('change', 'input,select', function () {
-  if (mqtt_connected == true) {
+  if (mqtt.isConnected()) {
     obj= $(this).attr('id');
     if (obj==undefined) {
       obj=$(this).attr('name');
@@ -207,7 +207,6 @@ $('body').on('change', 'input,select', function () {
 
 </script>
 <script>
-  var mqtt_connected = false;
   MQTTconnect();
 </script>
 </body>

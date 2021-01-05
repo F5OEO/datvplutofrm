@@ -968,7 +968,7 @@ var t = '#tab1C ';
       {
         console.log('PTTON');
         xmlhttp.open("GET", "requests.php?PTT=on", true);
-         if (mqtt_connected == true) {
+         if (mqtt.isConnected()) {
           sendmqtt('plutodvb/var', '{"ptt":"true"}' ) ;
          }
 
@@ -977,7 +977,7 @@ var t = '#tab1C ';
       {
         console.log('PTTOFF');
         xmlhttp.open("GET", "requests.php?PTT=off", true);
-        if (mqtt_connected == true) {
+        if (mqtt.isConnected()) {
           sendmqtt('plutodvb/var', '{"ptt":"false"}' ) ;
         }
       }
@@ -1786,7 +1786,7 @@ $(".right-c-menu li").on('click', function(){
 
 //MQTT send messages
 $('body').on('change', 'input,select', function () {
-  if (mqtt_connected == true) {
+  if (mqtt.isConnected()) {
     obj= $(this).attr('id');
     if (obj==undefined) {
       obj=$(this).attr('name');
@@ -1803,7 +1803,6 @@ $('body').on('change', 'input,select', function () {
 
 </script>
 <script>
-  var mqtt_connected = false;
   MQTTconnect();
 </script>
 </body>
