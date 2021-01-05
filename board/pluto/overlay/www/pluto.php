@@ -1041,28 +1041,28 @@ function update_slider_pat()
 
 function upd_freq() {
 if ($(t+'select[name ="channel"]').val()=='Custom') {
-  $(t+'input[name ="freq"]').val(0);
-  $(t+'input[name ="sr"]').val(0);
+  $(t+'input[name ="freq"]').val(0).change();
+  $(t+'input[name ="sr"]').val(0).change();
   $(t+'select[name ="srselect"]').val('Custom');
 } 
 else {
-  $(t+'input[name ="freq"]').val(parseFloat($(t+'select[name ="channel"]').val().split("-")[0])-$(t+'input[name ="trvlo"]').val())
+  $(t+'input[name ="freq"]').val(parseFloat($(t+'select[name ="channel"]').val().split("-")[0])-$(t+'input[name ="trvlo"]').val()).change()
 
     var chan_array = $(t+'select[name ="channel"] option:selected').text().match(/[a-z]+|[^a-z]+/gi);;
     var sr=0;
     if(chan_array[1]=="KS"){
       sr=chan_array[0];
     }
-    $(t+'input[name ="sr"]').val(sr);
-    $(t+'select[name ="srselect"]').val(sr);
+    $(t+'input[name ="sr"]').val(sr).change();
+    $(t+'select[name ="srselect"]').val(sr).change();
   }
 
 }
 function upd_trvlo() {
 if ($(t+'select[name ="trvloselect"]').val()=='Custom') {
-  $(t+'input[name ="trvlo"]').val(0);
+  $(t+'input[name ="trvlo"]').val(0).change();
 } else {
-  $(t+'input[name ="trvlo"]').val($(t+'select[name ="trvloselect"]').val());     
+  $(t+'input[name ="trvlo"]').val($(t+'select[name ="trvloselect"]').val()).change();     
 }
 }
 
@@ -1070,10 +1070,10 @@ if ($(t+'select[name ="trvloselect"]').val()=='Custom') {
 function upd_sr() {
 
   if ($(t+'select[name ="srselect"]').val()=='Custom') {
-  $(t+'input[name ="sr"]').val(0);
+  $(t+'input[name ="sr"]').val(0).change();
 } 
 else {
-  $(t+'input[name ="sr"]').val($(t+'select[name ="srselect"]').val());  
+  $(t+'input[name ="sr"]').val($(t+'select[name ="srselect"]').val()).change();  
 }
 }
 
