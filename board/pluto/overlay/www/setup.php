@@ -346,8 +346,9 @@ Drag and drop the items to construct the text as you want it to be composed. It 
                     <div class="dd-handle">Watchdog duration (setting)</div>
                 </li>       
                 <li class="dd-item" data-id="text1">
-                    <div class="dd-handle">Free text #1</div>
+                    <div class="dd-handle">Free text #1 </div>
                 </li>
+                <span id="freetext1" contenteditable="true">text</span>
                 <li class="dd-item" data-id="text2">
                     <div class="dd-handle">Free text #2</div>
                 </li>
@@ -529,8 +530,7 @@ var $rows = $("#strategy_tab tbody tr").each(function(index) {
 });
 var myObj = {};
 myObj.rows = rows;
-//alert((JSON.stringify(myObj)).replace('"','\\"'));
-        $.get( "requests.php?cmd="+encodeURIComponent('echo "'+JSON.stringify(myObj)+'" > /mnt/jffs2/etc/strategy.json'), function( data ) {
+        $.get( "requests.php?cmd="+encodeURIComponent("echo '"+JSON.stringify(myObj)+"' > /mnt/jffs2/etc/strategy.json"), function( data ) {
             if (status=='success') { 
               $('#aa').fadeIn(250).fadeOut(1500);
             }
@@ -641,8 +641,7 @@ function update_slide(id,decimal,text) {
     })
     .on('change', function (){
 
-      //$('#jsonresult').text(JSON.stringify($('#nestable').nestable('serialize')));
-      $.get( "requests.php?cmd="+encodeURIComponent('echo '+JSON.stringify($(this).nestable('serialize'))+' > /mnt/jffs2/etc/text_gen_available_items.json'), function( data ) {
+       $.get( "requests.php?cmd="+encodeURIComponent("echo '"+JSON.stringify($(this).nestable('serialize'))+"' > /mnt/jffs2/etc/text_gen_available_items.json"), function( data ) {
         if (status=='success') { 
           //$('#aa').fadeIn(250).fadeOut(1500);
         }
@@ -657,7 +656,7 @@ function update_slide(id,decimal,text) {
     })
     .on('change', function (){
       //console.log ($('#nestable2').nestable('serialize'));
-      $.get( "requests.php?cmd="+encodeURIComponent('echo '+JSON.stringify($(this).nestable('serialize'))+' > /mnt/jffs2/etc/text_gen_set_items.json'), function( data ) {
+      $.get( "requests.php?cmd="+encodeURIComponent("echo '"+JSON.stringify($(this).nestable('serialize'))+"' > /mnt/jffs2/etc/text_gen_set_items.json"), function( data ) {
         if (status=='success') { 
           //$('#aa').fadeIn(250).fadeOut(1500);
             }
