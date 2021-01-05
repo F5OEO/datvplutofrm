@@ -180,14 +180,14 @@ Attention, in this version the editable cells are not verified at all.
 <tbody>
   <tr id="tr1">
     <td class="tg-wpev">1</td>
-    <td class="tg-wpev" contenteditable="true">5000</td>
-    <td class="tg-wpev" contenteditable="true">2</td>
-    <td class="tg-wpev" contenteditable="true">64</td>
-    <td class="tg-wpev" contenteditable="true">200</td>
-    <td class="tg-wpev" contenteditable="true">1920</td>
-    <td class="tg-wpev" contenteditable="true">1080</td>
-    <td class="tg-wpev" contenteditable="true">30</td>
-    <td class="tg-wpev" contenteditable="true">1000</td>
+    <td class="tg-wpev" id="td-1" contenteditable="true">5000</td>
+    <td class="tg-wpev" id="td-2" contenteditable="true">2</td>
+    <td class="tg-wpev" id="td-3" contenteditable="true">64</td>
+    <td class="tg-wpev" id="td-4" contenteditable="true">200</td>
+    <td class="tg-wpev" id="td-5" contenteditable="true">1920</td>
+    <td class="tg-wpev" id="td-6" contenteditable="true">1080</td>
+    <td class="tg-wpev" id="td-7" contenteditable="true">30</td>
+    <td class="tg-wpev" id="td-8" contenteditable="true">1000</td>
   </tr>
   <tr id="tr2">
     <td class="tg-wpev">2</td>
@@ -511,6 +511,12 @@ This is needed for apply your saved modifications made in Pluto Configuration se
         });
     });
 
+$("#strategy_tab td").on('change', function(e) {
+  var data = $(this).val();
+  console.log(data);
+});
+
+
 function table2json (){
 var rows = [];
 var $headers = $("th");
@@ -523,8 +529,8 @@ var $rows = $("#strategy_tab tbody tr").each(function(index) {
 });
 var myObj = {};
 myObj.rows = rows;
-//alert(JSON.stringify(myObj));
-        $.get( "requests.php?cmd="+encodeURIComponent('echo '+JSON.stringify(myObj)+' > /mnt/jffs2/etc/strategy.json'), function( data ) {
+//alert((JSON.stringify(myObj)).replace('"','\\"'));
+        $.get( "requests.php?cmd="+encodeURIComponent('echo "'+JSON.stringify(myObj)+'" > /mnt/jffs2/etc/strategy.json'), function( data ) {
             if (status=='success') { 
               $('#aa').fadeIn(250).fadeOut(1500);
             }
@@ -534,25 +540,25 @@ myObj.rows = rows;
 function json2table() {
 
     $.ajax({
-        url: "/mnt/jffs2/etc/strategy.json",
+        url: "requests.php?cmd="+encodeURIComponent('cat /mnt/jffs2/etc/strategy.json'),
         dataType: 'json',
         type: 'get',
         cache:false,
         success: function(data){
-            /*console.log(data);*/
+            console.log(data);
             var event_data = '';
             $.each(data.rows, function(index, value){
                 /*console.log(value);*/
                 event_data += '<tr>';
-                event_data += '<td class="tg-wpev">'+value['Priority']+'</td>';
-                event_data += '<td class="tg-wpev" contenteditable="true">'+value['Total bitrate available']+'</td>';
-                event_data += '<td class="tg-wpev" contenteditable="true">'+value['Audio channels']+'</td>';
-                event_data += '<td class="tg-wpev" contenteditable="true">'+value['Audio Bitrate(kb/s)']+'</td>';
-                event_data += '<td class="tg-wpev" contenteditable="true">'+value['GOP']+'</td>';
-                event_data += '<td class="tg-wpev" contenteditable="true">'+value['Video Width']+'</td>';
-                event_data += '<td class="tg-wpev" contenteditable="true">'+value['Video Height']+'</td>';
-                event_data += '<td class="tg-wpev" contenteditable="true">'+value['FPS']+'</td>';
-                event_data += '<td class="tg-wpev" contenteditable="true">'+value['Video Rate(kb/s)']+'</td>';
+                event_data += '<td class="tg-wpev" id="td-1">'+value['Priority']+'</td>';
+                event_data += '<td class="tg-wpev" id="td-2" contenteditable="true">'+value['Total bitrate available']+'</td>';
+                event_data += '<td class="tg-wpev" id="td-3" contenteditable="true">'+value['Audio channels']+'</td>';
+                event_data += '<td class="tg-wpev" id="td-4" contenteditable="true">'+value['Audio Bitrate(kb/s)']+'</td>';
+                event_data += '<td class="tg-wpev" id="td-5" contenteditable="true">'+value['GOP']+'</td>';
+                event_data += '<td class="tg-wpev" id="td-6" contenteditable="true">'+value['Video Width']+'</td>';
+                event_data += '<td class="tg-wpev" id="td-7" contenteditable="true">'+value['Video Height']+'</td>';
+                event_data += '<td class="tg-wpev" id="td-8" contenteditable="true">'+value['FPS']+'</td>';
+                event_data += '<td class="tg-wpev" id="td-9" contenteditable="true">'+value['Video Rate(kb/s)']+'</td>';
                 
                 
                 event_data += '</tr>';
