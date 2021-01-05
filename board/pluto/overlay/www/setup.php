@@ -60,26 +60,26 @@
    <h2> Main mode selection</h2>
    should be able to be more attractive<br/>
    <input type="radio" id="mainmode"
-     name="mainmode" value="datv">
+     name="mainmode" value="datv" <?php if (isset($datv_config['mainmode']))  echo $datv_config['mainmode']=='datv' ? " checked" :  "" ?>>
     <label for="datv">DATV</label>
 
     <input type="radio" id="mainmode"
-     name="mainmode" value="pass">
+     name="mainmode" value="pass" <?php if (isset($datv_config['mainmode']))  echo $datv_config['mainmode']=='pass' ? " checked" :  "" ?>>
     <label for="pass">Passthrough (SDR Console,...)</label>
 
   </div>
   <h2> DATV operating mode</h2>
 
    <input type="radio" id="datvmode"
-     name="datvmode" value="rtmp">
+     name="DATV[datvmode]" value="rtmp" <?php if (isset($datv_config['DATV']['datvmode']))  echo $datv_config['DATV']['datvmode']=='rtmp' ? " checked" :  "" ?>>
     <label for="rtmp">RTMP</label>
 
     <input type="radio" id="datvmode"
-     name="datvmode" value="udp">
+     name="DATV[datvmode]" value="udp" <?php if (isset($datv_config['DATV']['datvmode']))  echo $datv_config['DATV']['datvmode']=='udp' ? " checked" :  "" ?>> 
     <label for="udp">UDP</label>
 
     <input type="radio" id="datvmode"
-     name="datvmode" value="test">
+     name="DATV[datvmode]" value="test" <?php if (isset($datv_config['DATV']['datvmode']))  echo $datv_config['DATV']['datvmode']=='test' ? " checked" :  "" ?>>
     <label for="test"><span class="note tooltip" title="Not available" style="color : #636363;">Test pattern</span></label>
   </div>
    <hr>
