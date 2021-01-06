@@ -162,6 +162,8 @@ Attention, in this version the editable cells are not verified at all.
 <col style="width: 90px">
 <col style="width: 90px">
 <col style="width: 90px">
+<col style="width: 90px">
+<col style="width: 90px">
 </colgroup>
 <thead>
 
@@ -175,6 +177,8 @@ Attention, in this version the editable cells are not verified at all.
     <th class="tg-88b2">Video Height</th>
     <th class="tg-88b2">FPS</th>
     <th class="tg-88b2">Video Rate<br>(kb/s)</th>
+    <th class="tg-88b2">PCR/PTS<br>(ms)</th>
+    <th class="tg-88b2">PAT period<br>(ms)</th>    
   </tr>
 </thead>
 <tbody>
@@ -188,6 +192,8 @@ Attention, in this version the editable cells are not verified at all.
     <td class="tg-wpev" id="td-6" contenteditable="true">1080</td>
     <td class="tg-wpev" id="td-7" contenteditable="true">30</td>
     <td class="tg-wpev" id="td-8" contenteditable="true">1000</td>
+    <td class="tg-wpev" id="td-9" contenteditable="true">800</td>
+    <td class="tg-wpev" id="td-10" contenteditable="true">200</td>
   </tr>
   <tr id="tr2">
     <td class="tg-wpev">2</td>
@@ -199,6 +205,8 @@ Attention, in this version the editable cells are not verified at all.
     <td class="tg-wpev" contenteditable="true">1080</td>
     <td class="tg-wpev" contenteditable="true">25</td>
     <td class="tg-wpev" contenteditable="true">999</td>
+    <td class="tg-wpev" id="td-9" contenteditable="true">800</td>
+    <td class="tg-wpev" id="td-10" contenteditable="true">200</td>
   </tr>
   <tr>
     <td class="tg-wpev">3</td>
@@ -210,6 +218,8 @@ Attention, in this version the editable cells are not verified at all.
     <td class="tg-wpev" contenteditable="true">432</td>
     <td class="tg-wpev" contenteditable="true">25</td>
     <td class="tg-wpev" contenteditable="true">300</td>
+    <td class="tg-wpev" id="td-9" contenteditable="true">800</td>
+    <td class="tg-wpev" id="td-10" contenteditable="true">200</td>
   </tr>
   <tr>
     <td class="tg-wpev">4</td>
@@ -221,6 +231,8 @@ Attention, in this version the editable cells are not verified at all.
     <td class="tg-wpev" contenteditable="true">324</td>
     <td class="tg-wpev" contenteditable="true">15</td>
     <td class="tg-wpev" contenteditable="true">200</td>
+    <td class="tg-wpev" id="td-9" contenteditable="true">800</td>
+    <td class="tg-wpev" id="td-10" contenteditable="true">200</td>
   </tr>
   <tr>
     <td class="tg-wpev">5</td>
@@ -232,6 +244,8 @@ Attention, in this version the editable cells are not verified at all.
     <td class="tg-wpev" contenteditable="true">216</td>
     <td class="tg-wpev" contenteditable="true">15</td>
     <td class="tg-wpev" contenteditable="true">120</td>
+    <td class="tg-wpev" id="td-9" contenteditable="true">800</td>
+    <td class="tg-wpev" id="td-10" contenteditable="true">200</td>
   </tr>
   <tr>
     <td class="tg-wpev">6</td>
@@ -243,6 +257,8 @@ Attention, in this version the editable cells are not verified at all.
     <td class="tg-wpev" contenteditable="true">216</td>
     <td class="tg-wpev" contenteditable="true">10</td>
     <td class="tg-wpev" contenteditable="true">64</td>
+    <td class="tg-wpev" id="td-9" contenteditable="true">800</td>
+    <td class="tg-wpev" id="td-10" contenteditable="true">200</td>
   </tr>
 </tbody>
 </table>
@@ -537,6 +553,51 @@ myObj.rows = rows;
           });
 }
 
+
+
+function buildItem(item) {
+
+    var html = "<li class='dd-item' data-id='" + item.id + "' id='" + item.id + "'>";
+    html += "<div class='dd-handle'>" + item.id + "</div>";
+
+    if (item.children) {
+
+        html += "<ol class='dd-list'>";
+        $.each(item.children, function (index, sub) {
+            html += buildItem(sub);
+        });
+        html += "</ol>";
+
+    }
+
+    html += "</li>";
+
+    return html;
+}
+
+function json2nestable() {
+
+    $.ajax({
+        url: "requests.php?cmd="+encodeURIComponent('cat /mnt/jffs2/etc/text_gen_available_items.json'),
+        dataType: 'json',
+        type: 'get',
+        cache:false,
+        success: function(data){
+            console.log(data);
+            $.each(data, function (index, item) {
+              $('#nestable ul').append(buildItem(item));
+            });
+        },
+        error: function(d){
+            /*console.log("error");*/
+            console.log("text_gen_available_items.json not found. Can be normal if table never modified.");
+        }
+
+    })
+
+}
+
+
 function json2table() {
 
     $.ajax({
@@ -559,6 +620,8 @@ function json2table() {
                 event_data += '<td class="tg-wpev" id="td-7" contenteditable="true">'+value['Video Height']+'</td>';
                 event_data += '<td class="tg-wpev" id="td-8" contenteditable="true">'+value['FPS']+'</td>';
                 event_data += '<td class="tg-wpev" id="td-9" contenteditable="true">'+value['Video Rate(kb/s)']+'</td>';
+                event_data += '<td class="tg-wpev" id="td-8" contenteditable="true">'+value['PCR/PTS (ms)']+'</td>';
+                event_data += '<td class="tg-wpev" id="td-9" contenteditable="true">'+value['PAT period (ms)']+'</td>';
                 
                 
                 event_data += '</tr>';
@@ -619,8 +682,6 @@ function update_slide(id,decimal,text) {
 
 
 
-
-
     var updateOutput = function(e)
     {
         var list   = e.length ? e : $(e.target),
@@ -664,24 +725,6 @@ function update_slide(id,decimal,text) {
 
 
     });
-
-    // output initial serialised data
-   // updateOutput($('#nestable').data('output', $('#nestable-output')));
-   // updateOutput($('#nestable2').data('output', $('#nestable2-output')));
-
-    $('#nestable-menu').on('click', function(e)
-    {
-        var target = $(e.target),
-            action = target.data('action');
-        if (action === 'expand-all') {
-            $('.dd').nestable('expandAll');
-        }
-        if (action === 'collapse-all') {
-            $('.dd').nestable('collapseAll');
-        }
-    });
-
-    $('#nestable3').nestable();
 
 
 
