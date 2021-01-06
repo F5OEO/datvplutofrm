@@ -558,7 +558,7 @@ myObj.rows = rows;
 function buildItem(item) {
 
     var html = "<li class='dd-item' data-id='" + item.id + "' id='" + item.id + "'>";
-    html += "<div class='dd-handle'>" + item.id + "</div>";
+    html += "<div class='dd-handle'>" + item.desc + "</div>";
 
     if (item.children) {
 
@@ -583,14 +583,38 @@ function json2nestable() {
         type: 'get',
         cache:false,
         success: function(data){
-            console.log(data);
+            // console.log(data);
+            $('#nestable ol').html("");
             $.each(data, function (index, item) {
-              $('#nestable ul').append(buildItem(item));
+              $('#nestable ol').append(buildItem(item));
             });
         },
         error: function(d){
             /*console.log("error");*/
             console.log("text_gen_available_items.json not found. Can be normal if table never modified.");
+        }
+
+    })
+
+}
+
+function json2nestable2() {
+
+    $.ajax({
+        url: "requests.php?cmd="+encodeURIComponent('cat /mnt/jffs2/etc/text_gen_set_items.json'),
+        dataType: 'json',
+        type: 'get',
+        cache:false,
+        success: function(data){
+            // console.log(data);
+            $('#nestable2 ol').html("");
+            $.each(data, function (index, item) {
+              $('#nestable2 ol').append(buildItem(item));
+            });
+        },
+        error: function(d){
+            /*console.log("error");*/
+            console.log("text_gen_set_items.json.json not found. Can be normal if table never modified.");
         }
 
     })
@@ -702,7 +726,7 @@ function update_slide(id,decimal,text) {
     })
     .on('change', function (){
 
-       $.get( "requests.php?cmd="+encodeURIComponent("echo '"+JSON.stringify($(this).nestable('serialize'))+"' > /mnt/jffs2/etc/text_gen_available_items.json"), function( data ) {
+       $.get( "requests.php?cmd="+encodeURIComponent("echo '["+($(this).nestable('serializeplus'))+"]' > /mnt/jffs2/etc/text_gen_available_items.json"), function( data ) {
         if (status=='success') { 
           //$('#aa').fadeIn(250).fadeOut(1500);
         }
@@ -717,7 +741,7 @@ function update_slide(id,decimal,text) {
     })
     .on('change', function (){
       //console.log ($('#nestable2').nestable('serialize'));
-      $.get( "requests.php?cmd="+encodeURIComponent("echo '"+JSON.stringify($(this).nestable('serialize'))+"' > /mnt/jffs2/etc/text_gen_set_items.json"), function( data ) {
+      $.get( "requests.php?cmd="+encodeURIComponent("echo '["+($(this).nestable('serializeplus'))+"]' > /mnt/jffs2/etc/text_gen_set_items.json"), function( data ) {
         if (status=='success') { 
           //$('#aa').fadeIn(250).fadeOut(1500);
             }
@@ -749,7 +773,8 @@ $('body').on('change', 'input,select', function () {
 </script>
 <script>
   json2table(); // load the json table definition
-  
+  json2nestable(); //load textgenerator
+  json2nestable2();
   MQTTconnect();
 </script>
 </body>
