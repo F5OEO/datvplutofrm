@@ -161,6 +161,31 @@
             return data;
         },
 
+        serializeplus: function()
+        {
+            var data,
+                depth = 0,
+                list  = this;
+                step  = function(level, depth)
+                {
+                    var array = [ ],
+                        items = level.children(list.options.itemNodeName);
+                        
+                    items.each(function()
+                    {   desc =  $(' ol [data-id="'+$(this).data()['id']+'"]').find('div').html() ;// level.children(list.options.itemNodeName).children('.'+list.options.handleClass);
+                        var li   = $(this),
+                            item = '{"desc":"'+desc+'", "id":"'+li.data()['id']+'"}',
+                            sub  = li.children(list.options.listNodeName);
+                        if (sub.length) {
+                            item.children = step(sub, depth + 1);
+                        }
+                        array.push(item);
+                    });
+                    return array;
+                };
+            data = step(list.el.find(list.options.listNodeName).first(), depth);
+            return data;
+        },
         serialise: function()
         {
             return this.serialize();
