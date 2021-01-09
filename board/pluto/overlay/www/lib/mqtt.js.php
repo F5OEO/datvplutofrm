@@ -34,7 +34,7 @@
     }
     function MQTTconnect() {
     console.log("connecting to "+ host +" "+ port);
-    mqtt = new Paho.MQTT.Client(host,port,"/mqtt","uii-ihm");
+    mqtt = new Paho.MQTT.Client(host,port,"/mqtt","uii-ihm-<?php echo ($_GET["page"]); ?>");
     //document.write("connecting to "+ host);
     var options = {
       timeout: 3,
