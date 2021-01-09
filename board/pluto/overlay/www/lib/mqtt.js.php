@@ -27,14 +27,32 @@
     console.log("MQTT connected");
 
     mqtt.subscribe("plutodvb/started");
+    mqtt.subscribe("plutodvb/var");
     message = new Paho.MQTT.Message('{ "page" : "<?php echo ($_GET["page"]); ?>" }');
     message.destinationName = "plutodvb/page";
     mqtt.send(message);
+    //On page load 
+    $('input,select').each(function (i) {
+      if (mqtt.isConnected()) {
+        obj= $(this).attr('id');
+        if (obj==undefined) {
+          obj=$(this).attr('name');
+        }
+        if ($(this).is(':checkbox')) {
+          val= $(this).is(':checked');
+        } else {
+          val=$(this).val();
+        }
+
+        sendmqtt('plutodvb/var', '{"'+obj+'":"'+ val +'"}' ) ;
+        sendmqtt('plutodvb/subvar/'+obj, val ) ;
+      }});
+
     
     }
     function MQTTconnect() {
     console.log("connecting to "+ host +" "+ port);
-    mqtt = new Paho.MQTT.Client(host,port,"/mqtt","uii-ihm-<?php echo ($_GET["page"]); ?>");
+    mqtt = new Paho.MQTT.Client(host,port,"/mqtt","uii-ihm-<?php echo ($_GET["page"])."-".uniqid(); ?>");
     //document.write("connecting to "+ host);
     var options = {
       timeout: 3,
