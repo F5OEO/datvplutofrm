@@ -1706,7 +1706,7 @@ $('#file').click(function(){
 
  });
 
-//F10 F10 shortcuts for PTT toggle
+//F10 F9 ESC shortcuts for PTT toggle
   $(document).keydown(function(evt){ 
     
       if (evt.keyCode==121){
@@ -1717,6 +1717,11 @@ $('#file').click(function(){
         evt.preventDefault();
          save_modulator_setup();
     }    
+      if (evt.keyCode==27){ 
+        evt.preventDefault();
+          $(".right-c-menu").hide(100);
+    }   
+
 });
 
 
