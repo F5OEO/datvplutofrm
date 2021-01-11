@@ -664,7 +664,7 @@ a {cursor:pointer;}
     padding-bottom: 0px; 
 
 
-    background: #FFF;
+    background-color: transparent;
     border-top-left-radius:3px; 
     border-top-right-radius:3px; 
 }
@@ -673,15 +673,38 @@ a {cursor:pointer;}
     display: inline-block;
 }
 
+
+  .blink-tabactivated{
+    color: #000;
+    font-weight: bold;
+    font-size: 2rem;
+    animation: blinkingText 2s infinite;
+  }
+  @keyframes blinkingText{
+    0%    { background-color: #FF033E; color : white;}
+    50%  { background-color: #a00028;color : white;}
+    100%  { background-color: #FF033E;color : white;}
+  }
+  .activ-tab {
+      
+      border-width: 10px !important;
+
+      border-color: red !important;
+      padding: 10px !important;
+      padding-top:20px;
+
+  }
+
 .container {
 
     clear:both;           
     /*width:100%; */
     border-left: solid 1px #CCC;
-      border-right: solid 1px #CCC;
-  border-bottom: solid 1px #CCC;
+    border-right: solid 1px #CCC;
+    border-bottom: solid 1px #CCC;
+    border-top: solid 1px #CCC;
     text-align:left;
-  padding : 20px;
+    padding : 20px;
 
 }
 

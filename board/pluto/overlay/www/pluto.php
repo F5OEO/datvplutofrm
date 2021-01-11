@@ -240,7 +240,7 @@
   if (true==false) // replace false by true for developping on debug server
   {
     echo "<i style='color:red;'>Attention, in developping mode </i><br>";
-    $file_general = 'settings-datv.txt';
+    $file_general= addslashes ('C:\Users\cfur\Downloads\UwAmp\www\datvplutofrm\board\pluto\overlay\www\settings-datv.txt');
   }
   $general_ini = readinifile($file_general);
   $datv_config = $general_ini[1];  
@@ -272,6 +272,8 @@
             <td><div class="slidecontainer">
               <input type="range" min="-79" max="<?php echo $max_power; ?>" step="0.1" value="-10" class="slidernewpower" name="power" onchange="update_slider()" oninput="update_slidertxt()">
               <span id="powertext"></span>
+              <input type='hidden' id='power_abs' name='power_abs'>
+              <input type='hidden' id='power_abs_watt' name='power_abs_watt'>
             </div>
           </td>
         </tr>
@@ -788,6 +790,17 @@ var t = '#tab1C ';
     if (tab!=1) {
       n=tab;
     } 
+
+    localStorage.setItem('LastTabApplied',tab ); //to be placed in success part
+    if ($('#textptt').text()=='ON AIR') {
+      $('a').removeClass('blink-tabactivated');
+
+
+      localStorage.setItem('ActivTab_TX',tab );
+      $('a#tab'+tab).addClass('blink-tabactivated');
+      $(t).addClass('activ-tab');
+    }
+
     $.ajax({
         url: 'modulator_save.php', // url where to submit the request
         type : "POST", // type of action POST || GET
@@ -796,6 +809,7 @@ var t = '#tab1C ';
         data : $("#modulator"+n+", #h264h265").serialize(), // post data || get data
         success : function(result) {
           $(".saved").fadeIn(250).fadeOut(1500);
+
           return true;
         },
         error: function(xhr, resp, text) {
@@ -912,8 +926,19 @@ var t = '#tab1C ';
           console.log('On  air status');
           document.getElementById("ptt").innerHTML = 'Switch OFF';
           document.getElementById("textptt").innerHTML  = '<font color="#ff0000">ON AIR</font>';
+          if (localStorage.getItem('ActivTab_TX')) {
+            $('a#tab'+localStorage.getItem('ActivTab_TX')).addClass('blink-tabactivated');
+            $('#tab'+localStorage.getItem('ActivTab_TX')+'C').addClass('activ-tab');
+          }
 
           if (status=="STANDBY") {
+            if (localStorage.getItem('LastTabApplied')) {
+             localStorage.setItem('ActivTab_TX',localStorage.getItem('LastTabApplied') );
+            }
+            $('a#tab'+localStorage.getItem('ActivTab_TX')).addClass('blink-tabactivated');
+            $('#tab'+localStorage.getItem('ActivTab_TX')+'C').addClass('activ-tab');
+
+            
             //start count duration
              localStorage.setItem('txon_at',Date.now() );
              if (localStorage.getItem('total_switchover')==null) {
@@ -932,6 +957,10 @@ var t = '#tab1C ';
           document.getElementById("textptt").innerHTML  = '<font color="#33b3ca">STANDBY</font>';
 
           if (status=="ON AIR") {
+            $('a').removeClass('blink-tabactivated');
+             $('#tab'+localStorage.getItem('ActivTab_TX')+'C').removeClass('activ-tab');
+            localStorage.removeItem('ActivTab_TX');
+            
             //memorise total duration
             if  (localStorage.getItem('total_duration')==null) {
               localStorage.setItem('total_duration', parseInt((Date.now()-localStorage.getItem('txon_at'))/1000,10));
@@ -970,6 +999,7 @@ var t = '#tab1C ';
         xmlhttp.open("GET", "requests.php?PTT=on", true);
          if (mqtt.isConnected()) {
           sendmqtt('plutodvb/var', '{"ptt":"true"}' ) ;
+          sendmqtt('plutodvb/subvar/ptt', 'true' ) ;
          }
 
       }
@@ -979,6 +1009,7 @@ var t = '#tab1C ';
         xmlhttp.open("GET", "requests.php?PTT=off", true);
         if (mqtt.isConnected()) {
           sendmqtt('plutodvb/var', '{"ptt":"false"}' ) ;
+          sendmqtt('plutodvb/subvar/ptt', 'false' ) ;
         }
       }
       xmlhttp.send();
@@ -1013,9 +1044,13 @@ function update_slidertxt()
     text_watt = (Math.pow(10,(abs/10))/1000).toFixed(1)+'W'
   }
   $(t+'#powertext').text(parseFloat($(t+'input[name ="power"]').val()).toFixed(1)+'dB (Abs: '+abs.toFixed(1)+'dB / '+text_watt+')' ) ;
+  $(t+'#power_abs').val(abs.toFixed(1)+'dB').change();;
+  $(t+'#power_abs_watt').val(text_watt).change();;
  }
  else {
   $(t+'#powertext').text(parseFloat($(t+'input[name ="power"]').val()).toFixed(1)+'dB')  ;
+  $(t+'#power_abs').val('').change();;
+  $(t+'#power_abs_watt').val('').change();;
  }
 
 
@@ -1789,9 +1824,17 @@ $(".right-c-menu li").on('click', function(){
   $(".right-c-menu").hide(100);
 });
 
-//MQTT send messages
-$('body').on('change', 'input,select', function () {
-  if (mqtt.isConnected()) {
+
+
+
+</script>
+<script>
+  $( document ).ready(function() {
+  MQTTconnect();
+
+  //MQTT send messages
+$('body').on('change', 'input,select,textarea', function () {
+
     obj= $(this).attr('id');
     if (obj==undefined) {
       obj=$(this).attr('name');
@@ -1801,14 +1844,12 @@ $('body').on('change', 'input,select', function () {
     } else {
       val=$(this).val();
     }
-
+  if (mqtt.isConnected()) {
     sendmqtt('plutodvb/var', '{"'+obj+'":"'+ val +'"}' ) ;
+    sendmqtt('plutodvb/subvar/'+obj, val ) ;
   }
 });
-
-</script>
-<script>
-  MQTTconnect();
+});
 </script>
 </body>
 </html>
