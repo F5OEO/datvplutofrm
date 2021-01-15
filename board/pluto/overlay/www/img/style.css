@@ -17,7 +17,7 @@ hr{
 h1, h3{
   font-family: "Arial Regular", sans-serif;
   font-weight: bold;
-  margin-bottom:0;
+  margin-bottom: 0.6em;
 }
 h1{
   font-size: 32px;
