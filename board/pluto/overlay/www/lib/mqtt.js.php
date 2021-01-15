@@ -2,7 +2,7 @@
     var mqtt;
     var reconnectTimeout = 2000;
     var host="<?php echo shell_exec('echo -n $(ip -f inet -o addr show eth0 | cut -d\  -f 7 | cut -d/ -f 1)'); ?>";
-    //var host='192.168.1.8'; //debug purpose
+    var host='192.168.1.8'; //debug purpose
     var port=9001;
     
     function onFailure(error,message) {
@@ -10,9 +10,21 @@
       setTimeout(MQTTconnect, reconnectTimeout);
         }
     function onMessageArrived(msg){
-      out_msg="MQTT Message received "+msg.payloadString+"<br>";
-      out_msg=out_msg+" MQTT Message received Topic "+msg.destinationName;
+      out_msg="MQTT Message received "+msg.payloadString+"";
+      out_msg=out_msg+"    Topic "+msg.destinationName;
       console.log(out_msg);
+      if (typeof update_textgen == 'function') {
+         if (msg.destinationName.substr(0,16)=='plutodvb/subvar/') {
+            update_textgen (msg.destinationName,msg.payloadString); 
+         }
+         
+      }
+      if ('<?php echo ($_GET["page"]); ?>'=='pluto.php') {
+          if ((msg.destinationName=='plutodvb/subpage') && (msg.payloadString=='textgen.php')) {
+            init_pluto_obj();
+
+          }
+      }
 
     }
     
@@ -25,30 +37,20 @@
     function onConnect() {
     // Once a connection has been made, make a subscription and send a message.
     console.log("MQTT connected");
+      if (typeof json2nestable2 == 'function') {
+        json2nestable2();
+         
+      }
 
     mqtt.subscribe("plutodvb/started");
     mqtt.subscribe("plutodvb/var");
+    mqtt.subscribe("plutodvb/subpage");
     message = new Paho.MQTT.Message('{ "page" : "<?php echo ($_GET["page"]); ?>" }');
     message.destinationName = "plutodvb/page";
     mqtt.send(message);
-    //On page load 
-    $('input,select').each(function (i) {
-      if (mqtt.isConnected()) {
-        obj= $(this).attr('id');
-        if (obj==undefined) {
-          obj=$(this).attr('name');
-        }
-        if ($(this).is(':checkbox')) {
-          val= $(this).is(':checked');
-        } else {
-          val=$(this).val();
-        }
+    sendmqtt("plutodvb/subpage","<?php echo ($_GET["page"]); ?>");
+    init_pluto_obj();
 
-        sendmqtt('plutodvb/var', '{"'+obj+'":"'+ val +'"}' ) ;
-        sendmqtt('plutodvb/subvar/'+obj, val ) ;
-      }});
-
-    
     }
     function MQTTconnect() {
     console.log("connecting to "+ host +" "+ port);
@@ -65,5 +67,28 @@
     mqtt.onConnectionLost = onFailure
     
     mqtt.connect(options); //connect
+    }
+
+    function init_pluto_obj() {
+          //On page load 
+    if ((typeof t !== 'undefined')  && $( t ).length ) {
+    $(t+'  input,select,textarea,hidden').each(function (inp) {
+
+        obj= $(this).attr('id');
+        if (obj==undefined) {
+          obj=$(this).attr('name');
+        }
+        if ($(this).is(':checkbox')) {
+          val= $(this).is(':checked');
+        } else {
+          val=$(this).val();
+        }
+      if (mqtt.isConnected()) {
+       // sendmqtt('plutodvb/var', '{"'+obj+'":"'+ val +'"}' ) ;
+        sendmqtt('plutodvb/subvar/'+obj, val ) ;
+        console.log ('t='+t+' obj='+obj+' val='+val);
+      }});
+
+    }
     }
    
