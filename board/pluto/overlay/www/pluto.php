@@ -679,7 +679,7 @@ if (($general_ini==false) || (isset($datv_config['H265BOX']['use_h265box'])&& $d
 </table><br>
 <input type="submit" value="Apply Settings"><span id="saved_h264h265" class="saved" style="display: none;"> Saved !</span>
 <br><br>
-<h2>Advanced (Remux)</h2>
+<h2>Advanced (Remux) *** Please refer to <a href='setup.php'>Setup</a></h2>
 <hr>
 <table>
 <tr id="remux">

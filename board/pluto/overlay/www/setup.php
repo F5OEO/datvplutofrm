@@ -9,11 +9,13 @@
   
     $file_config ='/opt/config.txt';
     $file_general = '/mnt/jffs2/etc/settings-datv.txt';
+    $dir = '/mnt/jffs2/etc/';
     if (true==false) // replace false by true for developping on debug server
     {
       echo "<i>Attention, in developping mode </i><br>";
       $file_config ='config.txt';
       $file_general = 'settings-datv.txt';
+      $dir= "";
     }
 
     $config_ini = readinifile($file_config);
@@ -85,7 +87,6 @@
    <hr>
    <h2>DATV transmission settings</h2>
    <h3>General use</h3>
-   <br>
 
    <table>
      <tr>
@@ -109,7 +110,6 @@
      </tr>
    </table>
    <h3>H264/H265 box</h3>
-
    <table>
      <tr>
         <td><span class="note tooltip" title="<ul><li>When enabled (yes position), the H264/H265 section is displayed on the controller page. " style="color : #636363;">Use of a H264/H265 box</span><br></td>
@@ -118,10 +118,10 @@
           <input type="checkbox" id="use_h265box" name="H265BOX[use_h265box]" <?php if (isset($datv_config['H265BOX']['use_h265box']))  echo $datv_config['H265BOX']['use_h265box']=='on' ? " checked" :  "" ?>>
           <label for="use_h265box" aria-describedby="label"><span class="ui"></span> <span id='use_h265box_label'> enabled</span></label>
         </div> </td>
-        <td><span class="note tooltip" title="Address of your H264/H265 encoder box. The online status is updated after moving the cursor out of the input field.<ul><li>✔️ : Is online from the Pluto (good answer to the ping command).</li><li>✖️ : Seems not online from the Pluto (no answer to the ping command)</li> " style="color : #636363;">IP address</span></td>
+        <td><span class="note tooltip" title="Address of your H264/H265 encoder box. The online status is updated after moving the cursor out of the input field and at the upload of the setup.<ul><li>✔️ : Is online from the Pluto (good answer to the ping command).</li><li>✖️ : Seems not online from the Pluto (no answer to the ping command)</li> " style="color : #636363;">IP address</span></td>
 
         <td><input type="text" id="ipaddr_h265box" name="H265BOX[ipaddr_h265box]" value="<?php  if (isset($datv_config['H265BOX']['use_h265box'])) { $ping_ip= $datv_config['H265BOX']['ipaddr_h265box'] ;} else { $ping_ip=  '192.168.1.120'; } ; echo $ping_ip; ?>" maxlength="15" size="16"> <?php $a= shell_exec ("ping -W 1 -c 1 ".$ping_ip); if (strpos($a, ", 100% packet loss") > 0) {$r= " ✖️";} else { $r= " ✔️"; } ?><span id="ipaddr_h265box_status"><?php echo $r; ?></span></td>
-
+      </tr>
       <tr>
           <td><span class="note tooltip" title="'admin' by default" style="color : #636363;">Administrator login</span> </td>
           <td><input type="text" id="h265box_login" name="H265BOX[h265box_login]" value="<?php if (isset($datv_config['H265BOX']['h265box_login'])) echo $datv_config['H265BOX']['h265box_login']; else echo "admin" ?>" maxlength="6" size="6"></td>
@@ -131,9 +131,18 @@
      
 
        </tr>
+     <tr>
+          <td><span class="note tooltip" title="To fluidify, normalize the video stream coming from the ON-DMI-16 encoder" style="color : #636363;">Remux - Force compliant</span> </td>
+        <td><div class="checkcontainer">
+          <input type="checkbox" id="remux" name="H265BOX[remux]" <?php if (isset($datv_config['H265BOX']['remux']))  echo $datv_config['H265BOX']['remux']=='on' ? " checked" :  "" ?>>
+          <label for="remux" aria-describedby="label"><span class="ui"></span> <span id='remux_label'> enabled</span></label>
+        </div> </td>
      </tr>
     
    </table>
+
+
+
   <h2>Strategy Setting table</h2>
   This modifiable table makes it easy to set the parameters of the H264/265 encoder automatically according to the stream transport rate (depending on the transmitted signal characteristics).<br/>
 Attention, in this version the editable cells are not verified at all.
@@ -292,102 +301,6 @@ Attention, in this version the editable cells are not verified at all.
    <input type="submit" value="Apply Settings" id ="general"><span id="general_saved" class="saved"  style="display: none;"> Saved !</span>
  </form>
 <br>
-<h2>Text generator</h2>
-Drag and drop the items to construct the text as you want it to be composed. It can be directly integrated into your video streaming software and thus be used to animate a banner updated in real time.<i>under developpement</i>
-<div class="cf nestable-lists">
-
-        <div class="dd" id="nestable"><strong>Items available</strong>
-            <ol class="dd-list">
-                
-                
-
-                <li class="dd-item" data-id="power_rel">
-                    <div class="dd-handle">Power - Pluto relative output (dB)</div>
-                </li>     
-                <li class="dd-item" data-id="power_abs">
-                    <div class="dd-handle">Power - Absolute output (dB)</div>
-                </li>       
-                <li class="dd-item" data-id="power_abs_watt">
-                    <div class="dd-handle">Power - Absolute output (W)</div>
-                </li>
-                <li class="dd-item" data-id="sr">
-                    <div class="dd-handle">Symbol Rate</div>
-                </li>
-                <li class="dd-item" data-id="freq">
-                    <div class="dd-handle">Transmission frequency</div>
-                </li>
-                <li class="dd-item" data-id="pcrpts">
-                    <div class="dd-handle">PCR/PTS</div>
-                </li>
-                <li class="dd-item" data-id="patperiod">
-                    <div class="dd-handle">PAT period</div>
-                </li>
-                <li class="dd-item" data-id="mode">
-                    <div class="dd-handle">DVBS mode</div>
-                </li>
-                <li class="dd-item" data-id="mod">
-                    <div class="dd-handle">Modulation</div>
-                </li>
-                <li class="dd-item" data-id="fec">
-                    <div class="dd-handle">FEC forward error correction</div>
-                </li>
-                <li class="dd-item" data-id="sr">
-                    <div class="dd-handle">Symbol Rate</div>
-                </li>
-                <li class="dd-item" data-id="pilots">
-                    <div class="dd-handle">Pilots</div>
-                </li>
-                <li class="dd-item" data-id="frame">
-                    <div class="dd-handle">Frame</div>
-                </li>
-                <li class="dd-item" data-id="rolloff">
-                    <div class="dd-handle">Rolloff</div>
-                </li>
-                <li class="dd-item" data-id="trvlo">
-                    <div class="dd-handle">Transverter frequency</div>
-                </li>
-                <li class="dd-item" data-id="comment">
-                    <div class="dd-handle">Channel comment</div>
-                </li>
-
-
-
-                <li class="dd-item" data-id="phase_correction">
-                    <div class="dd-handle">Phase correction</div>
-                </li>  
-                <li class="dd-item" data-id="module_correction">
-                    <div class="dd-handle">Module correction</div>
-                </li>
-                <li class="dd-item" data-id="watchdog">
-                    <div class="dd-handle">Watchdog duration (setting)</div>
-                </li>       
-                <li class="dd-item" data-id="text1">
-                    <div class="dd-handle">Free text #1 </div>
-                </li>
-                <span id="freetext1" contenteditable="true">text</span>
-                <li class="dd-item" data-id="text2">
-                    <div class="dd-handle">Free text #2</div>
-                </li>
-                <li class="dd-item" data-id="text3">
-                    <div class="dd-handle">Free text #3</div>
-                </li>                      
-              </ol>
-        </div>
-
-        <div class="dd" id="nestable2"><strong>Generated text</strong>
-            <ol class="dd-list">
-                <li class="dd-item" data-id="callsign">
-                    <div class="dd-handle">Callsign</div>
-                </li>
-                <li class="dd-item" data-id="provider">
-                    <div class="dd-handle">Provider name</div>
-                </li>
-            </ol>
-        </div>
-
-    </div>
-    <span id='jsonresult'></span>
-<br>
    <h2>Pluto Configuration</h2>
    This section read and save the <pre>/opt/config.txt</pre> file. Take care of your modifications before applying them. Some modifications may make your equipment inaccessible from the network. To apply, please reboot (control button further down the page).
     <h3>USB on Ethernet </h3>
@@ -528,7 +441,9 @@ This is needed for apply your saved modifications made in Pluto Configuration se
         });
     });
 
-$("#strategy_tab td").on('change', function(e) {
+
+
+$("#strategy_tab").on('td[contenteditable]', function() {
   var data = $(this).val();
   console.log(data);
 });
@@ -575,51 +490,10 @@ function buildItem(item) {
     return html;
 }
 
-function json2nestable() {
 
-    $.ajax({
-        url: "requests.php?cmd="+encodeURIComponent('cat /mnt/jffs2/etc/text_gen_available_items.json'),
-        dataType: 'json',
-        type: 'get',
-        cache:false,
-        success: function(data){
-            // console.log(data);
-            $('#nestable ol').html("");
-            $.each(data, function (index, item) {
-              $('#nestable ol').append(buildItem(item));
-            });
-        },
-        error: function(d){
-            /*console.log("error");*/
-            console.log("text_gen_available_items.json not found. Can be normal if table never modified.");
-        }
 
-    })
 
-}
 
-function json2nestable2() {
-
-    $.ajax({
-        url: "requests.php?cmd="+encodeURIComponent('cat /mnt/jffs2/etc/text_gen_set_items.json'),
-        dataType: 'json',
-        type: 'get',
-        cache:false,
-        success: function(data){
-            // console.log(data);
-            $('#nestable2 ol').html("");
-            $.each(data, function (index, item) {
-              $('#nestable2 ol').append(buildItem(item));
-            });
-        },
-        error: function(d){
-            /*console.log("error");*/
-            console.log("text_gen_set_items.json.json not found. Can be normal if table never modified.");
-        }
-
-    })
-
-}
 
 
 function json2table() {
@@ -672,8 +546,6 @@ function json2table() {
     }         
    
  }
-
-
    $("#dhcp_eth").click(function() {
     dhcp ();
   });
@@ -718,38 +590,6 @@ function update_slide(id,decimal,text) {
         }
     };
 
-    // activate Nestable for list 1
-    $('#nestable').nestable({
-        group: 1,
-        maxDepth :1
-
-    })
-    .on('change', function (){
-
-       $.get( "requests.php?cmd="+encodeURIComponent("echo '["+($(this).nestable('serializeplus'))+"]' > /mnt/jffs2/etc/text_gen_available_items.json"), function( data ) {
-        if (status=='success') { 
-          //$('#aa').fadeIn(250).fadeOut(1500);
-        }
-  });
-
-    });
-
-    // activate Nestable for list 2
-    $('#nestable2').nestable({
-        group: 1,
-        maxDepth :1
-    })
-    .on('change', function (){
-      //console.log ($('#nestable2').nestable('serialize'));
-      $.get( "requests.php?cmd="+encodeURIComponent("echo '["+($(this).nestable('serializeplus'))+"]' > /mnt/jffs2/etc/text_gen_set_items.json"), function( data ) {
-        if (status=='success') { 
-          //$('#aa').fadeIn(250).fadeOut(1500);
-            }
-      });
-
-
-    });
-
 
 
 
@@ -770,12 +610,16 @@ $('body').on('change', 'input,select', function () {
   }
 });
 
+
+
 </script>
 <script>
-  json2table(); // load the json table definition
-  json2nestable(); //load textgenerator
-  json2nestable2();
+  $( document ).ready(function() {
   MQTTconnect();
+  json2table(); // load the json table definition
+
+});
+
 </script>
 </body>
 </html>
