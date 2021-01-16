@@ -22,6 +22,8 @@ pttoff
 
 while :
 do
+#inotifywait -m -e modify /sys/bus/iio/devices/iio\:device1/out_voltage0_hardwaregain
+
 gain=$(cat /sys/bus/iio/devices/iio:device1/out_voltage0_hardwaregain)
 powerdown=$(cat /sys/bus/iio/devices/iio:device1/out_altvoltage1_TX_LO_powerdown)
 

@@ -22,6 +22,7 @@ else
 	kill -9 $pidffmpeg
 	killall -9 tsp
 	killall -9 pluto_dvb
+	killall -9 tsvbr2cbr
 fi
 sleep 1
 done
