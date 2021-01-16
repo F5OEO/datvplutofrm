@@ -15,7 +15,17 @@
       <div id="col2">
     <nav style="text-align: center;">
       <ul class="nav-menu nav-center">
-        <li><a href="setup.php" <?php activ_menu('setup.php'); ?> >Setup</a></li>
+        <li><a href="setup.php" <?php activ_menu('setup.php'); ?> >Configuration</a>
+          <ul>
+            <li><a href="setup.php" <?php activ_menu('setup.php'); ?> >Setup</a><ul>
+              <li><a href="setup.php#linkdatvmode" >Mode settings</a></li>
+              <li><a href="setup.php#linkdatvsettings" >DATV transmission settings</a></li>
+              <li><a href="setup.php#linkplutosettings" >Pluto settings</a></li>
+              <li><a href="setup.php#linkfirmware" >Firmware & patch update</a></li>
+              </ul></li>
+            <li><a href="textgen.php">Text generator 🆕</a></li>
+            <li><a href="status.php">Pluto status 🆕</a></li>
+          </ul>
         <li><a href="pluto.php" <?php activ_menu('pluto.php'); ?> >Controller</a>
           <!--<ul>
             <li><a href="#">Sub Nav Link</a></li>
@@ -33,7 +43,7 @@
         <li><a href="doc.php" <?php activ_menu('doc.php'); ?> >Documentation</a>
           <ul>
             <li><a href="doc.php" >PlutoDVB documentation</a></li>
-            <li><a href="https://wiki.batc.org.uk/QO-100_WB_Bandplan" target="_blank">QO-100 Wideband Bandplan</a></li>
+            <li><a href="https://wiki.batc.org.uk/QO-100_WB_Bandplan" target="_blank">QO-100 Wideband Bandplan 🔗</a></li>
           </ul>
         </li>
         <li><a href="credits.php" <?php activ_menu('credits.php'); ?>>Credits and updates</a>

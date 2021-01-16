@@ -57,9 +57,12 @@
    </nav>
  -->
    <h1>PlutoDVB General setup</h1> 
+   
    <hr>
+   <section id="linkdatvmode"></section>
       <form id="general" name="datv_config" method="post" action = "javascript:save_config_setup('general','<?php echo urlencode($file_general)?>', '<?php echo rawurlencode($general_ini[0]) ?>');">
-   <h2> Main mode selection</h2>
+   
+   <h2 > Main mode selection</h2>
    should be able to be more attractive<br/>
    <input type="radio" id="mainmode"
      name="mainmode" value="datv" <?php if (isset($datv_config['mainmode']))  echo $datv_config['mainmode']=='datv' ? " checked" :  "" ?>>
@@ -70,7 +73,7 @@
     <label for="pass">Passthrough (SDR Console,...)</label>
 
   </div>
-  <h2> DATV operating mode</h2>
+  <h2 > DATV operating mode</h2>
 
    <input type="radio" id="datvmode"
      name="DATV[datvmode]" value="rtmp" <?php if (isset($datv_config['DATV']['datvmode']))  echo $datv_config['DATV']['datvmode']=='rtmp' ? " checked" :  "" ?>>
@@ -84,7 +87,7 @@
      name="DATV[datvmode]" value="test" <?php if (isset($datv_config['DATV']['datvmode']))  echo $datv_config['DATV']['datvmode']=='test' ? " checked" :  "" ?>>
     <label for="test"><span class="note tooltip" title="Not available" style="color : #636363;">Test pattern</span></label>
   </div>
-   <hr>
+   <hr> <section id="linkdatvsettings"></section>
    <h2>DATV transmission settings</h2>
    <h3>General use</h3>
 
@@ -300,7 +303,8 @@ Attention, in this version the editable cells are not verified at all.
    </table><br>
    <input type="submit" value="Apply Settings" id ="general"><span id="general_saved" class="saved"  style="display: none;"> Saved !</span>
  </form>
-<br>
+
+<br><hr> <section id="linkplutosettings"></section>
    <h2>Pluto Configuration</h2>
    This section read and save the <pre>/opt/config.txt</pre> file. Take care of your modifications before applying them. Some modifications may make your equipment inaccessible from the network. To apply, please reboot (control button further down the page).
     <h3>USB on Ethernet </h3>
