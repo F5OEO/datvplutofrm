@@ -275,8 +275,8 @@ textgen='';
  j+=1;
  });
  console.log ('textgen = '+textgen);
- //sendmqtt('plutodvb/subvar/gentext',textgen) ;
- //sendmqtt('plutodvb/var','[{"gentext":"'+textgen+'"') ;
+ sendmqtt('plutodvb/subvar/gentext',textgen) ;
+ sendmqtt('plutodvb/var','[{"gentext":"'+textgen+'"') ;
  $('#diplaytextgen').text(textgen);
 
 }
@@ -365,7 +365,14 @@ console.log("subs "+item.id);
 
 
 
-//MQTT send messages
+
+
+
+</script>
+<script>
+  $( document ).ready(function() {
+  MQTTconnect();
+  //MQTT send messages
 $('body').on('change', 'input,select', function () {
   if (mqtt.isConnected()) {
     obj= $(this).attr('id');
@@ -382,13 +389,6 @@ $('body').on('change', 'input,select', function () {
   }
 });
 
-
-
-</script>
-<script>
-  $( document ).ready(function() {
-  MQTTconnect();
-  
   json2nestable(); //load textgenerator
   json2nestable2();
 });
