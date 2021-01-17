@@ -15,12 +15,14 @@
       <div id="col2">
     <nav style="text-align: center;">
       <ul class="nav-menu nav-center">
-        <li><a href="setup.php" <?php activ_menu('setup.php'); ?> >Configuration</a>
+        <li><a href="setup.php" <?php activ_menu('setup.php'); ?> >System</a>
           <ul>
             <li><a href="setup.php" <?php activ_menu('setup.php'); ?> >Setup</a><ul>
               <li><a href="setup.php#linkdatvmode" >Mode settings</a></li>
-              <li><a href="setup.php#linkdatvsettings" >DATV transmission settings</a></li>
+              <li><a href="setup.php#linkdatvsettings" >Transmiter settings</a></li>
+              <li><a href="setup.php#linkreceiversettings" >Receiver settings</a></li>
               <li><a href="setup.php#linkplutosettings" >Pluto settings</a></li>
+              
               <li><a href="setup.php#linkfirmware" >Firmware & patch update</a></li>
               </ul></li>
             <li><a href="textgen.php">Text generator 🆕</a></li>
