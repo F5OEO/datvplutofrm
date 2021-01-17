@@ -22,11 +22,10 @@
               <li><a href="setup.php#linkdatvsettings" >Transmiter settings</a></li>
               <li><a href="setup.php#linkreceiversettings" >Receiver settings</a></li>
               <li><a href="setup.php#linkplutosettings" >Pluto settings</a></li>
-              
-              <li><a href="setup.php#linkfirmware" >Firmware & patch update</a></li>
               </ul></li>
             <li><a href="textgen.php">Text generator 🆕</a></li>
             <li><a href="status.php">Pluto status 🆕</a></li>
+            <li><a href="maintenance.php">Maintenance</a></li>
           </ul>
         <li><a href="pluto.php" <?php activ_menu('pluto.php'); ?> >Controller</a>
           <!--<ul>
@@ -42,12 +41,7 @@
           </ul> -->
         </li>
         <li><a href="analysis.php" <?php activ_menu('analysis.php'); ?> >Analysis</a></li>
-        <li><a href="doc.php" <?php activ_menu('doc.php'); ?> >Documentation</a>
-          <ul>
-            <li><a href="doc.php" >PlutoDVB documentation</a></li>
-            <li><a href="https://wiki.batc.org.uk/QO-100_WB_Bandplan" target="_blank">QO-100 Wideband Bandplan 🔗</a></li>
-          </ul>
-        </li>
+        <li><a href="doc.php" <?php activ_menu('doc.php'); ?> >Documentation</a></li>
         <li><a href="credits.php" <?php activ_menu('credits.php'); ?>>Credits and updates</a>
           <ul>
             <li><a href="credits.php#f5oeo">F5OEO</a></li>
