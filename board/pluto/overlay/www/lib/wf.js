@@ -826,8 +826,8 @@ if(mouse_y > (canvasHeight * 7/8))
         
        
         //$(t+'[name="freq"]').val($("#upf").val()- $(t+'[name="trvlo"]').val());
-        $(t+'[name="freq"]').val($("#upf").val()- $(t+'[name="trvlo"]').val());
-        console.log('tab wf = '+t + ' .upf='+$("#upf").val() + ' tvrlo='+$(t+'[name="trvlo"]').val());
+        $(t+'[name="freq"]').val($("#upf").val()- $(t+'[name="trvlo"]').val()).change();
+        //console.log('tab wf = '+t + ' .upf='+$("#upf").val() + ' tvrlo='+$(t+'[name="trvlo"]').val());
         save_local_modulator();
         let textarea = document.getElementById("upf");
         textarea.select();
