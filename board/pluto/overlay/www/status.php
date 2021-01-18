@@ -33,8 +33,8 @@
   <head>
     <meta charset="UTF-8">
 
-    <title>Pluto status</title>
-    <meta name="description" content="ADALM-PLUTO DVB General Setup ">
+    <title>PlutoDVB status</title>
+    <meta name="description" content="PlutoDVB Status ">
     <link type="text/css" href="./img/style.css" rel="stylesheet">
     <link type="text/css" href="lib/nestable.css" rel="stylesheet">
     <script src="lib/jquery-3.5.1.min.js"></script>
@@ -56,9 +56,10 @@
      <a class="button" href="index.html">Documentation</a>
    </nav>
  -->
-   <h1>Pluto status</h1> <i>(under developpement)</i>
+   <h1>PlutoDVB status</h1> <i>(under developpement)</i>
    
    <hr>
+   <h2>Pluto Status</h2>
    <ul>
     <li> Temperature </li>
     <li> CPU </li>
@@ -70,11 +71,55 @@
     <li> Ethernet reception rate </li>
     <li> USB emission rate </li>
     <li> USB reception rate </li>
+    <li> MQTT brocker connected</li>
+    <li> Last page loaded</li>
    </ul>
    
-<script>
+   <h2>Encoder Status</h2>
+   <?php 
 
-//MQTT send messages
+
+function get(){
+
+
+$username = 'admin';
+$password = '12345';
+$auth = base64_encode($username.":".$password);
+
+
+  $headers = array(
+    'Authorization: Basic ' . $auth,
+    'Content-type: ' . "application/x-www-form-urlencoded; charset=UTF-8"
+  );
+
+  $context = array (
+      'http' => array (
+        'method' => 'GET',
+        'header'=> $headers,
+        'content' => '',
+        )
+      );
+
+
+  $ctx = stream_context_create($context);
+  $data = file_get_contents("http://192.168.1.120/action/get?subject=devinfo", false, $ctx);
+  return $data;
+
+
+
+}
+
+    var_dump(simplexml_load_string(get()));
+
+
+
+   ?>
+
+
+<script>
+  $( document ).ready(function() {
+  MQTTconnect();
+  //MQTT send messages
 $('body').on('change', 'input,select', function () {
   if (mqtt.isConnected()) {
     obj= $(this).attr('id');
@@ -91,10 +136,6 @@ $('body').on('change', 'input,select', function () {
   }
 });
 
-</script>
-<script>
-  $( document ).ready(function() {
-  MQTTconnect();
 
 
 });

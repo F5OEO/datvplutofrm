@@ -92,14 +92,6 @@
       </section>
     </div>
 
-<h2>Check for updates</h2>
-<hr>
-Your browser must have an internet connection. <br>
-<form method="post">
-  <p>
-    <button name="check_update">Check</button>
-  </p>
-</form>
 
 
 <br>
@@ -130,7 +122,11 @@ Your browser must have an internet connection. <br>
 <p id="test"><strong>Contributor</strong></p>  
 <p>Hamradio call F5UII since 1993, computer science engineer. Likes many aspects of the hobby and is a member of the <a href="http://www.fy5ke.org/?page_id=795" target="_blank">FY5KE contest</a> team. Discovered a lot of new domains thanks to the QO-100 satellite : Hyperfrequency, SDR, digital television (DVB). </p>
 
-<p></p>
+<p>
+  <p>You may have good ideas for further development of this software. You can bring them on <a href="https://www.f5uii.net/en/patch-plutodvb/?o=<?php
+        echo "$fwver";
+        ?>" title="Go to Chris blog and ressources" target="_blank">my blog</a>. You can help me to continue the developments and projects around plutoSDR, by making a gift purchase of an item content published on the public wish list, or <a href="https://www.buymeacoffee.com/f5uii" target="_blank">buy me a cofee</a>. 😉 73 Chris F5UII</p>
+</p>
 </div>
 <div class="colRight" style='text-align: left;'>
   <p id="test"><strong>Main projects</strong></p>
