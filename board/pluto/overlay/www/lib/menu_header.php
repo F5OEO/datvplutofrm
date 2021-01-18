@@ -42,7 +42,7 @@
         </li>
         <li><a href="analysis.php" <?php activ_menu('analysis.php'); ?> >Analysis</a></li>
         <li><a href="doc.php" <?php activ_menu('doc.php'); ?> >Documentation</a></li>
-        <li><a href="credits.php" <?php activ_menu('credits.php'); ?>>Credits and updates</a>
+        <li><a href="credits.php" <?php activ_menu('credits.php'); ?>>Credits</a>
           <ul>
             <li><a href="credits.php#f5oeo">F5OEO</a></li>
             <li><a href="credits.php#f5uii">F5UII</a></li>
