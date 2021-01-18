@@ -95,15 +95,18 @@
           <input type="checkbox" id="tx_onstart" name="DATV[tx_onstart]" <?php if (isset($datv_config['DATV']['tx_onstart']))  echo $datv_config['DATV']['tx_onstart']=='on' ? " checked" :  "" ?>>
           <label for="tx_onstart" aria-describedby="label"><span class="ui"></span> <span id='tx_onstart_label'> enabled</span></label>
         </div> </td>  
+        <td><span class="note tooltip" title="<ul><li>When set to a value different than 0, the absolute power conversion (abs) is displayed in dB and also Watt unit on the controller. </li><li>The value can be positive or negative.</li></ul>" style="color : #636363;">Conversion gain to display the real power (absolute output level) </span><i>(dB)</i></td>
+        <td><input type="text" id="abs_gain" name="DATV[abs_gain]" value="<?php if (isset($datv_config['DATV']['abs_gain'])) echo $datv_config['DATV']['abs_gain']; ?>" maxlength="4" size="4"></td>
 
      </tr>
      
      <tr>
         <td><span class="note tooltip" title="Limits the stroke of the power adjustment.<br/>  ⚠️ This setting is not to be considered as an absolute protection against overpower.<br>It is highly recommended for safety of your transmision line to ensure it by inserting suitable RF attenuators.<p>The value to be indicated is the relative power (maximum 0dB which corresponds to the maximum output power of the Pluto). The expected value is therefore <strong>negative</strong></p>" style="color : #636363;">Maximum adjustable power</span>  <i>(dB)</i></td>
         <td><input type="text" id="hi_power_limit" name="DATV[hi_power_limit]" value="<?php if (isset($datv_config['DATV']['hi_power_limit'])) echo $datv_config['DATV']['hi_power_limit']; ?>" maxlength="6" size="6"></td>
+        <td><span class="note tooltip" title="Minimum  adjustable low stop of the relative output power" style="color : #636363;">Minimum adjustable power</span>  <i>(dB)</i></td>
+        <td><input type="text" id="lo_power_limit" name="DATV[lo_power_limit]" value="<?php if (isset($datv_config['DATV']['lo_power_limit'])) echo $datv_config['DATV']['lo_power_limit']; ?>" maxlength="6" size="6"></td>        
 
-        <td><span class="note tooltip" title="<ul><li>When set to a value different than 0, the absolute power conversion (abs) is displayed in dB and also Watt unit on the controller. </li><li>The value can be positive or negative.</li></ul>" style="color : #636363;">Conversion gain to display the real power (absolute output level) </span><i>(dB)</i></td>
-        <td><input type="text" id="abs_gain" name="DATV[abs_gain]" value="<?php if (isset($datv_config['DATV']['abs_gain'])) echo $datv_config['DATV']['abs_gain']; ?>" maxlength="4" size="4"></td>
+
    
 
      </tr>
@@ -696,6 +699,15 @@ if ((typeof mqtt.isConnected === 'function') )  {
         alert ('Power limit must be a negative value (0dB is the maximum relative output level).');
       } else {
         $('#hi_power_limit').css("background-color","");
+      }
+    })
+
+        $('#lo_power_limit,#hi_power_limit').on('change paste keyup',function() {
+      if (parseFloat($('#hi_power_limit').val())<parseFloat($('#lo_power_limit').val())) {
+        $('#lo_power_limit,#hi_power_limit').css("background-color","red");
+        alert ('The maximum limit is lower than the minimum limit. Please correct one or the other of the limit values.');
+      } else {
+        $('#lo_power_limit,#hi_power_limit').css("background-color","");
       }
     })
 
