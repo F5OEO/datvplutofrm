@@ -2,11 +2,7 @@
     // F5UII : Setup page. The outputs are multiples files, working by ajax call with global_save.php.
 
     session_start();
-    require ('./lib/functions.php');
-    if ( isset( $_POST[ 'reboot' ] ) ) {
-     exec( '/sbin/reboot' );
-    }
-  
+   require ('./lib/functions.php');
     $file_config ='/opt/config.txt';
     $file_general = '/mnt/jffs2/etc/settings-datv.txt';
     $dir = '/mnt/jffs2/etc/';
@@ -302,9 +298,114 @@ Attention, in this version the editable cells are not verified at all.
      
    </table><br>
    <input type="submit" value="Apply Settings" id ="general"><span id="general_saved" class="saved"  style="display: none;"> Saved !</span>
- </form>
 
-<br><hr> <section id="linkplutosettings"></section>
+ <hr>
+<section id="linkreceiversettings"></section>
+<h2>DATV Reception</h2>
+      <h3>Spectrum</h3>
+      <p>The QO-100 spectrum is an online ressource of BATC / AMSAT-UK. You can disable the display of the spectrum QO-100 here. When disabled, the data flow is interrupted. At the same time, the receiver control feature is switched off. Save your choice by Apply Settings button. </p>
+
+        <table>
+          <tr>
+            <td>Spectrum</td>
+              <td>
+                <div class="checkcontainer">
+                  <input type="checkbox" id="spectrum_enable" name="DATV_RECEIVER[spectrum_enable]">
+                  <label for="spectrum_enable" aria-describedby="label"><span class="ui"></span> displayed</label>
+                </div>
+              </td>
+
+            </tr>
+          </table>
+
+          <h3><span class="note tooltip"  style="color: #636363;" title= '<h2>Control your transmission frequency and paste the RTMP URL string</h2>
+       <p>At the bottom of QO-100 Spectrum, there are horizontal bars representing the possible transmission channels on the satellite. By simply clicking on a bar, <ul><li>you will report  the corresponding transmission frequency in the Modulator table, in <i>Freq</i> field. This will take account of your possible transverter settings.</li><li>the chosen channel frequency is copied in your clipboard so that you can easily paste where you want.</li><li>then, by clicking on the text <i>Click here to copy RTMP server URL in </i>📋, you will directly copy in clipboard the whole string that is waiting in the destination URL. You will be able to simply paste it in URL field of your stream software like OBS Studio, or Vmix (the <a href="index.html#test" >RTMP string</a> is set with all parameters set in Modulator table, to be paste).</li></ul> </p>
+       <h2>Steering DATV receiver</h2>
+       <p><i>At this stage, only one minitiouner or Longmyndreceiver can be controlled. The Pluto must be connected on the same local network, through a gateway (router). </i></p>
+       <h2>About control Longmynd</h2>
+       Steering compatible with <a href="https://forum.batc.org.uk/viewtopic.php?f=101&t=6594&p=25786&hilit=g7jtt#p22243" target="_blank">G7JTT script (Thanks to G8UGD)</a>
+       <h3>About Minitiouner</h3><img src="./img/minitiouner.jpg" style="
+       float: right;"/>
+       <p>The Minitiouner hardware is designed for easy use with the software Minitiouner Pro conceived by F6DZP Jean-Pierre. The support and download are free and available on <a href="http://www.vivadatv.org/" target="_blank">vivadatv forum</a>.</p>
+       <h3>How it works</h3>
+       <p>To be able to directly drive your minitiouner by a simple click on a used channel of the QO-100 spectrum, you have to follow these few indications.</p>
+       <p>The Ip adress and port to enter in the <i>Setup</i> tab correspond to the informations <i>Conf_AddrUDP</i> and <i>Conf_Port</i> that you find in the minitiouner configuration file <i>minitiouneConfig.ini</i>.  The IP address can also be the address of the computer on which the minitiouner is running.
+        The gateway address indicated is that of your network router. Click <i>Apply Settings</i> for save your settings.</p>
+        <p>Click on a signal on the spectrum. The command is sent directly to the minitiouner with the right frequency and SR, also considering your settings stored on the setup tab.</p>'>Receiver setup</span></h3>
+          <p>To be able to control Minitioune or Longmynd, please fill in these few parameters.</p>
+
+          <table>
+            <tr>
+              <td>Destination IP address</td>
+              <td><input type="text"  name="DATV_RECEIVER[minitiouner-ip]" value="<?php if (isset($datv_config['DATV_RECEIVER']['minitiouner-ip'])) echo $datv_config['DATV_RECEIVER']['minitiouner-ip']; else echo '232.0.0.11'; ?>"></td>
+              <td>Destination Port number <br></td>
+              <td><input type="text" name="DATV_RECEIVER[minitiouner-port]" value="<?php if (isset($datv_config['DATV_RECEIVER']['minitiouner-port'])) echo $datv_config['DATV_RECEIVER']['minitiouner-port']; else echo '6789'; ?>" maxlength="15" size="16"> </td>
+            </tr>
+            <tr>
+              <td>UDP Broadcast IP address</td>
+              <td><input type="text" name="DATV_RECEIVER[minitiouner-udp-ip]" value="<?php if (isset($datv_config['DATV_RECEIVER']['minitiouner-udp-ip'])) echo $datv_config['DATV_RECEIVER']['minitiouner-udp-ip']; else echo '230.0.0.10'; ?>" ></td>
+              <td>UDP Broadcast Port number <br></td>
+              <td><input type="text" name="DATV_RECEIVER[minitiouner-udp-port]" value="<?php if (isset($datv_config['DATV_RECEIVER']['minitiouner-udp-port'])) echo $datv_config['DATV_RECEIVER']['minitiouner-udp-port']; else echo '230.0.0.10'; ?>" maxlength="15" size="16"> </td>
+            </tr> 
+            <tr>
+              <td>LNB Offset <i>kHz</i></td>
+              <td><input type="text" name="DATV_RECEIVER[minitiouner-offset]" value="<?php if (isset($datv_config['DATV_RECEIVER']['minitiouner-offset'])) echo $datv_config['DATV_RECEIVER']['minitiouner-offset']; else echo '9750000'; ?>"></td>
+              <td>Rx socket <br></td>
+              <td><select name="DATV_RECEIVER[minitiouner-socket]" >
+                <option value="A" <?php if (isset($datv_config['DATV_RECEIVER']['minitiouner-socket']))  echo $datv_config['DATV_RECEIVER']['minitiouner-socket']=='A' ? " selected" :  "" ?>>A</option>
+                <option value="B" <?php if (isset($datv_config['DATV_RECEIVER']['minitiouner-socket']))  echo $datv_config['DATV_RECEIVER']['minitiouner-socket']=='B' ? " selected" :  "" ?>>B</option>
+              </select> </td>
+            </tr>
+            <tr>
+              <td>LNB Voltage <i>V</i></td>
+              <td>
+                <select name="DATV_RECEIVER[minitiouner-voltage]" >
+                  <option value="0" <?php if (isset($datv_config['DATV_RECEIVER']['minitiouner-voltage']))  echo $datv_config['DATV_RECEIVER']['minitiouner-voltage']=='0' ? " selected" :  "" ?>>0</option>
+                  <option value="13" <?php if (isset($datv_config['DATV_RECEIVER']['minitiouner-voltage']))  echo $datv_config['DATV_RECEIVER']['minitiouner-voltage']=='13' ? " selected" :  "" ?>>13</option>
+                  <option value="18" <?php if (isset($datv_config['DATV_RECEIVER']['minitiouner-voltage']))  echo $datv_config['DATV_RECEIVER']['minitiouner-voltage']=='18' ? " selected" :  "" ?>>18</option>
+                </select>
+              </td>
+              <td>LNB 22 kHz <br></td>
+              <td><select name="DATV_RECEIVER[minitiouner-22khz]">
+                <option value="OFF" <?php if (isset($datv_config['DATV_RECEIVER']['minitiouner-22khz']))  echo $datv_config['DATV_RECEIVER']['minitiouner-22khz']=='OFF' ? " selected" :  "" ?>>Off</option>
+                <option value="ON" <?php if (isset($datv_config['DATV_RECEIVER']['minitiouner-22khz']))  echo $datv_config['DATV_RECEIVER']['minitiouner-22khz']=='ON' ? " selected" :  "" ?>>On</option>
+              </select> </td>
+            </tr>  
+            <tr>
+              <td>DVB Mode <i></i></td>
+              <td>
+                <select name="DATV_RECEIVER[minitiouner-mode]" >
+                  <option value="Auto" <?php if (isset($datv_config['DATV_RECEIVER']['minitiouner-mode']))  echo $datv_config['DATV_RECEIVER']['minitiouner-mode']=='Auto' ? " selected" :  "" ?>>Auto</option>
+                  <option value="DVB-S" <?php if (isset($datv_config['DATV_RECEIVER']['minitiouner-mode']))  echo $datv_config['DATV_RECEIVER']['minitiouner-mode']=='DVB-S' ? " selected" :  "" ?>>DVBS</option>
+                  <option value="DVB-S2" <?php if (isset($datv_config['DATV_RECEIVER']['minitiouner-mode']))  echo $datv_config['DATV_RECEIVER']['minitiouner-mode']=='DVB-S2' ? " selected" :  "" ?>>DVBS2</option>
+                </select>
+              </td>
+              <!--
+              <td>LAN Gateway address<br></td>
+              <td><input type="text" name="gateway-eth0" value="192.168.1.1" maxlength="15" size="16">
+              </td>
+            </tr>  -->     
+               
+          </table><br>
+          <input type="submit" value="Apply Settings" id ="submit_receiver"><span id="saved_receiver" class="saved"  style="display: none;"> Saved !</span>
+   
+<br><hr> <section id=""></section>
+   <h2>Display Settings <i>under developpement</i></h2>
+           <table>
+          <tr>
+            <td>Fixed menu banner at the top of all the pages</td>
+              <td>
+                <div>
+                  <input type="checkbox" id="menu_fixed" name="DATV[menu_fixed]">
+                  <label for="menu_fixed" aria-describedby="label"><span class="ui"></span> fixed</label>
+                </div>
+              </td>
+
+            </tr>
+          </table><br>
+          <input type="submit" value="Apply Settings" id ="submit_receiver"><span id="saved_receiver" class="saved"  style="display: none;"> Saved !</span>
+        </form>
+<hr> <section id="linkplutosettings"></section>
    <h2>Pluto Configuration</h2>
    This section read and save the <pre>/opt/config.txt</pre> file. Take care of your modifications before applying them. Some modifications may make your equipment inaccessible from the network. To apply, please reboot (control button further down the page).
     <h3>USB on Ethernet </h3>
@@ -405,32 +506,10 @@ Attention, in this version the editable cells are not verified at all.
     <input type="submit" value="Apply Settings" id ="configtxt"><span id="configtxt_saved" class="saved"  style="display: none;"> Saved !</span>
   </form>
 
-<h2>Reboot</h2>
 
-This is needed for apply your saved modifications made in Pluto Configuration section. Take a moment to check your settings before applying them.<br>
-<form method="post">
-  <p>
-    <button name="reboot">Reboot the Pluto</button>
-  </p>
-</form>
 <script>
-   $(document).ready(function() {
-    dhcp ();
-    update_slide('phase_correction',1,' °');
-    update_slide('module_correction',2,'');
-    if (window.location.href.indexOf("xpert") > -1) {
-      $(".xpert").show();
-    }
 
-    $('#hi_power_limit').on('change paste keyup',function() {
-      if (parseFloat($('#hi_power_limit').val())>0) {
-        $('#hi_power_limit').css("background-color","red");
-        alert ('Power limit must be a negative value (0dB is the maximum relative output level).');
-      } else {
-        $('#hi_power_limit').css("background-color","");
-      }
-    })
-  });
+
 
    // Check device ping
     $("#ipaddr_h265box").on('change',function() {
@@ -495,11 +574,6 @@ function buildItem(item) {
 }
 
 
-
-
-
-
-
 function json2table() {
 
     $.ajax({
@@ -522,8 +596,8 @@ function json2table() {
                 event_data += '<td class="tg-wpev" id="td-7" contenteditable="true">'+value['Video Height']+'</td>';
                 event_data += '<td class="tg-wpev" id="td-8" contenteditable="true">'+value['FPS']+'</td>';
                 event_data += '<td class="tg-wpev" id="td-9" contenteditable="true">'+value['Video Rate(kb/s)']+'</td>';
-                event_data += '<td class="tg-wpev" id="td-8" contenteditable="true">'+value['PCR/PTS (ms)']+'</td>';
-                event_data += '<td class="tg-wpev" id="td-9" contenteditable="true">'+value['PAT period (ms)']+'</td>';
+                event_data += '<td class="tg-wpev" id="td-8" contenteditable="true">'+value['PCR/PTS(ms)']+'</td>';
+                event_data += '<td class="tg-wpev" id="td-9" contenteditable="true">'+value['PAT period(ms)']+'</td>';
                 
                 
                 event_data += '</tr>';
@@ -575,30 +649,22 @@ function json2table() {
 
 function update_slide(id,decimal,text) {
   $('#'+id+'-value').text(Number.parseFloat($('#'+id).val()).toFixed(decimal)+text)  ;
-  if (mqtt.isConnected()) {
-   sendmqtt('plutodvb/var', '{"'+id+'":"'+$('#'+id).val()+'"}' ) ;
+  if ((typeof mqtt.isConnected  === 'function') )  {
+    if (mqtt.isConnected()) {
+     sendmqtt('plutodvb/var', '{"'+id+'":"'+$('#'+id).val()+'"}' ) ;
+    }
   }
 }
 
-
-
-    var updateOutput = function(e)
-    {
-        var list   = e.length ? e : $(e.target),
-            output = list.data('output');
-        if (window.JSON) {
-            //output.val(window.JSON.stringify(list.nestable('serialize')));//, null, 2));
-           // $('#jsonresult').text(list.nestable('serialize'));
-        } else {
-            //output.val('JSON browser support required for this demo.');
-        }
-    };
-
-
+</script>
+<script>
+  $( document ).ready(function() {
+  MQTTconnect();
 
 
 //MQTT send messages
 $('body').on('change', 'input,select', function () {
+if ((typeof mqtt.isConnected === 'function') )  {
   if (mqtt.isConnected()) {
     obj= $(this).attr('id');
     if (obj==undefined) {
@@ -612,15 +678,27 @@ $('body').on('change', 'input,select', function () {
 
     sendmqtt('plutodvb/var', '{"'+obj+'":"'+ val +'"}' ) ;
   }
+}
 });
 
-
-
-</script>
-<script>
-  $( document ).ready(function() {
-  MQTTconnect();
   json2table(); // load the json table definition
+
+      dhcp ();
+    update_slide('phase_correction',1,' °');
+    update_slide('module_correction',2,'');
+    if (window.location.href.indexOf("xpert") > -1) {
+      $(".xpert").show();
+    }
+
+    $('#hi_power_limit').on('change paste keyup',function() {
+      if (parseFloat($('#hi_power_limit').val())>0) {
+        $('#hi_power_limit').css("background-color","red");
+        alert ('Power limit must be a negative value (0dB is the maximum relative output level).');
+      } else {
+        $('#hi_power_limit').css("background-color","");
+      }
+    })
+
 
 });
 
