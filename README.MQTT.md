@@ -16,6 +16,7 @@ This allows the parameters changed by the operator to be taken into account with
 	-  ```'{"file_firm":"C:\fakepath\pluto.frm"}``` A firmware file is uploaded	
 - ```plutodvb/started``` Sended by the PlutoDVB when is started
 - ```plutodvb/ts/netbitrate``` Transport Stream Bitrate in bits/s
+- ```plutodvb/status/tx``` Transmiting status : true = On air, false = Stand by
 
 "file_firm":"C:\fakepath\pluto.frm"}
 
