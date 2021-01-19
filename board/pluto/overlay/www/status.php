@@ -7,7 +7,7 @@
      exec( '/sbin/reboot' );
     }
   
-    $file_config ='/opt/config.txt';
+    $file_config ='/mnt/jffs2/etc/config.txt';
     $file_general = '/mnt/jffs2/etc/settings-datv.txt';
     $dir = '/mnt/jffs2/etc/';
     if (true==false) // replace false by true for developping on debug server

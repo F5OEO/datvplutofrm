@@ -3,7 +3,7 @@
 
     session_start();
    require ('./lib/functions.php');
-    $file_config ='/opt/config.txt';
+    $file_config ='/mnt/jffs2/etc/config.txt';
     $file_general = '/mnt/jffs2/etc/settings-datv.txt';
     $dir = '/mnt/jffs2/etc/';
     if (true==false) // replace false by true for developping on debug server
@@ -410,7 +410,7 @@ Attention, in this version the editable cells are not verified at all.
         </form>
 <hr> <section id="linkplutosettings"></section>
    <h2>Pluto Configuration</h2>
-   This section read and save the <pre>/opt/config.txt</pre> file. Take care of your modifications before applying them. Some modifications may make your equipment inaccessible from the network. To apply, please reboot (control button further down the page).
+   This section read and save the <pre>/mnt/jffs2/etc/config.txt</pre> file. Take care of your modifications before applying them. Some modifications may make your equipment inaccessible from the network. To apply, please reboot (control button further down the page).
     <h3>USB on Ethernet </h3>
     <p>This <i>USB on Ethernet</i> setup section corresponds to the IP address mounted when the pluto is plugged in USB on a computer.</p>
 <form id="configtxt" name="config" method="post" action = "javascript:save_config_setup('configtxt','<?php echo urlencode($file_config)?>', '<?php echo urlencode($config_ini[0]) ?>');">
