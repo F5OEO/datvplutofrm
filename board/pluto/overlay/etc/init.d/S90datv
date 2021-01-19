@@ -2,9 +2,10 @@
 #/root/pluto_dvb -f 34 -t 250e6 -s 250e3 >/dev/null </dev/null 2>/dev/null 
 start() {
    
+   cp /mnt/jffs2/etc/settings.txt /www/settings.txt 
+
    CONF=/mnt/jffs2/etc/settings-datv.txt
-   dos2unix $CONF
-	MAINMODE=$(grep mainmode $CONF | cut -f2 -d '='|sed 's/ //g')
+   	MAINMODE=$(grep mainmode $CONF | cut -f2 -d '='|sed 's/ //g')
 	DATVMODE=$(grep datvmode $CONF | cut -f2 -d '='|sed 's/ //g')
 
 	if [ "$MAINMODE" = "pass" ]; then
