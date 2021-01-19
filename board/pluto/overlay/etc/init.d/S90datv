@@ -3,6 +3,13 @@
 start() {
    
    cp /mnt/jffs2/etc/settings.txt /www/settings.txt 
+   
+  
+if [ -f "/mnt/jffs2/etc/config.txt" ]; then
+    echo "config.txt already in jfss2"
+else 
+	cp /opt/config.txt /mnt/jffs2/etc/config.txt
+fi
 
    CONF=/mnt/jffs2/etc/settings-datv.txt
    	MAINMODE=$(grep mainmode $CONF | cut -f2 -d '='|sed 's/ //g')
