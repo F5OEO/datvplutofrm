@@ -40,7 +40,7 @@ MESSAGE="$FWVERS""$PROVNAME"
 
 CONF=/mnt/jffs2/etc/settings-datv.txt
 #workaround for extra ^M characters : dos2unix
-dos2unix $CONF
+#dos2unix $CONF
 REMUX=$(grep "remux" $CONF | cut -f2 -d '='|sed 's/ //g')
 H265BOX=$(grep use_h265box $CONF | cut -f2 -d '='|sed 's/ //g')
 H265BOXIP=$(grep ipaddr_h265box $CONF | cut -f2 -d '='|sed 's/ //g')

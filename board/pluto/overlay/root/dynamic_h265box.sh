@@ -1,5 +1,5 @@
 CONF=/mnt/jffs2/etc/settings-datv.txt
-dos2unix $CONF
+#dos2unix $CONF
 H265BOX=$(grep use_h265box $CONF | cut -f2 -d '='|sed 's/ //g')
 H265BOXIP=$(grep ipaddr_h265box $CONF | cut -f2 -d '='|sed 's/ //g')
 
