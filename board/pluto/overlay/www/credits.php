@@ -81,7 +81,7 @@
 
                 <div >Mods by Chris <a href="https://www.f5uii.net/?o=2110
 " title="Go to Chris blog and ressources" target="_blank">F5UII.net</a>&nbsp; <a href="https://twitter.com/f5uii/" title="Go to f5uii profile on twitter"><img style="width: 20px;" src="./img/tw.png" alt="Twitter Logo"></a> version <i id='patch-uii'>UII2.5</i><div id="note">A new UII patch is available<span id = 'uii-new-version'></span>. Follow <a href= "https://www.f5uii.net/en/patch-plutodvb/?ori=update" target="_blank">this link</a>.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <a id="close">❌</a></div>: <span class="note tooltip" title="
-        <strong>Version UII2.5 - 03/01/2021</strong><ul><li>Steering compatible with Longmynd patched with <a href='https://forum.batc.org.uk/viewtopic.php?f=101&t=6594&p=25786&hilit=g7jtt#p22243' target='_blank'>G7JTT script (Thanks to G8UGD)</a></li><li>New PlutoDVB <a href='setup.php'>setup page</a> (under development, not everything is functional yet)</li><li>Maximum adjustable power </li><li>Display of absolute output power expressed in dB and watts</li><li>masking of the H265 encoder control panels if set as such</li><li>Manual control of H265 encoder parameters</li></ul>
+        <strong>Version UII2.5 - 03/01/2021</strong><ul><li>Steering compatible with Longmynd patched with <a href='https://forum.batc.org.uk/viewtopic.php?f=101&t=6594&p=25786&hilit=g7jtt#p22243' target='_blank'>G7JTT script (Thanks to G8UGD)</a></li><li>New PlutoDVB <a href='setup.php'>setup page</a> (under development, not everything is functional yet)</li><li>Text (banner) generator<li><li>Mini and maximum adjustable power </li><li>Display of absolute output power expressed in dB and watts</li><li>masking of the H265 encoder control panels if set as such</li><li>Manual control of H265 encoder parameters</li></ul>
         <strong>Version UII2.4 - 29/11/2020</strong><ul><li>Right click on modulator profiles (lock/unlock + Duplicate + Copy 3 items crosswise)</li><li>Keyboard shortcuts (F9=Apply modulator settings, F10=PTT toggle)</li><li>Analysis page, reception with crossfade display (Not perfect yet)</li></ul>
         <strong>previous versions, see support page</strong><hr>🛈 Link to <a href='https://www.f5uii.net/en/patch-plutodvb/?o=2110
 ' target='_blank'>download, roadmap and support page">
@@ -96,7 +96,7 @@
 
 <br>
 
-<section id="f5oeo">
+<section id="f5oeo" style="display: inline-block;">
 <h3 id="about">Evariste, F5OEO</h3>
 <div class="colLeft">
 <p id="test"><strong>Author</strong></p>  
@@ -116,7 +116,7 @@
 </div>
 </section>
 
-<section id="f5uii">
+<section id="f5uii" style="display: inline-block;">
 <h3 id="about">Christian, F5UII</h3>
 <div class="colLeft">
 <p id="test"><strong>Contributor</strong></p>  
@@ -136,10 +136,19 @@
     <li><a href="https://www.f5uii.net">Blog f5uii.net : With many tutorials (SDR, MMDVM DMR) </a></li>
   </ul>
 </div>
+
 </section>
-
+<section style="display: inline-block;" >
+<p>
+<h3 id="technology">Onbard technology</h3>
+<ul>
+  <li><img src="img/mqtt-logo.svg" style="width: 100px; height: 40px;  margin-right: 15px; vertical-align: middle;"> The Standard for IoT Messaging. Mosquitto broker is embedded. The dictionnary for interface PlutoDVB is <a href="https://github.com/F5OEO/datvplutofrm/blob/topic-f5uii/README.MQTT.md" target="_blank">published</a>.</li>
+  <li><img src="img/PHP-logo.svg" style="height: 40px;   margin-right: 15px; vertical-align: middle;">PHP free programming language for the web</li>
+  <li><img src="img/obs-websdocket.png" style="height: 40px;   margin-right: 15px; vertical-align: middle;"> OBS Studio Websocket, connection with the open-source video streaming softmware <a href="https://obsproject.com/" target="_blank">OBS Studio</a> <i>under developpement</i></li>
+</ul>
+</p>
 <a class="anchor" href="#top">Back to top</a>
-
+</section>
 <script>
 
 
