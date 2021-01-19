@@ -251,6 +251,12 @@
     $max_power = $datv_config['DATV']['hi_power_limit'];
   }
 
+  $min_power = -79;
+
+  if (($general_ini!=false) && (isset($datv_config['DATV']['lo_power_limit'])) && ($datv_config['DATV']['lo_power_limit'])!=null ) {
+    $min_power = $datv_config['DATV']['lo_power_limit'];
+  }
+
 ?>
 
   <h2>Modulator</h2>
@@ -270,7 +276,7 @@
         <table>
           <tr><td>Power <i>(0.1 dB steps)</i></td>
             <td><div class="slidecontainer">
-              <input type="range" min="-79" max="<?php echo $max_power; ?>" step="0.1" value="-10" class="slidernewpower" name="power" onchange="update_slider()" oninput="update_slidertxt()">
+              <input type="range" min="<?php echo $min_power; ?>" max="<?php echo $max_power; ?>" step="0.1" value="-10" class="slidernewpower" name="power" onchange="update_slider()" oninput="update_slidertxt()">
               <span id="powertext"></span>
               <input type='hidden' id='power_abs' name='power_abs'>
               <input type='hidden' id='power_abs_watt' name='power_abs_watt'>
@@ -294,15 +300,23 @@
         </td>
         <td>PAT period</td>
         <td><div class="slidecontainer">
-          <input type="range" min="100" max="1000" value="200" class="slider" name="patperiod" oninput="update_slider_pat()">
-          <span id="pattext"></span>
+          <input type="range" min="100" max="1000" value="200" class="slider" name="patperiod" oninput="update_slider_pat()"> <span id="pattext"></span>
         </div>
       </td>
 
     </tr>
     <tr>
-      <td>Freq-Manual <i>(70 MHz - 6 GHz)</i></td>
-      <td><input type="text" name="freq" value="0">
+      <td>Freq-Manual <i>(70 MHz - 6 GHz)</i><br/>Fine tune <i>(+/- 150 kHz)</i></td>
+      <td><input type="text" id="freq" name="freq" value="0" style="margin-bottom: 5px;" oninput="manualfreqchange();"> <button  type="button" style="
+    margin-left: 10px;
+    height: 24px;
+    width: 24px;
+    padding-left: 7px;
+    padding-top: 4px;
+    color: white;
+" onclick="tunefreqzero();">∅</button>
+        <input type="range" min="-150" max="150" value="0" class="slider" name="finefreqtune" oninput="update_slider_finefreqtune(); "> <span id="finefreqtunetext"> 0 kHz</span> 
+        <input type="hidden" id="f-central" name="f-central" value="">
       </td>
       <td>Freq-Channel <br><i>(SR channel Uplink / Downlink)</i></td>
       <td><select name="channel" onchange="upd_freq();calc_ts()">
@@ -1015,6 +1029,10 @@ var t = '#tab1C ';
       xmlhttp.send();
     }
 
+function tunefreqzero()
+{
+  $(t+' input[name ="finefreqtune"]').val(0).change();update_slider_finefreqtune();
+}
 
 function update_slide(id,text, tab) {
  
@@ -1074,14 +1092,27 @@ function update_slider_pat()
  $(t+'#pattext').html($(t+'input[name ="patperiod"]').val()+'ms')  ;
 }
 
+function update_slider_finefreqtune()
+{
+  console.log('test');
+
+$(t+'#finefreqtunetext').html($(t+'input[name ="finefreqtune"]').val()+'kHz')  ;
+ nfreq= parseFloat(parseFloat($(t+'input[name ="freq"]').val())+$(t+'input[name ="finefreqtune"]').val()*0.001);
+ console.log('nfreq='+nfreq);
+
+ $(t+'input[name ="freq"]').val((parseFloat($(t+'input[name ="f-central"]').val())+parseFloat($(t+'input[name ="finefreqtune"]').val()*0.001)).toFixed(3)).change();
+}
+
 function upd_freq() {
 if ($(t+'select[name ="channel"]').val()=='Custom') {
   $(t+'input[name ="freq"]').val(0).change();
+  $(t+'input[name ="f-central"]').val(0).change();
   $(t+'input[name ="sr"]').val(0).change();
   $(t+'select[name ="srselect"]').val('Custom');
 } 
 else {
-  $(t+'input[name ="freq"]').val(parseFloat($(t+'select[name ="channel"]').val().split("-")[0])-$(t+'input[name ="trvlo"]').val()).change()
+  $(t+'input[name ="freq"]').val((parseFloat($(t+'select[name ="channel"]').val().split("-")[0])-parseFloat($(t+'input[name ="trvlo"]').val())+parseFloat($(t+'input[name ="finefreqtune"]').val()/1000)).toFixed(3)).change();
+  $(t+'input[name ="f-central"]').val((parseFloat($(t+'select[name ="channel"]').val().split("-")[0])-parseFloat($(t+'input[name ="trvlo"]').val())).toFixed(3)).change()
 
     var chan_array = $(t+'select[name ="channel"] option:selected').text().match(/[a-z]+|[^a-z]+/gi);;
     var sr=0;
@@ -1396,6 +1427,7 @@ function update_tab(id) {
      update_slidertxt()
      update_slider_pat();
      update_slider_pts();
+     update_slider_finefreqtune();
       update_slide('keyint',' key interval','');
       update_slide('fps',' fps','');
       update_slide('v_bitrate',' kb/s','');
@@ -1456,6 +1488,18 @@ if ($( "#h265box-manualmode" ).is(":checked")== true ) {
 });
 
 
+
+
+$("#freq").on("change ", function() {
+
+
+});
+
+function manualfreqchange (){
+  
+   $(t+'#f-central').val($(t+'#freq').val()).change();
+  //$(t+'input [name="f-central"]').attr('value', parseFloat($(t+'#freq').val())).change();
+}
 
 function get_config_modulator(only_part) {
 
@@ -1525,6 +1569,7 @@ function get_config_modulator(only_part) {
    update_slider_pat();
    update_slider_pts();
    update_slider();
+   update_slider_finefreqtune();
    calc_ts();
  }) 
 
@@ -1847,6 +1892,8 @@ $('body').on('change', 'input,select,textarea', function () {
   if (mqtt.isConnected()) {
     sendmqtt('plutodvb/var', '{"'+obj+'":"'+ val +'"}' ) ;
     sendmqtt('plutodvb/subvar/'+obj, val ) ;
+
+    // Send PTT current status for synchronizing with heard pltuodvb/tx = true/false
   }
 });
 });
