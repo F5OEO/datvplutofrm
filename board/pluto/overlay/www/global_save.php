@@ -1,5 +1,5 @@
 <?php
-// F5UII : Saving global Adalm Pluto parameters to /opt/config.txt file in a ini format file
+// F5UII : Saving global Adalm Pluto parameters to file in a ini format file
 //
 
 require ('lib/functions.php');

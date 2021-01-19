@@ -3,7 +3,7 @@
   ?>
   <?php
   if ( isset( $_POST[ 'savefw' ] ) ) {
-    exec( '/root/writeconfig_to_env.sh' );
+    exec( 'cp /www/settings.txt /mnt/jffs2/etc/settings.txt' ); //To be replaced by a ajax cmd
   }
   ?>
   <?php
