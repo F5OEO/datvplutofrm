@@ -17,10 +17,10 @@ start() {
 		fi
 		if [ "$DATVMODE" = "rtmp" ]; then
 			/root/rtmppluto.sh >/dev/null </dev/null 2>/dev/null &
-		endif
+		fi
 		if [ "$DATVMODE" = "test" ]; then
 			/root/testpatern.sh >/dev/null </dev/null 2>/dev/null &
-		endif
+		fi
 	fi
    
    /root/readconfig_from_env.sh >/dev/null </dev/null 2>/dev/null 
