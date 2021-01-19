@@ -18,7 +18,7 @@ function write_php_ini($array, $file, $headlines)
         $res[]="";
        
       }
-      safefilerewrite($file, implode("\r\n", $res));
+      safefilerewrite($file, implode("\n", $res));
        
     }
 
