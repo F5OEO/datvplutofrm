@@ -2,12 +2,29 @@
 #/root/pluto_dvb -f 34 -t 250e6 -s 250e3 >/dev/null </dev/null 2>/dev/null 
 start() {
    
-   /root/watchconsoletx.sh >/dev/null </dev/null 2>/dev/null &
+   CONF=/mnt/jffs2/etc/settings-datv.txt
+   dos2unix $CONF
+	MAINMODE=$(grep mainmode $CONF | cut -f2 -d '='|sed 's/ //g')
+	DATVMODE=$(grep datvmode $CONF | cut -f2 -d '='|sed 's/ //g')
+
+	if [ "$MAINMODE" = "pass" ]; then
+	/root/watchconsoletx.sh >/dev/null </dev/null 2>/dev/null &
+	else
+		if [ "$DATVMODE" = "udp" ]; then
+			 /root/udpts.sh >/dev/null </dev/null 2>/dev/null &
+			  /root/watchudp.sh >/dev/null </dev/null 2>/dev/null &
+			  /root/dynamic_h265box.sh >/dev/null </dev/null 2>/dev/null & 
+		fi
+		if [ "$DATVMODE" = "rtmp" ]; then
+			/root/rtmppluto.sh >/dev/null </dev/null 2>/dev/null &
+		fi
+		if [ "$DATVMODE" = "test" ]; then
+			/root/testpatern.sh >/dev/null </dev/null 2>/dev/null &
+		fi
+	fi
+   
    /root/readconfig_from_env.sh >/dev/null </dev/null 2>/dev/null 
-   /root/rtmppluto.sh >/dev/null </dev/null 2>/dev/null &
-   /root/udpts.sh >/dev/null </dev/null 2>/dev/null &
-   /root/audio.sh >/dev/null </dev/null 2>/dev/null &
-   /root/watchudp.sh >/dev/null </dev/null 2>/dev/null & 
+
 #/root/decodevideo.sh >/dev/null </dev/null 2>/dev/null &  
 }
 
