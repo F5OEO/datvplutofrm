@@ -60,8 +60,16 @@
    
    <hr>
    <h2>Pluto Status</h2>
+   
+   Activ Mode :
+   TX status : On air / Standby
+
+
    <ul>
-    <li> Temperature </li>
+    <li> FPGA Temperature : <span id = "fpgatemp"></span> °C</li>
+    <li> Analog Digital Converter Temperature : <span id = "adtemp"></span> °C</li>
+    <li> Voltage : <span id = "voltage"></span> V</li>
+    <li> Current : <span id = "current"></span> mA</li>
     <li> CPU </li>
     <li> Processus </li>
     <li> Available memory RAM</li>
@@ -109,7 +117,7 @@ $auth = base64_encode($username.":".$password);
 
 }
 
-    var_dump(simplexml_load_string(get()));
+ //   var_dump(simplexml_load_string(get()));
 
 
 
@@ -133,12 +141,25 @@ $('body').on('change', 'input,select', function () {
     }
 
     sendmqtt('plutodvb/var', '{"'+obj+'":"'+ val +'"}' ) ;
+
   }
 });
 
 
 
 });
+
+
+  function update_status(variable, value) {
+
+if (variable.substr(0,16)=='plutodvb/status/') {
+  varid = variable.substring(16);
+  console.log (varid);
+  $('#'+varid).text(value);
+}
+
+
+}
 
 </script>
 </body>

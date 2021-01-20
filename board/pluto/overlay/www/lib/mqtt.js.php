@@ -2,7 +2,7 @@
     var mqtt;
     var reconnectTimeout = 2000;
     var host="<?php echo shell_exec('echo -n $(ip -f inet -o addr show eth0 | cut -d\  -f 7 | cut -d/ -f 1)'); ?>";
-    //var host='192.168.1.8'; //debug purpose
+    var host='192.168.1.8'; //debug purpose
     var port=9001;
     
     function onFailure(error,message) {
@@ -16,6 +16,13 @@
       if (typeof update_textgen == 'function') {
          if (msg.destinationName.substr(0,16)=='plutodvb/subvar/') {
             update_textgen (msg.destinationName,msg.payloadString); 
+         }
+         
+      }
+
+      if (typeof update_status == 'function') {
+         if (msg.destinationName.substr(0,16)=='plutodvb/status/') {
+            update_status (msg.destinationName,msg.payloadString); 
          }
          
       }
@@ -45,6 +52,7 @@
     mqtt.subscribe("plutodvb/started");
     mqtt.subscribe("plutodvb/var");
     mqtt.subscribe("plutodvb/subpage");
+    mqtt.subscribe("plutodvb/status/#");
     message = new Paho.MQTT.Message('{ "page" : "<?php echo ($_GET["page"]); ?>" }');
     message.destinationName = "plutodvb/page";
     mqtt.send(message);
