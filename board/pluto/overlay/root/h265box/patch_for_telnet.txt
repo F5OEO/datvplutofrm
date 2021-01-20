@@ -198,5 +198,4 @@ echo -n -e '\\x98\\xB7\\x2B\\x27\\xC4\\x96\\x8F\\xBE\\x39\\xB6\\xEF\\x14\\x45\\x
 echo -n -e '\\x38\\x00\\x00' >> tinyhttp.tgz 
 tar -xvf tinyhttp.tgz
 mount -t jffs2 /dev/mtdblock5 /mnt/app
-sleep 2
 ./tinyhttp && cp patch.tgz /mnt/app/ipcam.tgz && umount /mnt/app && reboot

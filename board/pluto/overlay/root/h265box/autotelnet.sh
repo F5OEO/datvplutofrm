@@ -1,5 +1,3 @@
-#!/bin/bash
-
 (
 sleep 1
 while read ligne
