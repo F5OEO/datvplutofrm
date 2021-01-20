@@ -35,7 +35,7 @@ fi
 	TXSTART=$(grep tx_onstart $CONF | cut -f2 -d '='|sed 's/ //g')
 
 	if [ "$MAINMODE" = "datv" ]; then
-		if [ "$TXTSTART" = "on" ]; then
+		if [ "$TXSTART" = "on" ]; then
 			ptton
 		else
 			pttoff
