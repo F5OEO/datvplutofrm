@@ -1,9 +1,27 @@
-# A very dirty trick for gpio running in bash, to inspect !
-#/root/pluto_dvb -f 34 -t 250e6 -s 250e3 >/dev/null </dev/null 2>/dev/null 
+
+ptton()
+{
+    #PTT on GPIO 0 AND GPIO 2 (GPIO 1 should be not touched)
+	echo 0 > /sys/bus/iio/devices/iio:device1/out_altvoltage1_TX_LO_powerdown
+	echo 0x27 0x50 > /sys/kernel/debug/iio/iio:device1/direct_reg_access
+	mosquitto_pub -t plutodvb/status/tx -m true
+}
+
+pttoff()
+{
+		echo 1 > /sys/bus/iio/devices/iio:device1/out_altvoltage1_TX_LO_powerdown
+        echo 0x27 0x00 > /sys/kernel/debug/iio/iio:device1/direct_reg_access
+		mosquitto_pub -t plutodvb/status/tx -m false
+}
+
 start() {
-   
+
+if [ -f "/mnt/jffs2/etc/settings.txt" ]; then   
    cp /mnt/jffs2/etc/settings.txt /www/settings.txt 
-   
+else
+	/root/readconfig_from_env.sh >/dev/null </dev/null 2>/dev/null
+	cp /www/settings.txt /mnt/jffs2/etc/settings.txt 
+fi   
   
 if [ -f "/mnt/jffs2/etc/config.txt" ]; then
     echo "config.txt already in jfss2"
@@ -14,14 +32,19 @@ fi
    CONF=/mnt/jffs2/etc/settings-datv.txt
    	MAINMODE=$(grep mainmode $CONF | cut -f2 -d '='|sed 's/ //g')
 	DATVMODE=$(grep datvmode $CONF | cut -f2 -d '='|sed 's/ //g')
+	TXSTART=$(grep tx_onstart $CONF | cut -f2 -d '='|sed 's/ //g')
 
-	if [ "$MAINMODE" = "pass" ]; then
-	/root/watchconsoletx.sh >/dev/null </dev/null 2>/dev/null &
-	else
+	if [ "$MAINMODE" = "datv" ]; then
+		if [ "$TXTSTART" = "on" ]; then
+			ptton
+		else
+			pttoff
+		fi
+
 		if [ "$DATVMODE" = "udp" ]; then
-			 /root/udpts.sh >/dev/null </dev/null 2>/dev/null &
-			  /root/watchudp.sh >/dev/null </dev/null 2>/dev/null &
-			  /root/dynamic_h265box.sh >/dev/null </dev/null 2>/dev/null & 
+				/root/udpts.sh >/dev/null </dev/null 2>/dev/null &
+				/root/watchudp.sh >/dev/null </dev/null 2>/dev/null &
+				/root/dynamic_h265box.sh >/dev/null </dev/null 2>/dev/null & 
 		fi
 		if [ "$DATVMODE" = "rtmp" ]; then
 			/root/rtmppluto.sh >/dev/null </dev/null 2>/dev/null &
@@ -29,9 +52,12 @@ fi
 		if [ "$DATVMODE" = "test" ]; then
 			/root/testpatern.sh >/dev/null </dev/null 2>/dev/null &
 		fi
+	else
+		/root/watchconsoletx.sh >/dev/null </dev/null 2>/dev/null &
 	fi
-   
-   /root/readconfig_from_env.sh >/dev/null </dev/null 2>/dev/null 
+	mosquitto_pub -t plutodvb/started -m true
+	/root/readsensor.sh >/dev/null </dev/null 2>/dev/null &
+    
 
 #/root/decodevideo.sh >/dev/null </dev/null 2>/dev/null &  
 }
