@@ -1043,7 +1043,7 @@ function update_slide(id,text, tab) {
 function update_slidertxt()
 {
 <?php 
-  if (($general_ini!=false) && (isset($datv_config['DATV']['abs_gain']))) {
+  if (($general_ini!=false) && (isset($datv_config['DATV']['abs_gain'])) &&($datv_config['DATV']['abs_gain']!='' )) {
     echo "abs_gain=".$datv_config['DATV']['abs_gain'].";";
   }
   else
@@ -1061,8 +1061,8 @@ function update_slidertxt()
   {
     text_watt = (Math.pow(10,(abs/10))/1000).toFixed(1)+'W'
   }
-  $(t+'#powertext').text(parseFloat($(t+'input[name ="power"]').val()).toFixed(1)+'dB (Abs: '+abs.toFixed(1)+'dB / '+text_watt+')' ) ;
-  $(t+'#power_abs').val(abs.toFixed(1)+'dB').change();;
+  $(t+'#powertext').text(parseFloat($(t+'input[name ="power"]').val()).toFixed(1)+'dB (Abs: '+abs.toFixed(1)+'dBm / '+text_watt+')' ) ;
+  $(t+'#power_abs').val(abs.toFixed(1)+'dBm').change();
   $(t+'#power_abs_watt').val(text_watt).change();;
  }
  else {
