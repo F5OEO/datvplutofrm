@@ -56,7 +56,7 @@ fi
 		/root/watchconsoletx.sh >/dev/null </dev/null 2>/dev/null &
 	fi
 	mosquitto_pub -t plutodvb/started -m true
-	/root/readsensor.sh >/dev/null </dev/null 2>/dev/null &
+	
     
 
 #/root/decodevideo.sh >/dev/null </dev/null 2>/dev/null &  
@@ -64,6 +64,30 @@ fi
 
 stop() {
 	echo heartbeat > /sys/class/leds/led0:green/trigger
+	#Be sure to stop tx
+	pttoff
+	mosquitto_pub -t plutodvb/started -m false
+
+	#kill all the processes
+	# UDP
+	pkill watchudp
+	pkill udpts
+	pkill pluto_dvb
+	pkill tsp
+	pkill dynamic_h265box
+	pkill tsvbr2cbr
+
+	# RTMP  
+	pkill rtmppluto
+
+	#patern
+	pkill testpatern
+	#passthrough
+	
+	pkill watchconsoletx
+	#common
+	
+	pkill ffmpeg
 
 	echo "Stopping"
 }

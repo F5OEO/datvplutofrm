@@ -1,3 +1,4 @@
+#!/bin/sh
 #https://www.analog.com/media/cn/technical-documentation/user-guides/AD9364_Register_Map_Reference_Manual_UG-672.pdf
 
 ptton()

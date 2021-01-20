@@ -1,3 +1,4 @@
+#!/bin/sh
 # We could do a continuous decoding BUT even by keeping just I picture, ffmpeg decodes all frames and CPU is too high
 
 while :
