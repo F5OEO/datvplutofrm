@@ -40,7 +40,7 @@ if ((isset($_GET['f'])) && (isset($_GET['rate']) && (isset($_GET['rec'])))) {
 	{
 		$Freq = strval(floatval('10'.$_GET['f'])*1000);
 		$rate= str_pad(strval($_GET['rate'])*1000, 5, "0", STR_PAD_LEFT);
-		if (floatval($_GET['rate'])<=0.25) { $LowSR="yes";$WideScan="no";}
+		if (floatval($_GET['rate'])<=0.07) { $LowSR="yes";$WideScan="no";}
 		$msg = "[GlobalMsg],Freq=".$Freq.",Offset=".$Offset.",Doppler=".$Doppler.",Srate=".$rate.",WideScan=".$WideScan.",LowSR=".$LowSR.",DVBmode=".$DVBmode.",FPlug=".$FPlug.",Voltage=".$Voltage.",22kHz=".$twentytwokhz."\r\n";
 		
 		$sock = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);

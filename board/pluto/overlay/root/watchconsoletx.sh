@@ -4,11 +4,13 @@ ptton()
 {
     #PTT on GPIO 0 AND GPIO 2 (GPIO 1 should be not touched)
 	echo 0x27 0x50 > /sys/kernel/debug/iio/iio:device1/direct_reg_access
+	mosquitto_pub -t plutodvb/status/tx -m true
 }
 
 pttoff()
 {
         echo 0x27 0x00 > /sys/kernel/debug/iio/iio:device1/direct_reg_access
+		mosquitto_pub -t plutodvb/status/tx -m false
 }
 
 

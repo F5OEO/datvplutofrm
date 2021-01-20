@@ -40,7 +40,7 @@ MESSAGE="$FWVERS""$PROVNAME"
 
 CONF=/mnt/jffs2/etc/settings-datv.txt
 #workaround for extra ^M characters : dos2unix
-dos2unix $CONF
+#dos2unix $CONF
 REMUX=$(grep "remux" $CONF | cut -f2 -d '='|sed 's/ //g')
 H265BOX=$(grep use_h265box $CONF | cut -f2 -d '='|sed 's/ //g')
 H265BOXIP=$(grep ipaddr_h265box $CONF | cut -f2 -d '='|sed 's/ //g')
@@ -81,10 +81,15 @@ source /root/strategy.sh
 echo VideoRate $VIDEORATE
 
 # CONFIGURE H265 ENCODER
+
+
 if [ "$H265BOX" = "on" ] ; then
-com="h265box=$H265BOXIP&codec=$CODEC&res=$RESOLUTION&fps=$VIDEOFPS&keyint=$GOPSIZE&v_bitrate=$VIDEORATE&sound=$SOUND&audioinput=$AUDIOINPUT&audio_channels=$AUDIOCHANNELS&audio_bitrate=$AUDIORATE&enabled=$PTT&pluto_ip=$myip&pluto_port=8282"
-echo $com
-php-cgi /www/encoder_control.php $com
+        MANUAL_MODE=$(grep "h265box-manualmode" /www/settings.txt | cut -f2 -d' '|sed 's/ //g')
+        if [ "$MANUAL_MODE" != "on" ]; then
+                com="h265box=$H265BOXIP&codec=$CODEC&res=$RESOLUTION&fps=$VIDEOFPS&keyint=$GOPSIZE&v_bitrate=$VIDEORATE&sound=$SOUND&audioinput=$AUDIOINPUT&audio_channels=$AUDIOCHANNELS&audio_bitrate=$AUDIORATE&enabled=$PTT&pluto_ip=$myip&pluto_port=8282"
+                echo $com
+                php-cgi /www/encoder_control.php $com
+        fi
 fi
 
 echo Freq before $FREQ

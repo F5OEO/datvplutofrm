@@ -15,6 +15,7 @@ $username = 'admin';
 $password = '12345';
 $auth = base64_encode($username.":".$password);
 
+
 set_enc_video($auth);
 set_enc_audio($auth);
 set_enc_network($auth);
@@ -94,74 +95,91 @@ function set_enc_network($auth){
 function set_enc_audio($auth){
 	$server = $_POST['h265box'].'/action/set?subject=audioenc&stream=0';
 	
+	
 	if($_POST['audioinput']=="line"){
-		$input=1;
+		$input="1";
 		//line in
 	}else{
-		$input=0;
-		//hdmi
+		$input="0";
+		//hdmi NOT WORKING !!!!!
 	}
 	
 	if($_POST['audio_channels']=="2"){
-		$channel=1;
+		$channel="1";
 		//stereo
 	}else{
-		$channel=0;
+		$channel="0";
 		//mono
 	}
 
 
 	//fixed to AAC
+	/*
 	$xml = '<?xml version: "1.0" encoding="utf-8"?>
 	<request>
 	<audioenc>
-        <channel>'.$channel.'</channel>         
-	<bitrate>'.$_POST['audio_bitrate'].'</bitrate>
-        <codec>2</codec>
-        <samples>48000</samples>                      
-	<input>'.$input.'</input>           
+	<codec>2</codec>
+	<samples>32000</samples>
+	<bitrate>'.$_POST['audio_bitrate'].'</bitrate>            
+    <channel>'.$channel.'</channel>         
+	<input>'.$input.'</input>
+	<invol>30</invol>
+	<outvol>100</outvol>                 
 	</audioenc>
 	</request>';
-
-        //echo $xml;
+	*/
 	
+	/*
+	$xml = '<?xml version="1.0" encoding="utf-8"?><request><audioenc>                        <codec>2</codec>                        <samples>48000</samples>                        <bitrate>'.$_POST['audio_bitrate'].'</bitrate>                        <channel>0</channel>                        <input>'.$input.'</input>                        <invol>30</invol>                        <outvol>100</outvol>                 </audioenc></request>';  
+	echo $xml."\n";
+	*/
+	
+	$xml = '<?xml version="1.0" encoding="utf-8"?><request><audioenc>                        <codec>2</codec>                        <samples>48000</samples>                        <bitrate>'.$_POST['audio_bitrate'].'</bitrate>                        <channel>'.$channel.'</channel>                        <input>1</input>                        <invol>30</invol>                        <outvol>100</outvol>                 </audioenc></request>';  
+	echo $xml;
 	
 	post($auth,$xml,$server);
-
+	
 }
 
 
 
 
-
+/* "<?xml version="1.0" encoding="utf-8"?><request><videoenc><codec>1</codec>
+ <resolution>720x540</resolution>
+<framerate>25</framerate><rc>1</rc><keygop>50</keygop><bitrate>251</bitrate>
+<quality>5</quality>
+<profile>0</profile>
+<audioen>1</audioen>
+ </videoenc></request>"
+*/
 
 function set_enc_video($auth){
 
 	$server = $_POST['h265box'].'/action/set?subject=videoenc&stream=0';
 
 	if(strtoupper($_POST['codec'])=="H265"){
-		$codec=1;
+		$codec="1";
 	}else{
-		$codec=0;
+		$codec="0";
 	}
      
         if($_POST['sound']=="On"){
-		$sound=1;
+		$sound="1";
 	}else{
-		$sound=0;
+		$sound="0";
 	}
 
 	$xml = '<?xml version: "1.0" encoding="utf-8"?>
 	<request><videoenc>
-	<codec>'.$codec.'</codec>
-	<resolution>'.$_POST['res'].'</resolution>
-	<framerate>'.$_POST['fps'].'</framerate>
-	<audioen>'.$sound.'</audioen>
-	<rc>1</rc>
-	<keygop>'.$_POST['keyint'].'</keygop>
-	<bitrate>'.$_POST['v_bitrate'].'</bitrate>
-	<quality>5</quality>
-	<profile>0</profile>
+	<codec>'.$codec.'</codec>            
+	<resolution>'.$_POST['res'].'</resolution>            
+	<framerate>'.$_POST['fps'].'</framerate>         
+	<rc>1</rc>             
+	<keygop>'.$_POST['keyint'].'</keygop>          
+	<bitrate>'.$_POST['v_bitrate'].'</bitrate>          
+	<quality>5</quality>        
+	<profile>0</profile>         
+	<audioen>1</audioen>             
 	</videoenc></request>';
 
 	//echo $xml;
@@ -188,10 +206,10 @@ function post($auth,$xml,$server){
 
 
 	$ctx = stream_context_create($context);
-	$data = file_get_contents("http://$server", false, $ctx);
-
-
-
+	file_get_contents("http://$server", false, $ctx);
+	//var_dump($data);
+	//echo "\n";
+	//usleep(100000);		
 }
 
 
