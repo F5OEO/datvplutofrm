@@ -8,8 +8,8 @@ H265BOXIP=$(grep ipaddr_h265box $CONF | cut -f2 -d '='|sed 's/ //g')
 while :
 do
 TSBITRATE=$(mosquitto_sub -t plutodvb/ts/netbitrate -C 1)
-CONFVOLATILE=/www/setting.txt
-MANUAL_MODE=$(grep "\h265box-manualmode\b" $CONFVOLATILE | cut -f2 -d' '|sed 's/ //g')
+CONFVOLATILE=/www/settings.txt
+MANUAL_MODE=$(grep "h265box-manualmode" $CONFVOLATILE | cut -f2 -d' '|sed 's/ //g')
 if [ "$MANUAL_MODE" != "on" ]; then
     source /root/strategy.sh
     # CONFIGURE H265 ENCODER

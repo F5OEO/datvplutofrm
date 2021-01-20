@@ -81,10 +81,15 @@ source /root/strategy.sh
 echo VideoRate $VIDEORATE
 
 # CONFIGURE H265 ENCODER
+
+
 if [ "$H265BOX" = "on" ] ; then
-com="h265box=$H265BOXIP&codec=$CODEC&res=$RESOLUTION&fps=$VIDEOFPS&keyint=$GOPSIZE&v_bitrate=$VIDEORATE&sound=$SOUND&audioinput=$AUDIOINPUT&audio_channels=$AUDIOCHANNELS&audio_bitrate=$AUDIORATE&enabled=$PTT&pluto_ip=$myip&pluto_port=8282"
-echo $com
-php-cgi /www/encoder_control.php $com
+        MANUAL_MODE=$(grep "h265box-manualmode" /www/settings.txt | cut -f2 -d' '|sed 's/ //g')
+        if [ "$MANUAL_MODE" != "on" ]; then
+                com="h265box=$H265BOXIP&codec=$CODEC&res=$RESOLUTION&fps=$VIDEOFPS&keyint=$GOPSIZE&v_bitrate=$VIDEORATE&sound=$SOUND&audioinput=$AUDIOINPUT&audio_channels=$AUDIOCHANNELS&audio_bitrate=$AUDIORATE&enabled=$PTT&pluto_ip=$myip&pluto_port=8282"
+                echo $com
+                php-cgi /www/encoder_control.php $com
+        fi
 fi
 
 echo Freq before $FREQ
