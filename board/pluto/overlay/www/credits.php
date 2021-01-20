@@ -95,6 +95,8 @@
 
 
 <br>
+  <img src='img/plutoDVB.svg' width="150px">
+
 
 <section id="f5oeo" style="display: inline-block;">
 <h3 id="about">Evariste, F5OEO</h3>
@@ -144,7 +146,7 @@
 <ul>
   <li><img src="img/mqtt-logo.svg" style="width: 100px; height: 40px;  margin-right: 15px; vertical-align: middle;"> The Standard for IoT Messaging. Mosquitto broker is embedded. The dictionnary for interface PlutoDVB is <a href="https://github.com/F5OEO/datvplutofrm/blob/topic-f5uii/README.MQTT.md" target="_blank">published</a>.</li>
   <li><img src="img/PHP-logo.svg" style="height: 40px;   margin-right: 15px; vertical-align: middle;">PHP free programming language for the web</li>
-  <li><img src="img/obs-websdocket.png" style="height: 40px;   margin-right: 15px; vertical-align: middle;"> OBS Studio Websocket, connection with the open-source video streaming softmware <a href="https://obsproject.com/" target="_blank">OBS Studio</a> <i>under developpement</i></li>
+  <li><img src="img/obs.svg" style="height: 40px;   margin-right: 15px; vertical-align: middle;"> OBS Studio Websocket, connection with the open-source video streaming softmware <a href="https://obsproject.com/" target="_blank">OBS Studio</a> <i>under developpement</i></li>
 </ul>
 </p>
 <a class="anchor" href="#top">Back to top</a>
