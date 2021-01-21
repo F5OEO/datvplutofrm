@@ -4,23 +4,6 @@
     session_start();
     require ('./lib/functions.php');
 
-    $file_config ='/mnt/jffs2/etc/config.txt';
-    $file_general = '/mnt/jffs2/etc/settings-datv.txt';
-    $dir = '/mnt/jffs2/etc/';
-    if (true==false) // replace false by true for developping on debug server
-    {
-      echo "<i>Attention, in developping mode </i><br>";
-      $file_config ='config.txt';
-      $file_general = 'settings-datv.txt';
-      $dir= addslashes ('C:\Users\cfur\Downloads\UwAmp\www\datvplutofrm\board\pluto\overlay\www\\');
-    }
-
-    $config_ini = readinifile($file_config);
-    $headfile = $config_ini[0];
-    $network_config = $config_ini[1];
-    $general_ini = readinifile($file_general);
-    $datv_config = $general_ini[1];    
-  
 
   ?>
   <!doctype html>
@@ -365,13 +348,25 @@ console.log("subs "+item.id);
 $('#addfreetext').click(function(){
   var numItems = 0;
   numItems = $('.freetext').length +1 ;
-  $("#nestable ol").append('<li class="dd-item" data-id="freetext'+numItems+'" data-type="freetext"><div class="dd-handle freetext" contenteditable="true">Editable freetext</div></li>'); 
+  $("#nestable ol").append('<li class="dd-item" data-id="freetext'+numItems+'" data-type="freetext"><div class="dd-handle freetext" contentEditable="true">Editable freetext</div></li>'); 
 })
 $('#addmqttvar').click(function(){
   var numItems = 0;
   numItems = $('.freemqtt').length +1 ;
-  $("#nestable ol").append('<li class="dd-item" data-id="freemqtt'+numItems+'" data-type="freemqtt"><div class="dd-handle freemqtt" contenteditable="true">Editable mqtt topic</div></li>'); 
+  $("#nestable ol").append('<li class="dd-item" data-id="freemqtt'+numItems+'" data-type="freemqtt"><div class="dd-handle freemqtt" ><span contentEditable="true">Editable mqtt topic</span></div></li>'); 
 })
+
+$('li[data-id^=freemqtt]').dblclick( function() {
+  console.log('ok');
+  window.prompt("sometext","defaultText");
+  $(this).attr('contentEditable','true');
+  $(this).addClass('inEdit');
+});
+$('li[data-id^=freemqtt]').blur( function() {
+  $(this).attr('contentEditable','false');
+  $(this).removeClass('inEdit');
+})
+
 
 
 

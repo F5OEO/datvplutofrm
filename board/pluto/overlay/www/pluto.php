@@ -1,5 +1,6 @@
   <?php
   session_start();
+  require ('./lib/functions.php');
   ?>
   <?php
   if ( isset( $_POST[ 'savefw' ] ) ) {
@@ -91,15 +92,14 @@
     <div class="tab-wrap">
 
       <input type="radio" id="tab1" name="tabGroup1" class="tab" checked>
-      <label for="tab1">QO-100 Spectrum</label>
+      <label for="tab1"><span class="note tooltip" title="To display the reception spectrum, you must have it enabled in the <a href='setup.php#linkreceiversettings'>Setup</a>. When disabled, the data flow is interrupted. At the same time, the receiver control feature is switched off. <p>The QO-100 spectrum is an online ressource of BATC / AMSAT-UK, we thank them for this resource. <br>You can enable/disable the display of the spectrum in the .</p>💡 Click on the tab to temporarily hide the spectrum. Another click on the banner will make the spectrum reappear.">Reception spectrum</span></label>
 
       <input type="radio" id="tab2" name="tabGroup1" class="tab">
-      <label for="tab2">Setup</label>
+      <!-- <label for="tab2">Setup</label> -->
 
-      <input type="radio" id="tab3" name="tabGroup1" class="tab">
-      <label for="tab3">Help</label>
 
-      <div class="tab__content" id="tab_spectrum">
+
+      <div class="tab__content" id="tab_spectrum" style = "visibility :display;">
         <div id="no_wf"><p style="padding :10px 25px;">To display the QO-100 spectrum, enable the display on the Setup tab.</p></div>
         <div id="wf" style="width: 100%;">
           <div id="fft-col" class="col-xl-7"  style="width: 100%;">
@@ -115,7 +115,7 @@
         </div>
       </div>
     </div>
-
+    <!--
     <div class="tab__content" id="tab_setup">
       <h3>Display</h3>
       <p>The QO-100 spectrum is an online ressource of BATC / AMSAT-UK. You can disable the display of the spectrum QO-100 here. When disabled, the data flow is interrupted. At the same time, the receiver control feature is switched off. Save your choice by Apply Settings button. </p>
@@ -133,84 +133,8 @@
             </tr>
           </table>
 
-          <h3>Receiver setup</h3>
-          <p>To be able to control your minitiouner, please fill in these few parameters. For more details, please refer to the Help tab.</p>
+      </div> -->
 
-          <table>
-            <tr>
-              <td>Destination IP address</td>
-              <td><input type="text" name="minitiouner-ip" value="232.0.0.11"></td>
-              <td>Destination Port number <br></td>
-              <td><input type="text" name="minitiouner-port" value="6789" maxlength="15" size="16"> </td>
-            </tr>
-            <tr>
-              <td>LNB Offset <i>kHz</i></td>
-              <td><input type="text" name="minitiouner-offset" value="9750000"></td>
-              <td>Rx socket <br></td>
-              <td><select name="minitiouner-socket" >
-                <option value="A">A</option>
-                <option value="B">B</option>
-              </select> </td>
-            </tr>
-            <tr>
-              <td>LNB Voltage <i>V</i></td>
-              <td>
-                <select name="minitiouner-voltage" >
-                  <option value="0">0</option>
-                  <option value="13">13</option>
-                  <option value="18">18</option>
-                </select>
-              </td>
-              <td>LNB 22 kHz <br></td>
-              <td><select name="minitiouner-22khz">
-                <option value="OFF">Off</option>
-                <option value="ON">On</option>
-              </select> </td>
-            </tr>  
-            <tr>
-              <td>DVB Mode <i></i></td>
-              <td>
-                <select name="minitiouner-mode" >
-                  <option value="Auto">Auto</option>
-                  <option value="DVB-S">DVBS</option>
-                  <option value="DVB-S2">DVBS2</option>
-                </select>
-              </td>
-              <td>LAN Gateway address<br></td>
-              <td><input type="text" name="gateway-eth0" value="192.168.1.1" maxlength="15" size="16">
-              </td>
-            </tr>       
-            <tr>
-              <td>UDP Broadcast IP address</td>
-              <td><input type="text" name="minitiouner-udp-ip" value="230.0.0.10"></td>
-              <td>UDP Broadcast Port number <br></td>
-              <td><input type="text" name="minitiouner-udp-port" value="10000" maxlength="15" size="16"> </td>
-            </tr>                 
-          </table><br>
-          <input type="submit" value="Apply Settings" id ="submit_receiver"><span id="saved_receiver" class="saved"  style="display: none;"> Saved !</span>
-        </form>
-
-      </div>
-
-      <div class="tab__content" id='tab_help'>
-
-       <h2>Control your transmission frequency and paste the RTMP URL string</h2>
-       <p>At the bottom of QO-100 Spectrum, there are horizontal bars representing the possible transmission channels on the satellite. By simply clicking on a bar, <ul><li>you will report  the corresponding transmission frequency in the Modulator table, in <i>Freq</i> field. This will take account of your possible transverter settings.</li><li>the chosen channel frequency is copied in your clipboard so that you can easily paste where you want.</li><li>then, by clicking on the text <i>Click here to copy RTMP server URL in </i>📋, you will directly copy in clipboard the whole string that is waiting in the destination URL. You will be able to simply paste it in URL field of your stream software like OBS Studio, or Vmix (the <a href="index.html#test" >RTMP string</a> is set with all parameters set in Modulator table, to be paste).</li></ul> </p>
-       <h2>Steering DATV receiver</h2>
-       <p><i>At this stage, only one minitiouner receiver can be controlled. The Pluto must be connected on the same local network, through a gateway (router). </i></p>
-       <h3>About Minitiouner</h3><img src="./img/minitiouner.jpg" style="
-       float: right;"/>
-       <p>The Minitiouner hardware is designed for easy use with the software Minitiouner Pro conceived by F6DZP Jean-Pierre. The support and download are free and available on <a href="http://www.vivadatv.org/" target="_blank">vivadatv forum</a>.</p>
-       <h3>How it works</h3>
-       <p>To be able to directly drive your minitiouner by a simple click on a used channel of the QO-100 spectrum, you have to follow these few indications.</p>
-       <p>The Ip adress and port to enter in the <i>Setup</i> tab correspond to the informations <i>Conf_AddrUDP</i> and <i>Conf_Port</i> that you find in the minitiouner configuration file <i>minitiouneConfig.ini</i>.  The IP address can also be the address of the computer on which the minitiouner is running.
-        The gateway address indicated is that of your network router. Click <i>Apply Settings</i> for save your settings.</p>
-        <p>Click on a signal on the spectrum. The command is sent directly to the minitiouner with the right frequency and SR, also considering your settings stored on the setup tab.</p>
-        <h3>And now what else ?</h3>
-        <p>You may have good ideas for further development of this software. You can bring them on <a href="https://www.f5uii.net/en/patch-plutodvb/?o=<?php
-        echo "$fwver";
-        ?>" title="Go to Chris blog and ressources" target="_blank">my blog</a>. You can help me to continue the developments and projects around plutoSDR, by making a gift purchase of an item content published on the public wish list, or buy me a cofee. 😉 73 Chris F5UII</p>
-      </div>
 
     </div>
   </section>
@@ -235,15 +159,7 @@
 
 
 <?php
-  require ('./lib/functions.php');
-  $file_general = '/mnt/jffs2/etc/settings-datv.txt';
-  if (true==false) // replace false by true for developping on debug server
-  {
-    echo "<i style='color:red;'>Attention, in developping mode </i><br>";
-    $file_general= addslashes ('C:\Users\cfur\Downloads\UwAmp\www\datvplutofrm\board\pluto\overlay\www\settings-datv.txt');
-  }
-  $general_ini = readinifile($file_general);
-  $datv_config = $general_ini[1];  
+
   
   $max_power = 10;
 
@@ -781,20 +697,17 @@ Can be usefull. <br>
 
 <script>
   function spectrum_display () {
-    if ($( "#spectrum_enable" ).is(":checked")==true) {
+    <?php $display="false"; if ((isset($datv_config['DATV_RECEIVER']['spectrum_enable']))&& $datv_config['DATV_RECEIVER']['spectrum_enable']==='on') {$display="true";} ?>
+    if (<?php echo $display ?>==true) {
       $("#wf").show(0);
       $("#no_wf").hide(0);
+      jQuery.getScript("lib/wf.js");
     } else { 
       $("#wf").hide(0);
       $("#no_wf").show(0);
     }
-    jQuery.getScript("lib/wf.js");
+    
   }
-
-  $( "#spectrum_enable" ).click(function() {
-    spectrum_display ();
-
-  });
 
 var tab='1';
 var t = '#tab1C ';
@@ -1366,43 +1279,6 @@ function upd_fec() {
 calc_ts();
 }
 var max= 0;
-function get_config_receiver() {
-
- $.get('settings-receiver.txt', function(data) {
-  var datalines = (data.split('\n'));
-  for (var i in datalines) {        
-    var datal =(datalines[i].split(' '));
-    var $el = $('[name="'+datal[0]+'"]');
-    type = $el.attr('type');
-
-    switch(type){
-      case 'checkbox':
-      $el.attr('checked', 'checked');
-      break;
-      case 'radio':
-      $el.filter('[value="'+datal[1]+'"]').attr('checked',  'checked');
-      break;
-      case 'option':
-        //$('select[name="minitiouner-22khz"]').find('option:contains("On")').attr("selected",true);
-        $el.removeAttr("selected");
-        $el.filter('[value="'+datal[1]+'"]').find('option:contains("'+datal[0]+'")').attr('selected', true);
-        break;                    
-        default:
-        $el.val(datal[1]);
-      }
-    }
-    spectrum_display(); 
-
-  })
- .fail(function() {
-  if (max<4) {
-    $.get('copy-config-jffs2www.php', function() {});
-    get_config_receiver() ;
-    max++;
-  }
- }) 
-}
-
 
 function update_tab(id) {
       
@@ -1576,7 +1452,7 @@ function get_config_modulator(only_part) {
 }
 
 function load() {
-  get_config_receiver() ;
+  spectrum_display(); 
   if  (localStorage.getItem('modulator_1')==null) {
     get_config_modulator(false);
   }
@@ -1870,6 +1746,9 @@ $(".right-c-menu li").on('click', function(){
 });
 
 
+$('#tab1').click(function(){
+   $("#tab_spectrum").toggle("slow");
+})
 
 
 </script>

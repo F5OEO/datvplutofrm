@@ -1,5 +1,28 @@
 <?php
 // php pluto library
+
+$file_config ='/mnt/jffs2/etc/config.txt';
+$file_general = '/mnt/jffs2/etc/settings-datv.txt';
+$dir = '/mnt/jffs2/etc/';
+if (true==false) // replace false by true for developping on debug server
+{
+  echo "<i>Attention, in developping mode </i><br>";
+  $file_config ='config.txt';
+  $file_general = 'settings-datv.txt';
+  $dir= "";
+}
+
+$config_ini = readinifile($file_config);
+$headfile = $config_ini[0];
+$network_config = $config_ini[1];
+$general_ini = readinifile($file_general);
+$datv_config = $general_ini[1];    
+//var_dump($datv_config);
+
+
+
+
+
 function write_php_ini($array, $file, $headlines)
     {
 
@@ -71,7 +94,7 @@ function readinifile($file) {
     }
     else 
     {
-      echo "The <pre>$file</pre> is not available, the form values are not initialized !<br> ";
+      echo "The <pre>$file</pre> is not available, the form values are not initialized ! Please take a look at the <a href='setup.php'>setup page</a> <br> ";
       return false;
      
     }

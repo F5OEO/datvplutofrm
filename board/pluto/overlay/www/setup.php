@@ -3,22 +3,7 @@
 
     session_start();
    require ('./lib/functions.php');
-    $file_config ='/mnt/jffs2/etc/config.txt';
-    $file_general = '/mnt/jffs2/etc/settings-datv.txt';
-    $dir = '/mnt/jffs2/etc/';
-    if (true==false) // replace false by true for developping on debug server
-    {
-      echo "<i>Attention, in developping mode </i><br>";
-      $file_config ='config.txt';
-      $file_general = 'settings-datv.txt';
-      $dir= "";
-    }
-
-    $config_ini = readinifile($file_config);
-    $headfile = $config_ini[0];
-    $network_config = $config_ini[1];
-    $general_ini = readinifile($file_general);
-    $datv_config = $general_ini[1];    
+ 
   
 
   ?>
@@ -95,7 +80,7 @@
           <input type="checkbox" id="tx_onstart" name="DATV[tx_onstart]" <?php if (isset($datv_config['DATV']['tx_onstart']))  echo $datv_config['DATV']['tx_onstart']=='on' ? " checked" :  "" ?>>
           <label for="tx_onstart" aria-describedby="label"><span class="ui"></span> <span id='tx_onstart_label'> enabled</span></label>
         </div> </td>  
-        <td><span class="note tooltip" title="<ul><li>When set to a value different than 0, the absolute power conversion (abs) is displayed in dB and also Watt unit on the controller. </li><li>The value can be positive or negative.</li></ul>" style="color : #636363;">Conversion gain to display the real power (absolute output level) </span><i>(dB)</i></td>
+        <td><span class="note tooltip" title="<ul><li>When set to a value different than 0, the absolute power conversion (abs) is displayed in dBm and also Watt unit on the controller. </li><li>The value can be positive or negative.</li></ul>This conversion is meant to be simplistic and linear and does not take into consideration the non-linearities and saturations of the amplifiers..." style="color : #636363;">Conversion gain to display the real power (approximate absolute output level) </span><i>(dB)</i></td>
         <td><input type="text" id="abs_gain" name="DATV[abs_gain]" value="<?php if (isset($datv_config['DATV']['abs_gain'])) echo $datv_config['DATV']['abs_gain']; ?>" maxlength="4" size="4"></td>
 
      </tr>

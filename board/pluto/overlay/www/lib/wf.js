@@ -1,4 +1,4 @@
-  if ( ((!window.navigator.onLine)||(document.getElementById("spectrum_enable").checked==false)) )
+  if (!window.navigator.onLine) 
   { 
    //no execution (exit)
   }
@@ -66,7 +66,7 @@ if(typeof(Storage) !== "undefined")
 
 /* On load */
 $(function() {
-  if ((!window.navigator.onLine)||(document.getElementById("spectrum_enable").checked==false)) 
+  if (!window.navigator.onLine) 
   { 
     return false;
   }
