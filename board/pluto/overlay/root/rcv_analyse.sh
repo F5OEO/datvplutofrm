@@ -10,8 +10,8 @@ kill -9 $mypid
 
 if [ -n "${1}" ] && [ $1 = "start" ]
 then
-	IP=$(grep  "\bminitiouner-udp-ip\b" /www/settings-receiver.txt | cut -f2 -d' ')
-	PORT=$(grep  "\bminitiouner-udp-port\b" /www/settings-receiver.txt | cut -f2 -d' ')
+	IP=$(grep  "\bminitiouner-udp-ip\b" /mnt/jffs2/etc/settings-receiver.txt | cut -f2 -d' ')
+	PORT=$(grep  "\bminitiouner-udp-port\b" /mnt/jffs2/etc/settings-receiver.txt | cut -f2 -d' ')
 
 	echo $IP
 	echo $PORT

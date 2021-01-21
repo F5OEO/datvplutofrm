@@ -16,6 +16,8 @@ pttoff()
 
 start() {
 
+cp /mnt/jffs2/etc/settings-receiver.txt /www/
+
 if [ -f "/mnt/jffs2/etc/settings.txt" ]; then   
    cp /mnt/jffs2/etc/settings.txt /www/settings.txt 
 else
@@ -23,8 +25,6 @@ else
 	cp /www/settings.txt /mnt/jffs2/etc/settings.txt 
 fi   
   
-
-
    CONF=/mnt/jffs2/etc/settings-datv.txt
    	MAINMODE=$(grep mainmode $CONF | cut -f2 -d '='|sed 's/ //g')
 	DATVMODE=$(grep datvmode $CONF | cut -f2 -d '='|sed 's/ //g')

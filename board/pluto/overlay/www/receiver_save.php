@@ -11,6 +11,6 @@ if(isset($_POST)){
 file_put_contents('settings-receiver.txt', $string_tofile);
 // 
 //exec ('route add default gw '.$_POST['gateway-eth0']);
-copy('/www/settings-receiver.txt','/mnt/jffs2/settings-receiver.txt');
+copy('/www/settings-receiver.txt','/mnt/jffs2/etc/settings-receiver.txt');
 }
 ?>
