@@ -7,16 +7,7 @@
     exec( 'cp /www/settings.txt /mnt/jffs2/etc/settings.txt' ); //To be replaced by a ajax cmd
   }
   ?>
-  <?php
-  if ( isset( $_POST[ 'reboot' ] ) ) {
-    exec( '/sbin/reboot' );
-  }
-  ?>
-  <?php
-  if ( isset( $_POST[ 'delpatch' ] ) ) {
-    exec( 'rm  /mnt/jffs2/patch.zip' );
-  }
-  ?>
+  
   <!doctype html>
   <html>
   <head>
@@ -64,7 +55,8 @@
     <script src="lib/mqtt.js.php?page=<?php echo basename($_SERVER["SCRIPT_FILENAME"]); ?>"></script>        
     <link type="text/css" href="./lib/tooltip.css" rel="stylesheet">
     <link type="text/css" href="./lib/menu.css" rel="stylesheet">
-    <link href="lib/favicon.ico" rel="icon" type="image/x-icon" />
+    <link href="img/favicon-32x32.png" rel="icon" type="image/png" />
+
   </head>
 
   <body onload="load()">
@@ -92,7 +84,7 @@
     <div class="tab-wrap">
 
       <input type="radio" id="tab1" name="tabGroup1" class="tab" checked>
-      <label for="tab1"><span class="note tooltip" title="To display the reception spectrum, you must have it enabled in the <a href='setup.php#linkreceiversettings'>Setup</a>. When disabled, the data flow is interrupted. At the same time, the receiver control feature is switched off. <p>The QO-100 spectrum is an online ressource of BATC / AMSAT-UK, we thank them for this resource. <br>You can enable/disable the display of the spectrum in the .</p>💡 Click on the tab to temporarily hide the spectrum. Another click on the banner will make the spectrum reappear.">Reception spectrum</span></label>
+      <label for="tab1"><span class="note tooltip" title="To display the reception spectrum, you must have it enabled in the <a href='setup.php#linkreceiversettings'>Setup</a>. When disabled, the data flow is interrupted. At the same time, the receiver control feature is switched off. <p>The QO-100 spectrum is an online ressource of BATC / AMSAT-UK, we thank them for this service. <br>You can enable/disable the display of the spectrum in the .</p>💡 Click on the tab to temporarily hide the spectrum. Another click on the banner will make the spectrum reappear.">Reception spectrum</span></label>
 
       <input type="radio" id="tab2" name="tabGroup1" class="tab">
       <!-- <label for="tab2">Setup</label> -->
@@ -100,7 +92,7 @@
 
 
       <div class="tab__content" id="tab_spectrum" style = "visibility :display;">
-        <div id="no_wf"><p style="padding :10px 25px;">To display the QO-100 spectrum, enable the display on the Setup tab.</p></div>
+        <div id="no_wf"><p style="padding :10px 25px;">To display the QO-100 spectrum, enable the display in the <a href="setup.php#linkreceiversettings">Receiving settings</a>.</p></div>
         <div id="wf" style="width: 100%;">
           <div id="fft-col" class="col-xl-7"  style="width: 100%;">
             <canvas id="c" width="1" height="1"></canvas>
@@ -608,26 +600,14 @@ if (($general_ini==false) || (isset($datv_config['H265BOX']['use_h265box'])&& $d
 
 </table><br>
 <input type="submit" value="Apply Settings"><span id="saved_h264h265" class="saved" style="display: none;"> Saved !</span>
-<br><br>
-<h2>Advanced (Remux) *** Please refer to <a href='setup.php'>Setup</a></h2>
-<hr>
-<table>
-<tr id="remux">
-  <td>Force compliant (H265box)</td>
-  <td><select name="remux">
-    <option selected value="1">on</option>
-    <option value="0">off</option>
-  </select></td>
-</tr>
-</table>
-<br/>
-<input type="submit" value="Apply Settings"><span id="saved_h265compliant" class="saved"  style="display: none;"> Saved !</span>
+
 </form>
-<td><br><b>Warning : <i>Select ON if you have trouble receiving with continuous blocks</b></i></td>
-<br><br>
+
+
 <?php
 } //end H265box filtering
 ?>
+<br>
 <h2>Save for next reboot</h2>
 <hr>
 Warning : In order to write permanently, you need first to apply setting then Save to flash. <br>
@@ -636,65 +616,8 @@ Warning : In order to write permanently, you need first to apply setting then Sa
     <button name="savefw">Save to flash</button>
   </p>
 </form>
-
-
 <br>
-
-<h2>Upload a new firmware or new patch</h2>
-<hr>
-
-<?php
-if ( isset( $_SESSION[ 'message' ] ) && $_SESSION[ 'message' ] ) {
-  printf( '<b>%s</b>', $_SESSION[ 'message' ] );
-  unset( $_SESSION[ 'message' ] );
-}
-?>
-<form method="POST" action="upload.php" enctype="multipart/form-data">
-  <div> <span>Upload a File (pluto.frm or patch.zip):</span>&nbsp;
-    <input type="file" name="uploadedFile" id="file_firm" />
-  </div><br>
-  <input type="submit" name="uploadBtn" value="Upload" />
-</form>
-<br><br>
-<h2>Delete patch</h2>
-<div class="xterm">
-  <?php 
-  $patchchk = shell_exec ( 'ls -la /mnt/jffs2 | grep -c patch.zip' ); 
-  echo "<b>$patchchk</b> &nbsp; Loaded<br/>"; 
-  if($patchchk)
-  {
-    $listzip = shell_exec ( 'unzip -l /mnt/jffs2/patch.zip' );
-    $separator = "\r\n";
-    $line = strtok($listzip, $separator);
-
-    while ($line !== false) {
-      echo $line;
-      echo "<br>";
-      $line = strtok( $separator );
-    }
-  }
-  ?>
-</div>
-<hr>
-This will restore to the last firmware state, removing the patches added in overlay.
-<br>After erasing the files, you will have to reboot manually or with below reboot button to resume with the basic firmware. <br>
-<form method="post">
-  <p>
-    <button name="delpatch">Delete Patch</button>
-  </p>
-</form>
-<br>
-
-<h2>Reboot</h2>
-<hr>
-Can be usefull. <br>
-<form method="post">
-  <p>
-    <button name="reboot">Reboot the Pluto</button>
-  </p>
-</form>
 <a class="anchor" href="#top">Back to top</a>
-
 <script>
   function spectrum_display () {
     <?php $display="false"; if ((isset($datv_config['DATV_RECEIVER']['spectrum_enable']))&& $datv_config['DATV_RECEIVER']['spectrum_enable']==='on') {$display="true";} ?>
@@ -1386,7 +1309,7 @@ function get_config_modulator(only_part) {
     var $el = $('[name="'+datal[0]+'"]');
     type = $el.attr('type');
 
-     if (['h265box','codec','sound','audioinput','remux','h265box-manualmode','res','v_bitrate','keyint','fps','audio_channels','audio_bitrate','remux','v_bitrate'].indexOf(datal[0]) >=0) {
+     if (['h265box','codec','sound','audioinput','h265box-manualmode','res','v_bitrate','keyint','fps','audio_channels','audio_bitrate','v_bitrate'].indexOf(datal[0]) >=0) {
 
       switch(type){
         case 'checkbox':
@@ -1409,7 +1332,7 @@ function get_config_modulator(only_part) {
         }
     }
      if (only_part !== true) {
-       if (['h265box','codec','sound','audioinput','remux','h265box-manualmode','res','v_bitrate','keyint','fps','audio_channels','audio_bitrate','remux','v_bitrate'].indexOf(datal[0]) <0) {
+       if (['h265box','codec','sound','audioinput','h265box-manualmode','res','v_bitrate','keyint','fps','audio_channels','audio_bitrate','v_bitrate'].indexOf(datal[0]) <0) {
         var $el = $('#tab1C '+'[name="'+datal[0]+'"]');
         type = $el.attr('type');
         }

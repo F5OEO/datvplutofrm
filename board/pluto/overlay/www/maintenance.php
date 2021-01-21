@@ -1,11 +1,15 @@
     <?php
      session_start();
-    require ('./lib/functions.php');
     if ( isset( $_POST[ 'reboot' ] ) ) {
      exec( '/sbin/reboot' );
     }
-  
+  ?>
+  <?php
+  if ( isset( $_POST[ 'delpatch' ] ) ) {
+    exec( 'rm  /mnt/jffs2/patch.zip' );
+  }
 
+  require ('./lib/functions.php');
   ?>
   <!doctype html>
 
