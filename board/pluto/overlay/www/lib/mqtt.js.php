@@ -7,12 +7,13 @@
     
     function onFailure(error,message) {
       console.log("MQTT connection attempt to Host "+host+" Failed");
+      $('#brokerconnected').text('Disconnected');
       setTimeout(MQTTconnect, reconnectTimeout);
         }
     function onMessageArrived(msg){
       out_msg="MQTT Message received "+msg.payloadString+"";
       out_msg=out_msg+"    Topic "+msg.destinationName;
-      console.log(out_msg);
+     // console.log(out_msg);
       if (typeof update_textgen == 'function') {
          if (msg.destinationName.substr(0,16)=='plutodvb/subvar/') {
             update_textgen (msg.destinationName,msg.payloadString); 
@@ -21,7 +22,7 @@
       }
 
       if (typeof update_status == 'function') {
-         if (msg.destinationName.substr(0,16)=='plutodvb/status/') {
+         if ((['plutodvb/status/','plutodvb/subpage']).indexOf(msg.destinationName.substr(0,16)) >= 0) {
             update_status (msg.destinationName,msg.payloadString); 
          }
          
@@ -44,6 +45,7 @@
     function onConnect() {
     // Once a connection has been made, make a subscription and send a message.
     console.log("MQTT connected");
+    $('#brokerconnected').text('Connected');
       if (typeof json2nestable2 == 'function') {
         json2nestable2();
          

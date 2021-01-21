@@ -79,8 +79,8 @@
     <li> Ethernet reception rate </li>
     <li> USB emission rate </li>
     <li> USB reception rate </li>
-    <li> MQTT brocker connected</li>
-    <li> Last page loaded</li>
+    <li><span class="note tooltip" title="MQTT ensuring communication between the human-machine interface and the PlutoDVB core. Also allows interaction with PlutoDVB from network clients. In the case where the status remains unchanged in the disconnected state, the interface is inoperative."> MQTT broker connection </span> : <span id = "brokerconnected"></span></li>
+    <li> Last page loaded : <span id = "lastpage"></span></li>
    </ul>
    
    <h2>Encoder Status</h2>
@@ -126,6 +126,8 @@ $auth = base64_encode($username.":".$password);
 
 <script>
   $( document ).ready(function() {
+ 
+ $('#brokerconnected').text('');
   MQTTconnect();
   //MQTT send messages
 $('body').on('change', 'input,select', function () {
@@ -141,8 +143,10 @@ $('body').on('change', 'input,select', function () {
     }
 
     sendmqtt('plutodvb/var', '{"'+obj+'":"'+ val +'"}' ) ;
+    //$('#brokerconnected').text('Connected');
 
   }
+ 
 });
 
 
@@ -154,9 +158,13 @@ $('body').on('change', 'input,select', function () {
 
 if (variable.substr(0,16)=='plutodvb/status/') {
   varid = variable.substring(16);
-  console.log (varid);
   $('#'+varid).text(value);
+} else 
+if (variable.substr(0,16)=='plutodvb/subpage') {
+  $('#lastpage').text(value);
+
 }
+
 
 
 }
