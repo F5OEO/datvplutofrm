@@ -73,6 +73,13 @@
     transform: translate3d(-100%,0,0);  /* position finale à gauche */
   }
 }
+
+.freetext {
+  border-color : red !important;
+}
+.freemqtt {
+  border-color : blue !important;
+}
     </style>
   </head>
 
@@ -98,12 +105,13 @@ Drag and drop the items to construct the text as you want it to be composed. It 
     <!-- le contenu défilant -->
     <div id ='diplaytextgen'>The generator did not retrieve the items. This will happen when your controller is reloaded.</div>
 </div>
-
+<div style ="margin-bottom: 15px;">
+<button id="addfreetext" type="button">Add a freetext</button> <button id="addmqttvar" type="button">Add a MQTT topic</button>
+</div>
 <div class="cf nestable-lists">
 
         <div class="dd" id="nestable"><strong>Items available</strong>
             <ol class="dd-list">
-                
                 
 
                 <li class="dd-item" data-id="power_rel">
@@ -169,16 +177,7 @@ Drag and drop the items to construct the text as you want it to be composed. It 
                 </li>
                 <li class="dd-item" data-id="watchdog">
                     <div class="dd-handle">Watchdog duration (setting)</div>
-                </li>       
-                <li class="dd-item" data-id="text1">
-                    <div class="dd-handle">Free text #1 </div>
-                </li>
-                <li class="dd-item" data-id="text2">
-                    <div class="dd-handle">Free text #2</div>
-                </li>
-                <li class="dd-item" data-id="text3">
-                    <div class="dd-handle">Free text #3</div>
-                </li>                      
+                </li>                         
               </ol>
         </div>
 
@@ -363,7 +362,16 @@ console.log("subs "+item.id);
     });
 
 
-
+$('#addfreetext').click(function(){
+  var numItems = 0;
+  numItems = $('.freetext').length +1 ;
+  $("#nestable ol").append('<li class="dd-item" data-id="freetext'+numItems+'" data-type="freetext"><div class="dd-handle freetext" contenteditable="true">Editable freetext</div></li>'); 
+})
+$('#addmqttvar').click(function(){
+  var numItems = 0;
+  numItems = $('.freemqtt').length +1 ;
+  $("#nestable ol").append('<li class="dd-item" data-id="freemqtt'+numItems+'" data-type="freemqtt"><div class="dd-handle freemqtt" contenteditable="true">Editable mqtt topic</div></li>'); 
+})
 
 
 
