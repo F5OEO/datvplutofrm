@@ -32,7 +32,7 @@
     <script src="lib/mqtt.js.php?page=<?php echo basename($_SERVER["SCRIPT_FILENAME"]); ?>"></script>        
     <link type="text/css" href="./lib/tooltip.css" rel="stylesheet">
     <link type="text/css" href="./lib/menu.css" rel="stylesheet">
-    <link href="lib/favicon.ico" rel="icon" type="image/x-icon" />
+    <link href="img/favicon-32x32.png" rel="icon" type="image/png" />
   </head>
 
   <body>
