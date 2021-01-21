@@ -124,12 +124,121 @@ create_system_files () {
 
 	}
 
+create_new_system_files () {
+
+	UDHCPD_CONF=/etc/udhcpd.conf
+	CONF=/mnt/jffs2/etc/config.txt
+	IFAC=/etc/network/interfaces
+	
+	
+   	HOSTNAME=$(grep hostname $CONF | cut -f2 -d '='|sed 's/ //g')
+	echo $HOSTNAME > /etc/hostname
+
+	# ================== USB NETWORK ==================== 
+
+	IPADDR=$(grep -w "ipaddr" $CONF | cut -f2 -d '='|sed 's/ //g')
+	if [ "$IPADDR" == "" ]; then
+		IPADDR=192.168.2.1
+	fi
+	IPADDR_HOST=$(grep -w "ipaddr_host" $CONF | cut -f2 -d '='|sed 's/ //g')
+	if [ "$IPADDR_HOST" == "" ]; then
+		IPADDR_HOST=192.168.2.10
+	fi
+	NETMASK=$(grep -w "netmask" $CONF | cut -f2 -d '='|sed 's/ //g')
+	if [ "$NETMASK" == "" ]; then
+		NETMASK=255.255.255.0
+	fi
+	# ================== ETHERNET NETWORK ====================
+
+	ETH_IPADDR=$(grep -w "ipaddr_eth" $CONF | cut -f2 -d '='|sed 's/ //g')
+	ETH_NETMASK=$(grep -w "netmask_eth" $CONF | cut -f2 -d '='|sed 's/ //g')
+	ETH_GW=$(grep -w "gateway_eth" $CONF | cut -f2 -d '='|sed 's/ //g')
+	ETH_DHCP=$(grep -w "dhcp_eth" $CONF | cut -f2 -d '='|sed 's/ //g')
+	
+	# ================== WIFI NETWORK ====================
+
+	WLAN_SSID=$(grep -w "ssid_wlan" $CONF | cut -f2 -d '='|sed 's/ //g')
+	WLAN_PWD=$(grep -w "pwd_wlan" $CONF | cut -f2 -d '='|sed 's/ //g')
+	WLAN_IPADDR=$(grep -w "ipaddr_wlan" $CONF | cut -f2 -d '='|sed 's/ //g')
+
+	# OTHER PARAM
+	XO_CORRECTION=$(grep -w "xo_correction" $CONF | cut -f2 -d '='|sed 's/ //g')
+	UDC_HANDLE_SUSPEND=$(grep -w "udc_handle_suspend" $CONF | cut -f2 -d '='|sed 's/ //g')
+	if [ "$UDC_HANDLE_SUSPEND" == "" ]; then
+		UDC_HANDLE_SUSPEND=0
+	fi
+	### /etc/udhcpd.conf ###
+	echo "start $IPADDR_HOST" > $UDHCPD_CONF
+	echo "interface usb0" >> $UDHCPD_CONF
+	echo "option subnet $NETMASK" >> $UDHCPD_CONF
+	
+	### /etc/network/interfaces ###
+	echo -e "auto lo\n""iface lo inet loopback\n" > $IFAC
+	##USB
+	echo -e "auto usb0\niface usb0 inet static" >> $IFAC
+	echo -e "\taddress $IPADDR\n\tnetmask $NETMASK\n" >> $IFAC
+	
+    ##ETH
+	if [ "$ETH_DHCP" = "on" ]; then
+		ETH_IPADDR=""
+	fi
+
+	echo -e "auto eth0" >> $IFAC
+	if [ -n "$ETH_IPADDR" ]; then
+		echo -e "iface eth0 inet static" >> $IFAC
+		echo -e "\taddress $ETH_IPADDR\n\tnetmask $ETH_NETMASK\n\tgateway $ETH_GW\n" >> $IFAC
+	else
+		echo -e "iface eth0 inet dhcp\n" >> $IFAC
+	fi
+
+	### /etc/wpa.conf ###
+	if [ -n "$WLAN_SSID" ]
+	then
+        if [ "$WLAN_SSID" = "AP" ]; then
+    # We are in access point mode
+         echo -e "auto wlan0\n" >> $IFAC
+        echo -e "iface wlan0 inet static\n" >>$IFAC
+        echo -e "address 192.168.3.1\n" >>$IFAC
+        echo -e "netmask 255.255.255.0\n" >>$IFAC
+		#Fixme : need dhcpdwan.conf
+        else
+		    if [ -n "$WLAN_PWD" ]
+		    then
+			    wpa_passphrase $WLAN_SSID $WLAN_PWD > /etc/wpa.conf
+		    else
+			    echo "network={" > /etc/wpa.conf
+			    echo "    ssid=\"$WLAN_SSID\"" >> /etc/wpa.conf
+			    echo "    key_mgmt=NONE" >> /etc/wpa.conf
+			    echo "}" >> /etc/wpa.conf
+		    fi
+
+		    echo -e "auto wlan0" >> $IFAC
+
+		    if [ -n "$WLAN_IPADDR" ]
+		    then
+			    echo -e "iface wlan0 inet static" >> $IFAC
+			    echo -e "\taddress $WLAN_IPADDR\n""\tnetmask 255.255.255.0" >> $IFAC
+		    else
+			    echo -e "iface wlan0 inet dhcp" >> $IFAC
+		    fi
+		    echo -e "\twpa-conf /etc/wpa.conf\n" >> $IFAC
+        fi
+	fi
+	
+	}
+
 mkdir -p /run/network
 
 case "$1" in
   start)
-	create_system_files
 	printf "Starting network: "
+	if [ -f "/mnt/jffs2/etc/config.txt" ]; then
+    	printf "using new config.txt"
+		create_new_system_files
+	else		
+		create_system_files
+	fi	
+	
 	/bin/hostname -F /etc/hostname
 	/sbin/ifup -a 2>&1 | logger
 	[ $? = 0 ] && echo "OK" || echo "FAIL"

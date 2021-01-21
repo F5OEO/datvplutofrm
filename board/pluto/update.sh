@@ -103,6 +103,7 @@ process_ini() {
 		rm /opt/fw_set.tmp
 		flash_indication_off
 		touch /mnt/msd/SUCCESS_ENV_UPDATE
+		
 	else
 		touch /mnt/msd/FAILED_INVALID_UBOOT_ENV
 	fi
@@ -230,6 +231,11 @@ do
 	fi
 
 	md5sum -c /opt/config.md5 || process_ini $conf
+
+	if [ -f "/mnt/jffs2/etc/config.txt" ]; then
+		dos2unix /mnt/msd/config.txt
+		cp /mnt/msd/config.txt /mnt/jffs2/etc/config.txt
+	fi
 
 	if [ "$TARGET" == "m2k" ]; then
 		if [[ -s /mnt/msd/${CALIBFILENAME} ]]; then

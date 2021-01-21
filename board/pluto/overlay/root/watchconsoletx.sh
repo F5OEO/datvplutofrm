@@ -50,7 +50,7 @@ if [ "$modeconsole" = "1" ] ; then
 		ptton
 	fi
 else
-      echo mode dvb
+      #echo mode dvb
 fi
 sleep 0.1
 done

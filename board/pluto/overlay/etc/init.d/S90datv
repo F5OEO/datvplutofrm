@@ -23,11 +23,7 @@ else
 	cp /www/settings.txt /mnt/jffs2/etc/settings.txt 
 fi   
   
-if [ -f "/mnt/jffs2/etc/config.txt" ]; then
-    echo "config.txt already in jfss2"
-else 
-	cp /opt/config.txt /mnt/jffs2/etc/config.txt
-fi
+
 
    CONF=/mnt/jffs2/etc/settings-datv.txt
    	MAINMODE=$(grep mainmode $CONF | cut -f2 -d '='|sed 's/ //g')
@@ -53,7 +49,7 @@ fi
 			/root/testpatern.sh >/dev/null </dev/null 2>/dev/null &
 		fi
 	else
-		/root/watchconsoletx.sh >/dev/null </dev/null 2>/dev/null &
+		echo mode passthrough
 	fi
 	mosquitto_pub -t plutodvb/started -m true
 	
@@ -84,7 +80,7 @@ stop() {
 	pkill testpatern
 	#passthrough
 	
-	pkill watchconsoletx
+	
 	#common
 	
 	pkill ffmpeg
@@ -100,6 +96,7 @@ restart() {
 # start/stop/restart
 case "$1" in
   start)
+    printf "Starting DATV: "
 	start
 	;;
   stop)

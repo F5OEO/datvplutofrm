@@ -22,6 +22,12 @@ case "$1" in
 		[[ -d /mnt/jffs2/etc/dropbear ]] && cd /mnt/jffs2/etc/dropbear && md5sum -s -c keys.md5 && cp dropbear* /etc/dropbear/
 		[[ -d /mnt/jffs2/root/.ssh ]] && cd /mnt/jffs2/root/.ssh && md5sum -s -c keys.md5 && mkdir /root/.ssh && cp authorized_keys /root/.ssh
         [[ -d /mnt/jffs2/myscript.sh ]] && /mnt/jffs2/myscript.sh &
+		if [ -f "/mnt/jffs2/etc/config.txt" ]; then
+  				  echo "config.txt already in jfss2"
+		else 
+			
+			cp /opt/config.txt /mnt/jffs2/etc/config.txt
+		fi
 		xo_correction
 		MAX_BS=`fw_printenv -n iio_max_block_size 2> /dev/null || echo 67108864`
 		echo ${MAX_BS} > /sys/module/industrialio_buffer_dma/parameters/max_block_size

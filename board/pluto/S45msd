@@ -3,7 +3,7 @@
 
 source /etc/device_config
 
-CONF=/opt/config.txt
+
 file=/sys/kernel/config/usb_gadget/composite_gadget/functions/mass_storage.0/lun.0/file
 img=/opt/vfat.img
 
@@ -37,10 +37,17 @@ case "$1" in
 			md5sum /mnt/msd/${CALIBFILENAME} > /opt/${CALIBFILENAME}.md5
 		fi
 
+		if [ -f "/mnt/jffs2/etc/config.txt" ]; then
+			
+			CONF=/mnt/jffs2/etc/config.txt
+		else
+			CONF=/opt/config.txt
+		fi
 		cp $CONF /mnt/msd
+
 		md5sum /mnt/msd/config.txt > /opt/config.md5
 
-		cp -a /www/* /mnt/msd
+		cp -a /www/index.html /mnt/msd
 		mv /mnt/msd/index.html /mnt/msd/info.html
 		umount /mnt/msd
 		echo $img > $file
