@@ -18,9 +18,9 @@ $FPlug = "B";
 $Voltage = "18";
 $twentytwokhz = "Off";
 */
-$lines = file('./settings-receiver.txt', FILE_IGNORE_NEW_LINES);
+$lines = file('/mnt/jffs2/etc/settings-datv.txt', FILE_IGNORE_NEW_LINES);
 foreach ($lines as $key => $value) {
-	$l=explode(' ', $lines[$key]);
+	$l=explode(' = ', $lines[$key]);
 	echo $l[0];
 	echo " / " . $l[1] . "<br>";
 	$j[$l[0]] = $l[1];
