@@ -298,7 +298,7 @@ Attention, in this version the editable cells are not verified at all.
             <td>Spectrum</td>
               <td>
                 <div class="checkcontainer">
-                  <input type="checkbox" id="spectrum_enable" name="DATV_RECEIVER[spectrum_enable]">
+                  <input type="checkbox" id="spectrum_enable" name="DATV_RECEIVER[spectrum_enable]" <?php if (isset($datv_config['DATV_RECEIVER']['spectrum_enable']))  echo $datv_config['DATV_RECEIVER']['spectrum_enable']=='on' ? " checked" :  "" ?>>
                   <label for="spectrum_enable" aria-describedby="label"><span class="ui"></span> displayed</label>
                 </div>
               </td>
