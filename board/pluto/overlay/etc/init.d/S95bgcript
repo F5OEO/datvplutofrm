@@ -3,7 +3,7 @@ start() {
 
 /root/readsensor.sh >/dev/null </dev/null 2>/dev/null &
 /root/switchmod.sh </dev/null 2>/dev/null &
-/root/watchconsoletx.sh </dev/null 2>/dev/null &
+
 
 }
 

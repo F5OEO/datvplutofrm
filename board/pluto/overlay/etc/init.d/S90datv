@@ -49,6 +49,7 @@ fi
 			/root/testpatern.sh >/dev/null </dev/null 2>/dev/null &
 		fi
 	else
+		/root/watchconsoletx.sh </dev/null 2>/dev/null &
 		echo mode passthrough
 	fi
 	mosquitto_pub -t plutodvb/started -m true
@@ -79,7 +80,7 @@ stop() {
 	#patern
 	pkill testpatern
 	#passthrough
-	
+	pkill watchconsoletx
 	
 	#common
 	
