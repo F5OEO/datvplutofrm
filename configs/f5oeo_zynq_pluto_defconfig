@@ -28,6 +28,7 @@ BR2_PACKAGE_FFMPEG_MUXERS="adts flv mpegts rawvideo image2"
 BR2_PACKAGE_FFMPEG_DEMUXERS="aac h264 mpegts mpegvideo pcm_s16le rawvideo rtp hevc flv dvbsub"
 BR2_PACKAGE_FFMPEG_PARSERS="aac h264 mjpeg mpegaudio mpegvideo hevc"
 BR2_PACKAGE_STRACE=y
+BR2_PACKAGE_CIFS_UTILS=y
 BR2_PACKAGE_MTD=y
 # BR2_PACKAGE_MTD_NANDDUMP is not set
 # BR2_PACKAGE_MTD_NANDTEST is not set

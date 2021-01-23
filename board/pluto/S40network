@@ -175,9 +175,12 @@ create_new_system_files () {
 	### /etc/network/interfaces ###
 	echo -e "auto lo\n""iface lo inet loopback\n" > $IFAC
 	##USB
+	if [ -n "$IPADDR" ]; then
 	echo -e "auto usb0\niface usb0 inet static" >> $IFAC
 	echo -e "\taddress $IPADDR\n\tnetmask $NETMASK\n" >> $IFAC
-	
+	else
+		echo -e "iface usb0 inet dhcp\n" >> $IFAC
+	fi
     ##ETH
 	if [ "$ETH_DHCP" = "on" ]; then
 		ETH_IPADDR=""
