@@ -422,10 +422,18 @@ render_timer = setInterval(render_fft, render_interval);
 
 function align_symbolrate(width)
 {
-  
   if(width < 0.022)
   {
     return 0;
+  }
+
+  else if(width < 0.040)
+  {
+    return 0.025;
+  }
+    else if(width < 0.059)
+  {
+    return 0.033;
   }
   else if(width < 0.060)
   {
