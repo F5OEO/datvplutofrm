@@ -13,6 +13,19 @@ if (!isset($_SERVER["HTTP_HOST"])) {
 
 $username = 'admin';
 $password = '12345';
+
+$lines = file('/mnt/jffs2/etc/settings-datv.txt', FILE_IGNORE_NEW_LINES);
+foreach ($lines as $key => $value) {
+	$l=explode(' = ', $lines[$key]);
+	echo $l[0];
+	echo " / " . $l[1] . "<br>";
+	$j[$l[0]] = $l[1];
+}
+if (isset($j['h265box_login']) && isset($j['h265box_login'])) {
+$username =  $j['h265box_login'];
+$password =  $j['h265box_password'];
+}
+
 $auth = base64_encode($username.":".$password);
 
 
@@ -134,8 +147,8 @@ function set_enc_audio($auth){
 	echo $xml."\n";
 	*/
 	
-	$xml = '<?xml version="1.0" encoding="utf-8"?><request><audioenc>                        <codec>2</codec>                        <samples>48000</samples>                        <bitrate>'.$_POST['audio_bitrate'].'</bitrate>                        <channel>'.$channel.'</channel>                        <input>1</input>                        <invol>30</invol>                        <outvol>100</outvol>                 </audioenc></request>';  
-	echo $xml;
+	$xml = '<?xml version="1.0" encoding="utf-8"?><request><audioenc>                        <codec>2</codec>                        <samples>48000</samples>                        <bitrate>'.$_POST['audio_bitrate'].'</bitrate>                        <channel>'.$channel.'</channel>                        <input>'.$input.'</input>                        <invol>30</invol>                        <outvol>100</outvol>                 </audioenc></request>';  
+	//echo $xml;
 	
 	post($auth,$xml,$server);
 	
