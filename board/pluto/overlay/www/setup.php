@@ -291,7 +291,9 @@ Attention, in this version the editable cells are not verified at all.
 <section id="linkreceiversettings"></section>
 <h2>DATV Reception</h2>
       <h3>Spectrum</h3>
-      <p>The QO-100 spectrum is an online ressource of BATC / AMSAT-UK. You can disable the display of the spectrum QO-100 here. When disabled, the data flow is interrupted. At the same time, the receiver control feature is switched off. Save your choice by Apply Settings button. </p>
+      <p>You can display a wideband reception spectrum on the controller.
+The source can be either an external source (internet) or the reception channel, active in full-duplex (For the safety of your Pluto receiver, be careful to use two different transmit and receive bands or switch in case of DATV traffic in simplex or near frequencies).
+If you are using a transverter (e.g. an LNB), specify the offset (LNB Offset) to be used in the Receiver setup section below.</p>
 
         <table>
           <tr>
@@ -305,30 +307,29 @@ Attention, in this version the editable cells are not verified at all.
               <td>Spectrum Band source <i></i></td>
               <td>
                 <select name="DATV_RECEIVER[spectrum-source]" >
-                  <option value="QO100-web" <?php if (isset($datv_config['DATV_RECEIVER']['spectrum-source']))  echo $datv_config['DATV_RECEIVER']['spectrum-source']=='QO100-web' ? " selected" :  "" ?>>BATC AMSAT-UK web</option>
-                  <option value="QO100-pluto" <?php if (isset($datv_config['DATV_RECEIVER']['spectrum-source']))  echo $datv_config['DATV_RECEIVER']['spectrum-source']=='QO100-pluto' ? " selected" :  "" ?>>Pluto QO-100 reception</option>
-                  <option value="70cm" <?php if (isset($datv_config['DATV_RECEIVER']['spectrum-source']))  echo $datv_config['DATV_RECEIVER']['spectrum-source']=='70cm' ? " selected" :  "" ?>>Pluto 70cm reception</option>
-                  <option value="23cm" <?php if (isset($datv_config['DATV_RECEIVER']['spectrum-source']))  echo $datv_config['DATV_RECEIVER']['spectrum-source']=='23cm' ? " selected" :  "" ?>>Pluto 23cm reception</option>                  
+                  <option value="QO100-web" <?php if (isset($datv_config['DATV_RECEIVER']['spectrum-source']))  echo $datv_config['DATV_RECEIVER']['spectrum-source']=='QO100-web' ? " selected" :  "" ?>>QO-100 BATC AMSAT-UK web</option>
+                  <option value="QO100-pluto" <?php if (isset($datv_config['DATV_RECEIVER']['spectrum-source']))  echo $datv_config['DATV_RECEIVER']['spectrum-source']=='QO100-pluto' ? " selected" :  "" ?>>QO-100 Pluto reception</option>
+                 <!-- <option value="70cm" <?php if (isset($datv_config['DATV_RECEIVER']['spectrum-source']))  echo $datv_config['DATV_RECEIVER']['spectrum-source']=='70cm' ? " selected" :  "" ?>>70cm band Pluto reception</option>
+                  <option value="23cm" <?php if (isset($datv_config['DATV_RECEIVER']['spectrum-source']))  echo $datv_config['DATV_RECEIVER']['spectrum-source']=='23cm' ? " selected" :  "" ?>>23cm band Pluto reception</option>            -->       
                 </select>
               </td>
 
             </tr>
           </table>
+                <p>The QO-100 spectrum is an online ressource of <a href="https://batc.org.uk/?origin=plutodvb" target="_blank"> BATC</a> / <a href="https://amsat-uk.org/?origin=plutodvb" target="_blank">AMSAT-UK</a>. We thank them for making this resource available.  </p>
 
           <h3><span class="note tooltip"  style="color: #636363;" title= '<h2>Control your transmission frequency and paste the RTMP URL string</h2>
        <p>At the bottom of QO-100 Spectrum, there are horizontal bars representing the possible transmission channels on the satellite. By simply clicking on a bar, <ul><li>you will report  the corresponding transmission frequency in the Modulator table, in <i>Freq</i> field. This will take account of your possible transverter settings.</li><li>the chosen channel frequency is copied in your clipboard so that you can easily paste where you want.</li><li>then, by clicking on the text <i>Click here to copy RTMP server URL in </i>📋, you will directly copy in clipboard the whole string that is waiting in the destination URL. You will be able to simply paste it in URL field of your stream software like OBS Studio, or Vmix (the <a href="index.html#test" >RTMP string</a> is set with all parameters set in Modulator table, to be paste).</li></ul> </p>
-       <h2>Steering DATV receiver</h2>
-       <p><i>At this stage, only one minitiouner or Longmyndreceiver can be controlled. The Pluto must be connected on the same local network, through a gateway (router). </i></p>
-       <h2>About control Longmynd</h2>
-       Steering compatible with <a href="https://forum.batc.org.uk/viewtopic.php?f=101&t=6594&p=25786&hilit=g7jtt#p22243" target="_blank">G7JTT script (Thanks to G8UGD)</a>
        <h3>About Minitiouner</h3><img src="./img/minitiouner.jpg" style="
        float: right;"/>
        <p>The Minitiouner hardware is designed for easy use with the software Minitiouner Pro conceived by F6DZP Jean-Pierre. The support and download are free and available on <a href="http://www.vivadatv.org/" target="_blank">vivadatv forum</a>.</p>
+        <h3>About control Longmynd</h3>
+       This steering feature also makes it possible to control Longmynd thanks to <a href="https://forum.batc.org.uk/viewtopic.php?f=101&t=6594&p=25786&hilit=g7jtt#p22243" target="_blank">G7JTT script (Thanks to G8UGD)</a>
        <h3>How it works</h3>
        <p>To be able to directly drive your minitiouner by a simple click on a used channel of the QO-100 spectrum, you have to follow these few indications.</p>
        <p>The Ip adress and port to enter in the <i>Setup</i> tab correspond to the informations <i>Conf_AddrUDP</i> and <i>Conf_Port</i> that you find in the minitiouner configuration file <i>minitiouneConfig.ini</i>.  The IP address can also be the address of the computer on which the minitiouner is running.
         The gateway address indicated is that of your network router. Click <i>Apply Settings</i> for save your settings.</p>
-        <p>Click on a signal on the spectrum. The command is sent directly to the minitiouner with the right frequency and SR, also considering your settings stored on the setup tab.</p>'>Receiver setup</span></h3>
+        <p>Click on a signal on the spectrum. The command is sent directly to the minitiouner with the right frequency and SR, also considering your settings stored on the setup.</p>'>Receiver setup</span></h3>
           <p>To be able to control Minitioune or Longmynd, please fill in these few parameters.</p>
 
           <table>

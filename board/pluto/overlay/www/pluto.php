@@ -169,7 +169,7 @@
  if (($general_ini!=false) && (isset($datv_config['DATV_RECEIVER']['spectrum-source'])) && ($datv_config['DATV_RECEIVER']['spectrum-source'])!=null ) {
 
    if ($datv_config['DATV_RECEIVER']['spectrum-source'] !==  "QO100-web" ) 
-  {  $ws_url_override = 'ws://127.0.0.1:7681';  
+  {  $ws_url_override = 'ws://'. shell_exec('echo -n $(ip -f inet -o addr show eth0 | cut -d\  -f 7 | cut -d/ -f 1)').':7681';  
 echo '<script>var ws_url_override="'.$ws_url_override.'"</script>';
   }
   
