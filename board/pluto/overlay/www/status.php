@@ -48,11 +48,13 @@
 
 
    <ul>
+    <li> Last change of Pluto output : <span id="tx">No change since this page is displayed</span>
     <li> FPGA Temperature : <span id = "fpgatemp"></span> °C</li>
     <li> Analog Digital Converter Temperature : <span id = "adtemp"></span> °C</li>
     <li> Voltage : <span id = "voltage"></span> V</li>
     <li> Current : <span id = "current"></span> mA</li>
-    <li> CPU </li>
+    <li> Consumption: <span id = "energycons"></span> VA</li>
+       <li> CPU </li>
     <li> Processus </li>
     <li> Available memory RAM</li>
     <li> Available space on main ROM volume </li>
@@ -140,7 +142,7 @@ $('body').on('change', 'input,select', function () {
 
 if (variable.substr(0,16)=='plutodvb/status/') {
   varid = variable.substring(16);
-  $('#'+varid).text(value);
+  $('#'+varid).text(value).change();
 } else 
 if (variable.substr(0,16)=='plutodvb/subpage') {
   $('#lastpage').text(value);
@@ -150,6 +152,28 @@ if (variable.substr(0,16)=='plutodvb/subpage') {
 
 
 }
+
+$('#current,#voltage').on('change', function(){
+  $('#energycons').text((parseFloat($('#current').text()/1000)*parseFloat($('#voltage').text())).toFixed(3));
+  console.log($('#current').text());
+})
+
+$('#tx').on ('change', function(){
+  if ($('#tx').text()=='true') {
+    var today = new Date();
+  var h = today.getHours();
+  var m = today.getMinutes();
+  var s = today.getSeconds();
+    $('#tx').text('Transmit ON at '+today.getHours()+':'+today.getMinutes()+':'+today.getSeconds());
+  } else   if ($('#tx').text()=='false') {
+    var today = new Date();
+  var h = today.getHours();
+  var m = today.getMinutes();
+  var s = today.getSeconds();
+    $('#tx').text('Transmit OFF at '+today.getHours()+':'+today.getMinutes()+':'+today.getSeconds());
+  } 
+
+});
 
 </script>
 </body>
