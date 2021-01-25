@@ -165,6 +165,18 @@
     $min_power = $datv_config['DATV']['lo_power_limit'];
   }
 
+  //ws fft source
+ if (($general_ini!=false) && (isset($datv_config['DATV_RECEIVER']['spectrum-source'])) && ($datv_config['DATV_RECEIVER']['spectrum-source'])!=null ) {
+
+   if ($datv_config['DATV_RECEIVER']['spectrum-source'] ==  "QO100-web" ) {
+      $ws_url_override = 'undefined';
+   } else
+  { $ws_url_override = 'ws://127.0.0.1:7681';  
+  }
+  
+    echo '<script>var ws_url_override="'.$ws_url_override.'"</script>';
+  } 
+
 ?>
 
   <h2>Modulator</h2>
