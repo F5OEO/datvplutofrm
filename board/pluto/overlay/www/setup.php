@@ -302,6 +302,15 @@ Attention, in this version the editable cells are not verified at all.
                   <label for="spectrum_enable" aria-describedby="label"><span class="ui"></span> displayed</label>
                 </div>
               </td>
+              <td>Spectrum Band source <i></i></td>
+              <td>
+                <select name="DATV_RECEIVER[spectrum-source]" >
+                  <option value="QO100-web" <?php if (isset($datv_config['DATV_RECEIVER']['spectrum-source']))  echo $datv_config['DATV_RECEIVER']['spectrum-source']=='QO100-web' ? " selected" :  "" ?>>BATC AMSAT-UK web</option>
+                  <option value="QO100-pluto" <?php if (isset($datv_config['DATV_RECEIVER']['spectrum-source']))  echo $datv_config['DATV_RECEIVER']['spectrum-source']=='QO100-pluto' ? " selected" :  "" ?>>Pluto QO-100 reception</option>
+                  <option value="70cm" <?php if (isset($datv_config['DATV_RECEIVER']['spectrum-source']))  echo $datv_config['DATV_RECEIVER']['spectrum-source']=='70cm' ? " selected" :  "" ?>>Pluto 70cm reception</option>
+                  <option value="23cm" <?php if (isset($datv_config['DATV_RECEIVER']['spectrum-source']))  echo $datv_config['DATV_RECEIVER']['spectrum-source']=='23cm' ? " selected" :  "" ?>>Pluto 23cm reception</option>                  
+                </select>
+              </td>
 
             </tr>
           </table>
