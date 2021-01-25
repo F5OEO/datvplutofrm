@@ -155,21 +155,14 @@ if (variable.substr(0,16)=='plutodvb/subpage') {
 
 $('#current,#voltage').on('change', function(){
   $('#energycons').text((parseFloat($('#current').text()/1000)*parseFloat($('#voltage').text())).toFixed(3));
-  console.log($('#current').text());
 })
 
 $('#tx').on ('change', function(){
   if ($('#tx').text()=='true') {
     var today = new Date();
-  var h = today.getHours();
-  var m = today.getMinutes();
-  var s = today.getSeconds();
     $('#tx').text('Transmit ON at '+today.getHours()+':'+today.getMinutes()+':'+today.getSeconds());
   } else   if ($('#tx').text()=='false') {
     var today = new Date();
-  var h = today.getHours();
-  var m = today.getMinutes();
-  var s = today.getSeconds();
     $('#tx').text('Transmit OFF at '+today.getHours()+':'+today.getMinutes()+':'+today.getSeconds());
   } 
 
