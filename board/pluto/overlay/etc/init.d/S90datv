@@ -46,7 +46,8 @@ fi
 			/root/rtmppluto.sh >/dev/null </dev/null 2>/dev/null &
 		fi
 		if [ "$DATVMODE" = "test" ]; then
-			/root/testpatern.sh >/dev/null </dev/null 2>/dev/null &
+#			 /root/testpatern.sh >/dev/null </dev/null 2>/dev/null &
+        /root/pluto_fft_ws >/dev/null </dev/null 2>/dev/null &
 		fi
 	else
 		/root/watchconsoletx.sh </dev/null 2>/dev/null &
