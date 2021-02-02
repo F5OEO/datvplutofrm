@@ -390,6 +390,7 @@ echo '<script>var ws_url_override="'.$ws_url_override.'"</script>';
     <td><select name="mode" onchange="upd_mod()" >
       <option value="DVBS2">DVBS2</option>
       <option value="DVBS">DVBS</option>
+      <option value="DVBT">DVBT</option>
     </select></td>
     <td>Mod</td>
     <td><select name="mod" onchange="upd_fec()" >
@@ -1152,7 +1153,7 @@ function upd_h265box() {
 function upd_mod() {
   var DVBS2_MOD = ["QPSK","8PSK","16APSK","32APSK"];
 
-  if($(t+'select[name ="mode"]').val()=="DVBS"){
+  if(($(t+'select[name ="mode"]').val()=="DVBS")||($(t+'select[name ="mode"]').val()=="DVBT")){
       $(t+'select[name ="mod"]').find('option').remove().end().append('<option value="QPSK">QPSK</option>');
       $(t+'#pilots_option').hide();
       $(t+'#frame_option').hide();
@@ -1189,7 +1190,7 @@ function upd_fec() {
   var DVBS2_16APSK = ["2/3","3/4","4/5","5/6","8/9","9/10"];
   var DVBS2_32APSK = ["3/4","4/5","5/6","8/9","9/10"];
 
-  if($(t+'select[name ="mode"]').val()=="DVBS"){
+  if(($(t+'select[name ="mode"]').val()=="DVBS")||($(t+'select[name ="mode"]').val()=="DVBT")){
     //DVBS
     fec_list(DVBS);
 
