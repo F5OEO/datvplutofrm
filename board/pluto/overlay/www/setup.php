@@ -53,6 +53,14 @@
      name="mainmode" value="pass" <?php if (isset($datv_config['mainmode']))  echo $datv_config['mainmode']=='pass' ? " checked" :  "" ?>>
     <label for="pass">Passthrough (SDR Console,...)</label>
 
+    <input type="radio" id="mainmode"
+     name="mainmode" value="transverter" <?php if (isset($datv_config['mainmode']))  echo $datv_config['mainmode']=='transverter' ? " checked" :  "" ?>>
+    <label for="transverter"></label>
+
+    <input type="radio" id="mainmode"
+     name="mainmode" value="signal generator" <?php if (isset($datv_config['mainmode']))  echo $datv_config['mainmode']=='signal' ? " checked" :  "" ?>>
+    <label for="signal generator"></label>
+
   </div>
   <h2 > DATV operating mode</h2>
 
@@ -67,6 +75,11 @@
     <input type="radio" id="datvmode"
      name="DATV[datvmode]" value="test" <?php if (isset($datv_config['DATV']['datvmode']))  echo $datv_config['DATV']['datvmode']=='test' ? " checked" :  "" ?>>
     <label for="test"><span class="note tooltip" title="Not available" style="color : #636363;">Test pattern</span></label>
+
+    <input type="radio" id="datvmode"
+     name="DATV[datvmode]" value="repeater" <?php if (isset($datv_config['DATV']['datvmode']))  echo $datv_config['DATV']['datvmode']=='repeater' ? " checked" :  "" ?>>
+    <label for="repeater"><span class="note tooltip" title="Not available" style="color : #636363;">Test pattern</span></label>
+
   </div>
    <hr> <section id="linkdatvsettings"></section>
    <h2>DATV transmission settings</h2>

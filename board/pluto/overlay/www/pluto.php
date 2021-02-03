@@ -445,6 +445,7 @@ echo '<script>var ws_url_override="'.$ws_url_override.'"</script>';
       <option value="0.35">0.35</option>
       <option value="0.25">0.25</option>
       <option value="0.20">0.20</option>
+      <option value="0.15">0.15</option>
     </select></td>
 
     <td>Transverter LO <i>(MHz)</i></td>
