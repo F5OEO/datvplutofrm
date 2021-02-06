@@ -82,7 +82,9 @@
   
   <script>
     if (menu_fixed==true) {
-    $('#top').addClass('fixed');
-    $('body').css('padding-top','90px');
-  }
+
+      $('#top').addClass('fixed shadow');
+      $('body').css('padding-top','90px');
+     }
+
   </script>
