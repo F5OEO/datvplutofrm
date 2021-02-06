@@ -75,11 +75,11 @@
 
     <input type="radio" id="datvmode"
      name="DATV[datvmode]" value="test" <?php if (isset($datv_config['DATV']['datvmode']))  echo $datv_config['DATV']['datvmode']=='test' ? " checked" :  "" ?>>
-    <label for="test">Pattern<span id='lng_test_pattern' class="note tooltip" title="soon" style="color : #636363;">Test pattern</span></label>
+    <label for="test"><span id='lng_test_pattern' class="note tooltip" title="Soon" style="color : #636363;">Pattern</span></label>
 
     <input type="radio" id="datvmode"
      name="DATV[datvmode]" value="repeater" <?php if (isset($datv_config['DATV']['datvmode']))  echo $datv_config['DATV']['datvmode']=='repeater' ? " checked" :  "" ?>>
-    <label for="repeater">repeater<span class="note tooltip" title="Soon" style="color : #636363;">Test pattern</span></label>
+    <label for="repeater"><span id='lng_repeater' class="note tooltip" title="Soon" style="color : #636363;">Repeater</span></label>
 
   </div>
    <hr> <section id="linkdatvsettings"></section>
