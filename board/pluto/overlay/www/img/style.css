@@ -734,6 +734,7 @@ a {cursor:pointer;}
 }
 #col2 {
   padding-top: 20px;
+  margin:auto;
 
 }
 #col3 {
@@ -773,4 +774,18 @@ a {cursor:pointer;}
 
 .right-c-menu li:hover {
     background-color: #33b3ca78;
+}
+
+
+#top {
+  display: flex;
+
+}
+
+.fixed 
+{  position: fixed;  top:0; left:0;  width: 100%; 
+   padding-bottom:20px;
+   background-color: white;
+   border-bottom: 1px solid #247d8d;
+   z-index:110;
 }

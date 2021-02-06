@@ -1,6 +1,6 @@
   <?php
   session_start();
-  require ('./lib/functions.php');
+
   ?>
   <?php
   if ( isset( $_POST[ 'savefw' ] ) ) {
@@ -1688,6 +1688,8 @@ $('#tab1').click(function(){
 </script>
 <script>
   $( document ).ready(function() {
+
+
   MQTTconnect();
 
   //MQTT send messages

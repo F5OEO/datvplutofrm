@@ -2,7 +2,7 @@
     // F5UII : Setup page. The outputs are multiples files, working by ajax call with global_save.php.
 
     session_start();
-   require ('./lib/functions.php');
+   require_once ('./lib/functions.php');
  
   
 
@@ -14,7 +14,7 @@
   <head>
     <meta charset="UTF-8">
 
-    <title>PlutoDVB General setup</title>
+    <title id='lng_title_page'>PlutoDVB General setup</title>
     <meta name="description" content="ADALM-PLUTO DVB General Setup ">
     <link type="text/css" href="./img/style.css" rel="stylesheet">
     <link type="text/css" href="lib/nestable.css" rel="stylesheet">
@@ -22,6 +22,7 @@
     <script src="lib/tooltip.js"></script>
     <script src="lib/jquery.nestable.js"></script> 
     <script src="lib/mqttws31.js"></script>  
+    <script src="lib/jquery.MultiLanguage.min.js"></script>  
     <script src="lib/mqtt.js.php?page=<?php echo basename($_SERVER["SCRIPT_FILENAME"]); ?>"></script>  
     <link type="text/css" href="./lib/tooltip.css" rel="stylesheet">
     <link type="text/css" href="./lib/menu.css" rel="stylesheet">
@@ -37,13 +38,13 @@
      <a class="button" href="index.html">Documentation</a>
    </nav>
  -->
-   <h1>PlutoDVB General setup</h1> 
+   <h1 id='lng_title'>PlutoDVB General setup</h1> 
    
    <hr>
    <section id="linkdatvmode"></section>
       <form id="general" name="datv_config" method="post" action = "javascript:save_config_setup('general','<?php echo urlencode($file_general)?>', '<?php echo rawurlencode($general_ini[0]) ?>');">
    
-   <h2 > Main mode selection</h2>
+   <h2 id='lng_mainmode'> Main mode selection</h2>
    should be able to be more attractive<br/>
    <input type="radio" id="mainmode"
      name="mainmode" value="datv" <?php if (isset($datv_config['mainmode']))  echo $datv_config['mainmode']=='datv' ? " checked" :  "" ?>>
@@ -51,10 +52,10 @@
 
     <input type="radio" id="mainmode"
      name="mainmode" value="pass" <?php if (isset($datv_config['mainmode']))  echo $datv_config['mainmode']=='pass' ? " checked" :  "" ?>>
-    <label for="pass">Passthrough (SDR Console,...)</label>
+    <label for="pass" id="lng_passt">Passthrough (SDR Console,...)</label>
 
   </div>
-  <h2 > DATV operating mode</h2>
+  <h2 id='lng_datv_mode'> DATV operating mode</h2>
 
    <input type="radio" id="datvmode"
      name="DATV[datvmode]" value="rtmp" <?php if (isset($datv_config['DATV']['datvmode']))  echo $datv_config['DATV']['datvmode']=='rtmp' ? " checked" :  "" ?>>
@@ -66,7 +67,7 @@
 
     <input type="radio" id="datvmode"
      name="DATV[datvmode]" value="test" <?php if (isset($datv_config['DATV']['datvmode']))  echo $datv_config['DATV']['datvmode']=='test' ? " checked" :  "" ?>>
-    <label for="test"><span class="note tooltip" title="Not available" style="color : #636363;">Test pattern</span></label>
+    <label for="test"><span  id='lng_test_pattern' class="note tooltip" title="Not available" style="color : #636363;">Test pattern</span></label>
   </div>
    <hr> <section id="linkdatvsettings"></section>
    <h2>DATV transmission settings</h2>
@@ -394,8 +395,8 @@ If you are using a transverter (e.g. an LNB), specify the offset (LNB Offset) to
             <td>Fixed menu banner at the top of all the pages</td>
               <td>
                 <div>
-                  <input type="checkbox" id="menu_fixed" name="DATV[menu_fixed]">
-                  <label for="menu_fixed" aria-describedby="label"><span class="ui"></span> fixed</label>
+                  <input type="checkbox" id="menu_fixed" name="DATV[menu_fixed]" <?php if (isset($datv_config['DATV']['menu_fixed']))  echo $datv_config['DATV']['menu_fixed']=='on' ? " checked" :  "" ?>>
+                  <label for="menu_fixed" aria-describedby="label"><span class="ui" ></span> fixed</label>
                 </div>
               </td>
 
@@ -657,6 +658,10 @@ function update_slide(id,decimal,text) {
 </script>
 <script>
   $( document ).ready(function() {
+
+    
+    //$.MultiLanguage('./lib/language.json','en');
+
   MQTTconnect();
 
 
