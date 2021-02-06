@@ -1,0 +1,31 @@
+{
+  "config": {
+    "default": "en"
+  },
+  "language": {
+    "en": {
+      "#lng_title_page" : "General setup",
+      "#lng_title" : "General setup",
+      "#lng_mainmode": "Main mode selection",
+      "#lng_datv_mode": "DATV operating mode",
+      "#lng_test_pattern": "Test pattern"
+
+    },
+    "fr": {
+      "#lng_title_page" : "Configuration générale",
+      "#lng_title" : "Configuration générale",
+      "#lng_mainmode": "Sélection du mode principal",
+      "#lng_passt":"Transparent (SDR Console,...)",
+      "#lng_datv_mode": "Mode DATV",
+      "#lng_test_pattern": "Mire de test"
+    },
+    "de": {
+      "#lng_title":"Allgemeine Einrichtung",
+      "#lng_mainmode": "Auswahl des Hauptmodus",
+      "#lng_passt":"Durchsichtig (SDR Console,...)",
+      "#lng_datv_mode": "Betriebsart DATV",
+      "#lng_test_pattern": "Testbild"
+
+    }
+  }
+}
