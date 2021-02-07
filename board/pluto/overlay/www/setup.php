@@ -74,11 +74,11 @@
 
     <input type="radio" id="datvmode"
      name="DATV[datvmode]" value="test" <?php if (isset($datv_config['DATV']['datvmode']))  echo $datv_config['DATV']['datvmode']=='test' ? " checked" :  "" ?>>
-    <label for="test">Pattern<span class="note tooltip" title="soon" style="color : #636363;">Test pattern</span></label>
+    <label for="test">Pattern<span class="note tooltip" title="Not available" style="color : #636363;">Test pattern</span></label>
 
     <input type="radio" id="datvmode"
      name="DATV[datvmode]" value="repeater" <?php if (isset($datv_config['DATV']['datvmode']))  echo $datv_config['DATV']['datvmode']=='repeater' ? " checked" :  "" ?>>
-    <label for="repeater">repeater<span class="note tooltip" title="Soon" style="color : #636363;">Test pattern</span></label>
+    <label for="repeater">repeater<span class="note tooltip" title="Not available" style="color : #636363;">Test pattern</span></label>
 
   </div>
    <hr> <section id="linkdatvsettings"></section>
@@ -289,13 +289,24 @@ Attention, in this version the editable cells are not verified at all.
     <table>
 
      <tr>
-        <td><span class="note tooltip" title="Allows to correct a phase shift by balancing the central points around the center of the constellation<ul><li>on the central points of 16ASPK mod</li><li>on the two central point circles of 32ASPK mod</li></ul><p>💡 For fine adjustment, click on the slider and then use the up and down keys<br/> For an adjustment in steps of 10% of the full scale, click on the slider and then use the page up and page down keys.</p>" style="color : #636363;">Phase rotation correction</span> <i>(degrees)</i></td>
+        <td><span class="note tooltip" title="Allows to correct a phase shift by balancing the central points around the center of the constellation<ul><li>on the central points of 16ASPK mod</li><li>on the two central point circles of 32ASPK mod</li></ul><p>💡 For fine adjustment, click on the slider and then use the up and down keys<br/> For an adjustment in steps of 10% of the full scale, click on the slider and then use the page up and page down keys.</p>" style="color : #636363;">16APSK phase</span> <i>(relative degrees)</i></td>
         <td><input type="range" min="-45" max="45" step="0.1" id="phase_correction" name="DATV_EXPERT[phase_correction]" value="<?php if (isset($datv_config['DATV_EXPERT']['phase_correction'])) echo $datv_config['DATV_EXPERT']['phase_correction']; ?>" oninput="update_slide($(this).attr('id'),1,' °')"> <span id="phase_correction-value"></span></td>    
-        <td><span class="note tooltip" title="Allows to correct the distance from the constellation center<ul><li>for the central points of 16ASPK mod</li><li>for the two central point circles of 32ASPK mod</li></ul><p>💡 For fine adjustment, click on the slider and then use the up and down keys<br/> For an adjustment in steps of 10% of the full scale, click on the slider and then use the page up and page down keys.</p>" style="color : #636363;">Module vector correction</span> <i>(factor)</i></td>
+        <td><span class="note tooltip" title="Allows to correct the distance from the constellation center<ul><li>for the central points of 16ASPK mod</li><li>for the two central point circles of 32ASPK mod</li></ul><p>💡 For fine adjustment, click on the slider and then use the up and down keys<br/> For an adjustment in steps of 10% of the full scale, click on the slider and then use the page up and page down keys.</p>" style="color : #636363;">16APSK magnitude</span> <i>(relative factor)</i></td>
         <td><input type="range" min="0.4" max="2.5" step="0.01"  id="module_correction" name="DATV_EXPERT[module_correction]" value="<?php if (isset($datv_config['DATV_EXPERT']['module_correction'])) echo $datv_config['DATV_EXPERT']['module_correction']; ?>" oninput="update_slide($(this).attr('id'),2,'')"> <span id="module_correction-value"></span></td>               
      </tr>
-
-
+     <tr> </tr>
+     <tr>
+        <td><span class="note tooltip" title="Allows to correct a phase shift by balancing the central points around the center of the constellation<ul><li>on the central points of 16ASPK mod</li><li>on the two central point circles of 32ASPK mod</li></ul><p>💡 For fine adjustment, click on the slider and then use the up and down keys<br/> For an adjustment in steps of 10% of the full scale, click on the slider and then use the page up and page down keys.</p>" style="color : #636363;">32APSK phase1</span> <i>(relative degrees)</i></td>
+        <td><input type="range" min="-45" max="45" step="0.1" id="phase_correction_32_1" name="DATV_EXPERT[phase_correction_32_1]" value="<?php if (isset($datv_config['DATV_EXPERT']['phase_correction_32_1'])) echo $datv_config['DATV_EXPERT']['phase_correction_32_1']; ?>" oninput="update_slide($(this).attr('id'),3,' °')"> <span id="phase_correction_32_1-value"></span></td>    
+        <td><span class="note tooltip" title="Allows to correct the distance from the constellation center<ul><li>for the central points of 16ASPK mod</li><li>for the two central point circles of 32ASPK mod</li></ul><p>💡 For fine adjustment, click on the slider and then use the up and down keys<br/> For an adjustment in steps of 10% of the full scale, click on the slider and then use the page up and page down keys.</p>" style="color : #636363;">32APSK magnitude1</span> <i>(relative factor)</i></td>
+        <td><input type="range" min="0.4" max="2.5" step="0.01"  id="module_correction_32_1" name="DATV_EXPERT[module_correction_32_1]" value="<?php if (isset($datv_config['DATV_EXPERT']['module_correction_32_1'])) echo $datv_config['DATV_EXPERT']['module_correction_32_1']; ?>" oninput="update_slide($(this).attr('id'),4,'')"> <span id="module_correction_32_1-value"></span></td>               
+     </tr>
+     <tr>
+        <td><span class="note tooltip" title="Allows to correct a phase shift by balancing the central points around the center of the constellation<ul><li>on the central points of 16ASPK mod</li><li>on the two central point circles of 32ASPK mod</li></ul><p>💡 For fine adjustment, click on the slider and then use the up and down keys<br/> For an adjustment in steps of 10% of the full scale, click on the slider and then use the page up and page down keys.</p>" style="color : #636363;">32APSK phase1</span> <i>(relative degrees)</i></td>
+        <td><input type="range" min="-45" max="45" step="0.1" id="phase_correction_32_2" name="DATV_EXPERT[phase_correction_32_2]" value="<?php if (isset($datv_config['DATV_EXPERT']['phase_correction_32_2'])) echo $datv_config['DATV_EXPERT']['phase_correction_32_2']; ?>" oninput="update_slide($(this).attr('id'),5,' °')"> <span id="phase_correction_32_2-value"></span></td>    
+        <td><span class="note tooltip" title="Allows to correct the distance from the constellation center<ul><li>for the central points of 16ASPK mod</li><li>for the two central point circles of 32ASPK mod</li></ul><p>💡 For fine adjustment, click on the slider and then use the up and down keys<br/> For an adjustment in steps of 10% of the full scale, click on the slider and then use the page up and page down keys.</p>" style="color : #636363;">32APSK magnitude2</span> <i>(relative factor)</i></td>
+        <td><input type="range" min="0.4" max="2.5" step="0.01"  id="module_correction_32_2" name="DATV_EXPERT[module_correction_32_2]" value="<?php if (isset($datv_config['DATV_EXPERT']['module_correction_32_2'])) echo $datv_config['DATV_EXPERT']['module_correction_32_2']; ?>" oninput="update_slide($(this).attr('id'),6,'')"> <span id="module_correction_32_2-value"></span></td>               
+     </tr>
      
    </table><br>
    <input type="submit" value="Apply Settings" id ="general"><span id="general_saved" class="saved"  style="display: none;"> Saved !</span>
