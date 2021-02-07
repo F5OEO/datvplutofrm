@@ -9,7 +9,7 @@
     <meta charset="UTF-8">
     <title>ADALM-PLUTO DVB Analyzer</title>
     <meta name="description" content="ADALM-PLUTO DVB Analyzer ">
-    <link href="lib/analysis.ico" rel="icon" type="image/x-icon" />
+    <link href="img/favicon-32x32.png" rel="icon" type="image/png" />
     <link type="text/css" href="./img/style.css" rel="stylesheet">
     <link type="text/css" href="./lib/tooltip.css" rel="stylesheet">
     <link type="text/css" href="./lib/menu.css" rel="stylesheet">    

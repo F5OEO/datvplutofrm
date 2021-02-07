@@ -26,6 +26,7 @@
     <script src="lib/mqtt.js.php?page=<?php echo basename($_SERVER["SCRIPT_FILENAME"]); ?>"></script>  
     <link type="text/css" href="./lib/tooltip.css" rel="stylesheet">
     <link type="text/css" href="./lib/menu.css" rel="stylesheet">
+    <link href="img/favicon-32x32.png" rel="icon" type="image/png" />
   </head>
 
   <body>
@@ -38,7 +39,7 @@
      <a class="button" href="index.html">Documentation</a>
    </nav>
  -->
-   <h1>PlutoDVB status</h1> <i>(under developpement)</i>
+   <h1>PlutoDVB status</h1>
    
    <hr>
    <h2>Pluto Status</h2>
@@ -54,7 +55,7 @@
     <li> Voltage : <span id = "voltage"></span> V</li>
     <li> Current : <span id = "current"></span> mA</li>
     <li> Consumption: <span id = "energycons"></span> VA</li>
-       <li> CPU </li>
+    <!--   <li> CPU </li>
     <li> Processus </li>
     <li> Available memory RAM</li>
     <li> Available space on main ROM volume </li>
@@ -62,12 +63,12 @@
     <li> Ethernet emission rate </li>
     <li> Ethernet reception rate </li>
     <li> USB emission rate </li>
-    <li> USB reception rate </li>
+    <li> USB reception rate </li> -->
     <li><span class="note tooltip" title="MQTT ensuring communication between the human-machine interface and the PlutoDVB core. Also allows interaction with PlutoDVB from network clients. In the case where the status remains unchanged in the disconnected state, the interface is inoperative."> MQTT broker connection </span> : <span id = "brokerconnected"></span></li>
     <li> Last page loaded : <span id = "lastpage"></span></li>
    </ul>
    
-   <h2>Encoder Status</h2>
+   <!-- <h2>Encoder Status</h2> -->
    <?php 
 
 
@@ -154,7 +155,7 @@ if (variable.substr(0,16)=='plutodvb/subpage') {
 }
 
 $('#current,#voltage').on('change', function(){
-  $('#energycons').text((parseFloat($('#current').text()/1000)*parseFloat($('#voltage').text())).toFixed(3));
+  $('#energycons').text((parseFloat($('#current').text()/1000)*parseFloat($('#voltage').text())).toFixed(1));
 })
 
 $('#tx').on ('change', function(){

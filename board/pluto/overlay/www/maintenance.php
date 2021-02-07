@@ -29,6 +29,7 @@
     <script src="lib/mqtt.js.php?page=<?php echo basename($_SERVER["SCRIPT_FILENAME"]); ?>"></script>  
     <link type="text/css" href="./lib/tooltip.css" rel="stylesheet">
     <link type="text/css" href="./lib/menu.css" rel="stylesheet">
+    <link href="img/favicon-32x32.png" rel="icon" type="image/png" />
   </head>
 
   <body>
@@ -41,9 +42,9 @@
      <a class="button" href="index.html">Documentation</a>
    </nav>
  -->
-   <h1>PlutoDVB maintenance</h1> <i>(under developpement)</i>
+   <h1>PlutoDVB maintenance</h1> 
    
-   <hr>
+   <hr><!--
    <h2>Check for updates</h2>
     
     Your browser must have an internet connection. <br>
@@ -52,18 +53,8 @@
         <button name="check_update">Check</button>
       </p>
     </form>
-<br>
-   <h2>Save for next reboot</h2>
+<br> -->
 
-Warning : In order to write permanently, you need first to apply setting then Save to flash. <br>
-<form method="post">
-  <p>
-    <button name="savefw">Save to flash</button>
-  </p>
-</form>
-
-
-<br>
 
 <h2>Upload a new firmware or new patch</h2>
 
