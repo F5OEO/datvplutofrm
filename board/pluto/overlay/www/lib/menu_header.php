@@ -69,7 +69,7 @@
     
     
   </header>
-  <?php var_dump($general_ini);
+  <?php //var_dump($general_ini);
   if ((isset ($general_ini[1]['DATV']['menu_fixed'])) && ($general_ini[1]['DATV']['menu_fixed']=='on')) {
     
       echo '<script>menu_fixed=true;</script>';
