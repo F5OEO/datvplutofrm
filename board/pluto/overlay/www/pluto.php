@@ -1223,6 +1223,7 @@ var max= 0;
 
 function update_tab(id) {
       
+      var check_if_freqcenter = false;
       var data = localStorage.getItem('modulator_'+id);
       if (data !== null ) {
         var datalines = (data.split('&'));
@@ -1230,9 +1231,18 @@ function update_tab(id) {
           var datal =(decodeURIComponent(datalines[i]).split('='));
           var $el = $('#tab'+id+'C [name="'+datal[0]+'"]');
           $el.val(datal[1]);
+          if (datal[0]=='f-central') {
+            check_if_freqcenter = true;
+          }
 
         }
       }
+
+      //processing the addition of finetune (conversion of existing values)
+      if (check_if_freqcenter == false) {
+        $('#tab'+id+'C [name="f-central"]').val($('#tab'+id+'C [name="freq"]').val());
+      }
+
       if (localStorage.getItem('tablocked_'+id)=='true') {
         $('#tab'+id+'C :input').prop("disabled", true);
       } else {
