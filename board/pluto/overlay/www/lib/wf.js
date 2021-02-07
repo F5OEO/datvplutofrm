@@ -572,7 +572,7 @@ function detect_signals(fft_data)
         }
         /*
           ctx.lineWidth=1;
-          ctx.strokeStyle = 'white';
+          ctx.strokeStyle = 'red';
           ctx.beginPath();
           ctx.moveTo((start_signal/fft_data.length)*canvasWidth, canvasHeight * (1 - (signal_threshold/65536)));
           ctx.lineTo((end_signal/fft_data.length)*canvasWidth, canvasHeight * (1 - (signal_threshold/65536)));
@@ -583,7 +583,7 @@ function detect_signals(fft_data)
         strength_signal = acc / acc_i;
         /*
           ctx.lineWidth=1;
-          ctx.strokeStyle = 'white';
+          ctx.strokeStyle = 'yellow';
           ctx.beginPath();
           ctx.moveTo((start_signal/fft_data.length)*canvasWidth, canvasHeight * (1 - (strength_signal/65536)));
           ctx.lineTo((end_signal/fft_data.length)*canvasWidth, canvasHeight * (1 - (strength_signal/65536)));
@@ -598,7 +598,7 @@ function detect_signals(fft_data)
         }
         /*
           ctx.lineWidth=1;
-          ctx.strokeStyle = 'white';
+          ctx.strokeStyle = 'blue';
           ctx.beginPath();
           ctx.moveTo((start_signal/fft_data.length)*canvasWidth, canvasHeight * (1 - (strength_signal/65536)));
           ctx.lineTo((start_signal/fft_data.length)*canvasWidth, canvasHeight * (1 - (strength_signal/65536)) + 20);
@@ -613,7 +613,7 @@ function detect_signals(fft_data)
         }
         /*
           ctx.lineWidth=1;
-          ctx.strokeStyle = 'white';
+          ctx.strokeStyle = 'blue';
           ctx.beginPath();
           ctx.moveTo((end_signal/fft_data.length)*canvasWidth, canvasHeight * (1 - (strength_signal/65536)));
           ctx.lineTo((end_signal/fft_data.length)*canvasWidth, canvasHeight * (1 - (strength_signal/65536)) + 20);
@@ -861,6 +861,15 @@ if(mouse_y > (canvasHeight * 7/8))
             $('#message_spectrum').html('The URL string is in the clipboard and can by paste in your streaming software.<br/> <span style="font-family:verdana;  font-size: 12px; "> '+ m +'</span>');
                    
           }
+
+          if (obs_ws_connected==true) {
+            if (typeof obsstreamurl === "function") { 
+              
+              obsstreamurl($('#upf').val(),$(t+"input[name='callsign']").val());
+              $('#message_spectrum').html('The URL string has just been sent directly to OBS Studio (Parameters/Stream/Custom Server).<br/> <span style="font-family:verdana;  font-size: 12px; "> '+ m +'</span>');
+            }
+          }
+          
     
         });
 
