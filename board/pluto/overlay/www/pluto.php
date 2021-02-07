@@ -86,7 +86,7 @@
     <div class="tab-wrap">
 
       <input type="radio" id="tab1" name="tabGroup1" class="tab" checked>
-      <label for="tab1"><span class="note tooltip" title="To display the reception spectrum, you must have it enabled in the <a href='setup.php#linkreceiversettings'>Setup</a>. When disabled, the data flow is interrupted. At the same time, the receiver control feature is switched off. <p>The QO-100 spectrum is an online ressource of BATC / AMSAT-UK, we thank them for this service. <br>You can enable/disable the display of the spectrum in the .</p>💡 Click on the tab to temporarily hide the spectrum. Another click on the banner will make the spectrum reappear.">Reception spectrum</span></label>
+      <label for="tab1"><span class="note tooltip" title="To display the reception spectrum, you must have it enabled in the <a href='setup.php#linkreceiversettings'>Setup</a>. When disabled, the data flow is interrupted. At the same time, the receiver control feature is switched off. <p>The QO-100 spectrum is an online ressource of BATC / AMSAT-UK, we thank them for this service.</p>💡 Click on the tab to temporarily hide the spectrum. Another click on the banner will make the spectrum reappear.">Reception spectrum</span></label>
 
       <input type="radio" id="tab2" name="tabGroup1" class="tab">
       <!-- <label for="tab2">Setup</label> -->
