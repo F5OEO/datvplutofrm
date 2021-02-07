@@ -72,6 +72,3 @@
 .nav-vertical li { width: 100%; float: none; }
 .nav-vertical li:hover > ul { left: 100%; }
 
-#top {
-  display: flex;
-}

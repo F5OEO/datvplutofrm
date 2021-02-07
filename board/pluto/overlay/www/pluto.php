@@ -1,6 +1,6 @@
   <?php
   session_start();
-  require ('./lib/functions.php');
+
   ?>
   <?php
   if ( isset( $_POST[ 'savefw' ] ) ) {
@@ -51,6 +51,8 @@
     <script src="lib/u16Websocket.js"></script>
     <script src="lib/js.cookie.min.js"></script>
     <script src="lib/tooltip.js"></script>
+    <script src="lib/obs-websocket.js"></script>
+    <script src="obs.js.php"></script>
     <script src="lib/mqttws31.js"></script>      
     <script src="lib/mqtt.js.php?page=<?php echo basename($_SERVER["SCRIPT_FILENAME"]); ?>"></script>        
     <link type="text/css" href="./lib/tooltip.css" rel="stylesheet">
@@ -645,8 +647,12 @@ Warning : In order to write permanently, you need first to apply setting then Sa
     
   }
 
+//global variables
 var tab='1';
 var t = '#tab1C ';
+var obs_ws_connected = false;
+
+
 
   function save_modulator_setup (){     
     let n = '';
@@ -943,8 +949,7 @@ function update_slider_pat()
 
 function update_slider_finefreqtune()
 {
-  console.log('test');
-
+  
 $(t+'#finefreqtunetext').html($(t+'input[name ="finefreqtune"]').val()+'kHz')  ;
  nfreq= parseFloat(parseFloat($(t+'input[name ="freq"]').val())+$(t+'input[name ="finefreqtune"]').val()*0.001);
  console.log('nfreq='+nfreq);
@@ -1560,7 +1565,7 @@ $('#file').click(function(){
 
  function readSingleFile(evt) {
     var f = evt.target.files[0]; 
-    console.log('type = '+f.name.split(".").pop() );
+    //console.log('type = '+f.name.split(".").pop() );
     if (f.name.split(".").pop()=='pluto') {
       if (f) {
         var r = new FileReader();
@@ -1690,6 +1695,8 @@ $('#tab1').click(function(){
 </script>
 <script>
   $( document ).ready(function() {
+
+
   MQTTconnect();
 
   //MQTT send messages

@@ -2,7 +2,7 @@
     // F5UII : Setup page. The outputs are multiples files, working by ajax call with global_save.php.
 
     session_start();
-    require ('./lib/functions.php');
+    require_once ('./lib/functions.php');
     if ( isset( $_POST[ 'reboot' ] ) ) {
      exec( '/sbin/reboot' );
     }

@@ -9,7 +9,7 @@
     exec( 'rm  /mnt/jffs2/patch.zip' );
   }
 
-  require ('./lib/functions.php');
+  require_once ('./lib/functions.php');
   ?>
   <!doctype html>
 

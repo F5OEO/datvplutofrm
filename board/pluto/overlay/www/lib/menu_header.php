@@ -1,5 +1,5 @@
     <?php
-    
+      require_once ('./lib/functions.php');
     function activ_menu($link) {
       
       if ($link == basename($_SERVER["SCRIPT_FILENAME"])) {
@@ -23,8 +23,8 @@
               <li><a href="setup.php#linkreceiversettings" >Receiver settings</a></li>
               <li><a href="setup.php#linkplutosettings" >Pluto settings</a></li>
               </ul></li>
-            <li><a href="textgen.php">Text generator 🆕</a></li>
-            <li><a href="status.php">Pluto status 🆕</a></li>
+            <li><a href="textgen.php">Text generator</a></li>
+            <li><a href="status.php">Pluto status</a></li>
             <li><a href="maintenance.php">Maintenance</a></li>
           </ul>
         <li><a href="pluto.php" <?php activ_menu('pluto.php'); ?> >Controller</a>
@@ -69,3 +69,22 @@
     
     
   </header>
+  <?php //var_dump($general_ini);
+  if ((isset ($general_ini[1]['DATV']['menu_fixed'])) && ($general_ini[1]['DATV']['menu_fixed']=='on')) {
+    
+      echo '<script>menu_fixed=true;</script>';
+    }
+   else  {
+    echo '<script>menu_fixed=false;</script>';
+   }
+
+   ?>
+  
+  <script>
+    if (menu_fixed==true) {
+
+      $('#top').addClass('fixed shadow');
+      $('body').css('padding-top','90px');
+     }
+
+  </script>

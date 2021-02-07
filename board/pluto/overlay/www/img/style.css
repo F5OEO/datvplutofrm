@@ -734,6 +734,8 @@ a {cursor:pointer;}
 }
 #col2 {
   padding-top: 20px;
+  margin:auto;
+  flex: none;
 
 }
 #col3 {
@@ -773,4 +775,24 @@ a {cursor:pointer;}
 
 .right-c-menu li:hover {
     background-color: #33b3ca78;
+}
+
+
+#top {
+  display: flex;
+
+}
+
+.fixed 
+{  position: fixed;  top:0; left:0;  width: 100%; 
+   padding-bottom:20px;
+   background-color: white;
+   border-bottom: 1px solid #add8e6;
+   z-index:110;
+}
+
+.shadow {
+    -webkit-box-shadow: 0 3px 5px rgba(57, 63, 72, 0.3);
+  -moz-box-shadow: 0 3px 5px rgba(57, 63, 72, 0.3);
+  box-shadow: 0 3px 5px rgba(57, 63, 72, 0.3);
 }

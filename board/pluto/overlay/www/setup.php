@@ -2,7 +2,7 @@
     // F5UII : Setup page. The outputs are multiples files, working by ajax call with global_save.php.
 
     session_start();
-   require ('./lib/functions.php');
+   require_once ('./lib/functions.php');
  
   
 
@@ -14,7 +14,7 @@
   <head>
     <meta charset="UTF-8">
 
-    <title>PlutoDVB General setup</title>
+    <title id='lng_title_page'>PlutoDVB General setup</title>
     <meta name="description" content="ADALM-PLUTO DVB General Setup ">
     <link type="text/css" href="./img/style.css" rel="stylesheet">
     <link type="text/css" href="lib/nestable.css" rel="stylesheet">
@@ -22,6 +22,7 @@
     <script src="lib/tooltip.js"></script>
     <script src="lib/jquery.nestable.js"></script> 
     <script src="lib/mqttws31.js"></script>  
+    <script src="lib/jquery.MultiLanguage.min.js"></script>  
     <script src="lib/mqtt.js.php?page=<?php echo basename($_SERVER["SCRIPT_FILENAME"]); ?>"></script>  
     <link type="text/css" href="./lib/tooltip.css" rel="stylesheet">
     <link type="text/css" href="./lib/menu.css" rel="stylesheet">
@@ -37,13 +38,13 @@
      <a class="button" href="index.html">Documentation</a>
    </nav>
  -->
-   <h1>PlutoDVB General setup</h1> 
+   <h1 id='lng_title'>PlutoDVB General setup</h1> 
    
    <hr>
    <section id="linkdatvmode"></section>
       <form id="general" name="datv_config" method="post" action = "javascript:save_config_setup('general','<?php echo urlencode($file_general)?>', '<?php echo rawurlencode($general_ini[0]) ?>');">
    
-   <h2 > Main mode selection</h2>
+   <h2 id='lng_mainmode'> Main mode selection</h2>
    should be able to be more attractive<br/>
    <input type="radio" id="mainmode"
      name="mainmode" value="datv" <?php if (isset($datv_config['mainmode']))  echo $datv_config['mainmode']=='datv' ? " checked" :  "" ?>>
@@ -51,7 +52,7 @@
 
     <input type="radio" id="mainmode"
      name="mainmode" value="pass" <?php if (isset($datv_config['mainmode']))  echo $datv_config['mainmode']=='pass' ? " checked" :  "" ?>>
-    <label for="pass">Passthrough (SDR Console,...)</label>
+    <label for="pass" id="lng_passt">Passthrough (SDR Console,...)</label>
 
     <input type="radio" id="mainmode"
      name="mainmode" value="transverter" <?php if (isset($datv_config['mainmode']))  echo $datv_config['mainmode']=='transverter' ? " checked" :  "" ?>>
@@ -62,7 +63,7 @@
     <label for="signal generator">signal generator</label>
 
   </div>
-  <h2 > DATV operating mode</h2>
+  <h2 id='lng_datv_mode'> DATV operating mode</h2>
 
    <input type="radio" id="datvmode"
      name="DATV[datvmode]" value="rtmp" <?php if (isset($datv_config['DATV']['datvmode']))  echo $datv_config['DATV']['datvmode']=='rtmp' ? " checked" :  "" ?>>
@@ -74,13 +75,25 @@
 
     <input type="radio" id="datvmode"
      name="DATV[datvmode]" value="test" <?php if (isset($datv_config['DATV']['datvmode']))  echo $datv_config['DATV']['datvmode']=='test' ? " checked" :  "" ?>>
+<<<<<<< HEAD
     <label for="test">Pattern<span class="note tooltip" title="Not available" style="color : #636363;">Test pattern</span></label>
 
     <input type="radio" id="datvmode"
      name="DATV[datvmode]" value="repeater" <?php if (isset($datv_config['DATV']['datvmode']))  echo $datv_config['DATV']['datvmode']=='repeater' ? " checked" :  "" ?>>
     <label for="repeater">repeater<span class="note tooltip" title="Not available" style="color : #636363;">Test pattern</span></label>
+=======
+    <label for="test"><span id='lng_test_pattern' class="note tooltip" title="Soon" style="color : #636363;">Pattern</span></label>
+
+    <input type="radio" id="datvmode"
+     name="DATV[datvmode]" value="repeater" <?php if (isset($datv_config['DATV']['datvmode']))  echo $datv_config['DATV']['datvmode']=='repeater' ? " checked" :  "" ?>>
+    <label for="repeater"><span id='lng_repeater' class="note tooltip" title="Soon" style="color : #636363;">Repeater</span></label>
+>>>>>>> f05947c39fe59959557dce7832aca39c65b96f4f
 
   </div>
+  <p>
+     <input type="submit" value="Apply Settings" id ="general"><span id="general_saved" class="saved"  style="display: none;"> Saved !</span>
+
+  </p>
    <hr> <section id="linkdatvsettings"></section>
    <h2>DATV transmission settings</h2>
    <h3>General use</h3>
@@ -108,6 +121,29 @@
    
 
      </tr>
+   </table>
+   <h3>OBS Studio steering</h3>
+   <table>
+          <tr>
+        <td><span class="note tooltip" title="<ul><li>Before activating this function, you need to install the websocket plugin to OBS Studio. (<a href ='https://obsproject.com/forum/resources/obs-websocket-remote-control-obs-studio-from-websockets.466/' target='_blank' >Remote-control OBS Studio from WebSockets Plugin</a> </li><li>This allows you to drive OBS Studio directly from PlutoDVB.</li><li> The main feature is, when you are working in UDP mode, to write directly in OBS Studio the command line with the corresponding parameters (Parameters/Stream/Server). This action takes place when you apply the parameters on the controller page (shortcut F9).</li>" style="color : #636363;">Activation of OBS Studio steering</span><br></td>
+        <td><div class="checkcontainer">
+
+          <input type="checkbox" id="use_obs_steering" name="OBS[use_obs_steering]" <?php if (isset($datv_config['OBS']['use_obs_steering']))  echo $datv_config['OBS']['use_obs_steering']=='on' ? " checked" :  "" ?>>
+          <label for="use_obs_steering" aria-describedby="label"><span class="ui"></span> <span id='use_obs_steering_label'> enabled</span></label>
+        </div> </td>
+        <td><span class="note tooltip" title="Address of your PC on wich OBS Studio is running. The online status is updated after moving the cursor out of the input field and at the upload of the setup.<ul><li>✔️ : Is online from the Pluto (good answer to the ping command).</li><li>✖️ : Seems not online from the Pluto (no answer to the ping command)</li> " style="color : #636363;">OBS Studio IP address</span></td>
+
+        <td><input type="text" id="ipaddr_obs" name="OBS[ipaddr_obs]" value="<?php  if (isset($datv_config['OBS']['ipaddr_obs'])) { $ping_ip_obs= $datv_config['OBS']['ipaddr_obs'] ;} else { $ping_ip_obs=  '192.168.1.111'; } ; echo $ping_ip_obs; ?>" maxlength="15" size="16"> <?php $a= shell_exec ("ping -W 1 -c 1 ".$ping_ip_obs); if (strpos($a, ", 100% packet loss") > 0) {$r= " ✖️";} else { $r= " ✔️"; } ?><span id="ipaddr_obs_status"><?php echo $r; ?></span></td>
+      </tr>
+      <tr>
+        <td><span class="note tooltip" title="Default OBS Studio websocket port is 4444." style="color : #636363;">OBS websocket port</span> </td>
+        <td><input type="text" id="obs_port" name="OBS[obs_port]" value="<?php if (isset($datv_config['OBS']['obs_port'])) echo $datv_config['OBS']['obs_port']; else echo "4444" ?>" maxlength="6" size="6"></td>
+
+        <td><span class="note tooltip" title="By default, there is no password (empty)." style="color : #636363;">OBS websocket password</span></td>
+        <td><input type="text" id="obs_password" name="OBS[obs_password]" value="<?php if (isset($datv_config['OBS']['obs_password'])) echo $datv_config['OBS']['obs_password']; else echo ""?>" maxlength="8" size="8"></td>
+     
+
+       </tr>
    </table>
    <h3>H264/H265 box</h3>
    <table>
@@ -140,8 +176,9 @@
      </tr>
     
    </table>
-
-
+   <p>
+   <input type="submit" value="Apply Settings" id ="general"><span id="general_saved" class="saved"  style="display: none;"> Saved !</span>
+ </p>
 
   <h2>Strategy Setting table</h2>
   This modifiable table makes it easy to set the parameters of the H264/265 encoder automatically according to the stream transport rate (depending on the transmitted signal characteristics).<br/>
@@ -418,8 +455,8 @@ If you are using a transverter (e.g. an LNB), specify the offset (LNB Offset) to
             <td>Fixed menu banner at the top of all the pages</td>
               <td>
                 <div>
-                  <input type="checkbox" id="menu_fixed" name="DATV[menu_fixed]">
-                  <label for="menu_fixed" aria-describedby="label"><span class="ui"></span> fixed</label>
+                  <input type="checkbox" id="menu_fixed" name="DATV[menu_fixed]" <?php if (isset($datv_config['DATV']['menu_fixed']))  echo $datv_config['DATV']['menu_fixed']=='on' ? " checked" :  "" ?>>
+                  <label for="menu_fixed" aria-describedby="label"><span class="ui" ></span> fixed</label>
                 </div>
               </td>
 
@@ -681,6 +718,10 @@ function update_slide(id,decimal,text) {
 </script>
 <script>
   $( document ).ready(function() {
+
+    
+    //$.MultiLanguage('./lib/language.json','en');
+
   MQTTconnect();
 
 
