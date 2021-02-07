@@ -66,11 +66,11 @@
 
    <input type="radio" id="datvmode"
      name="DATV[datvmode]" value="rtmp" <?php if (isset($datv_config['DATV']['datvmode']))  echo $datv_config['DATV']['datvmode']=='rtmp' ? " checked" :  "" ?>>
-    <label for="rtmp">RTMP</label>
+    <label for="rtmp"><span class="note tooltip" title="You send to PlutoDVB a transport stream on 7272 port, with rtmp (realtime messaging protocol)" style="color : #636363;">RTMP</span></label>
 
     <input type="radio" id="datvmode"
      name="DATV[datvmode]" value="udp" <?php if (isset($datv_config['DATV']['datvmode']))  echo $datv_config['DATV']['datvmode']=='udp' ? " checked" :  "" ?>> 
-    <label for="udp">UDP</label>
+    <label for="udp"><span class="note tooltip" title="You send to PlutoDVB a transport stream on 8282 port, with udp (user datagram protocol)" style="color : #636363;">UDP</span></label>
 
     <input type="radio" id="datvmode"
      name="DATV[datvmode]" value="test" <?php if (isset($datv_config['DATV']['datvmode']))  echo $datv_config['DATV']['datvmode']=='test' ? " checked" :  "" ?>>
