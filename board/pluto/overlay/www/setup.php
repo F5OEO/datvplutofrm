@@ -10,7 +10,7 @@
   <!doctype html>
 
   <html>
-  <!-- if "?xpert" in url then expert parameters are displayed  -->
+ 
   <head>
     <meta charset="UTF-8">
 
@@ -45,7 +45,6 @@
       <form id="general" name="datv_config" method="post" action = "javascript:save_config_setup('general','<?php echo urlencode($file_general)?>', '<?php echo rawurlencode($general_ini[0]) ?>');">
    
    <h2 id='lng_mainmode'> Main mode selection</h2>
-   should be able to be more attractive<br/>
    <input type="radio" id="mainmode"
      name="mainmode" value="datv" <?php if (isset($datv_config['mainmode']))  echo $datv_config['mainmode']=='datv' ? " checked" :  "" ?>>
     <label for="datv">DATV</label>
@@ -56,11 +55,11 @@
 
     <input type="radio" id="mainmode"
      name="mainmode" value="transverter" <?php if (isset($datv_config['mainmode']))  echo $datv_config['mainmode']=='transverter' ? " checked" :  "" ?>>
-    <label for="transverter">transverter</label>
+    <label for="transverter"><span class="note tooltip" title="Not available" style="color : #636363;">Transverter</span></label>
 
     <input type="radio" id="mainmode"
-     name="mainmode" value="signal generator" <?php if (isset($datv_config['mainmode']))  echo $datv_config['mainmode']=='signal' ? " checked" :  "" ?>>
-    <label for="signal generator">signal generator</label>
+     name="mainmode" value="signal_generator" <?php if (isset($datv_config['mainmode']))  echo $datv_config['mainmode']=='signal_generator' ? " checked" :  "" ?>>
+    <label for="signal_generator"><span class="note tooltip" title="Not available" style="color : #636363;">Signal generator</span></label>
 
   </div>
   <h2 id='lng_datv_mode'> DATV operating mode</h2>
@@ -75,19 +74,11 @@
 
     <input type="radio" id="datvmode"
      name="DATV[datvmode]" value="test" <?php if (isset($datv_config['DATV']['datvmode']))  echo $datv_config['DATV']['datvmode']=='test' ? " checked" :  "" ?>>
-<<<<<<< HEAD
-    <label for="test">Pattern<span class="note tooltip" title="Not available" style="color : #636363;">Test pattern</span></label>
+    <label for="test"><span class="note tooltip" title="Not available" style="color : #636363;">Pattern</span></label>
 
     <input type="radio" id="datvmode"
      name="DATV[datvmode]" value="repeater" <?php if (isset($datv_config['DATV']['datvmode']))  echo $datv_config['DATV']['datvmode']=='repeater' ? " checked" :  "" ?>>
-    <label for="repeater">repeater<span class="note tooltip" title="Not available" style="color : #636363;">Test pattern</span></label>
-=======
-    <label for="test"><span id='lng_test_pattern' class="note tooltip" title="Soon" style="color : #636363;">Pattern</span></label>
-
-    <input type="radio" id="datvmode"
-     name="DATV[datvmode]" value="repeater" <?php if (isset($datv_config['DATV']['datvmode']))  echo $datv_config['DATV']['datvmode']=='repeater' ? " checked" :  "" ?>>
-    <label for="repeater"><span id='lng_repeater' class="note tooltip" title="Soon" style="color : #636363;">Repeater</span></label>
->>>>>>> f05947c39fe59959557dce7832aca39c65b96f4f
+    <label for="repeater"><span class="note tooltip" title="Not available" style="color : #636363;">Repeater</span></label>
 
   </div>
   <p>
@@ -125,7 +116,7 @@
    <h3>OBS Studio steering</h3>
    <table>
           <tr>
-        <td><span class="note tooltip" title="<ul><li>Before activating this function, you need to install the websocket plugin to OBS Studio. (<a href ='https://obsproject.com/forum/resources/obs-websocket-remote-control-obs-studio-from-websockets.466/' target='_blank' >Remote-control OBS Studio from WebSockets Plugin</a> </li><li>This allows you to drive OBS Studio directly from PlutoDVB.</li><li> The main feature is, when you are working in UDP mode, to write directly in OBS Studio the command line with the corresponding parameters (Parameters/Stream/Server). This action takes place when you apply the parameters on the controller page (shortcut F9).</li>" style="color : #636363;">Activation of OBS Studio steering</span><br></td>
+        <td><span class="note tooltip" title="<ul><li>Before activating this function, you need to install the websocket plugin to OBS Studio. (<a href ='https://obsproject.com/forum/resources/obs-websocket-remote-control-obs-studio-from-websockets.466/' target='_blank' >Remote-control OBS Studio from WebSockets Plugin</a>) </li><li>This allows you to drive OBS Studio directly from PlutoDVB.</li><li> The main feature is, usefull when you are working in UDP mode, to write directly in OBS Studio the command line with the corresponding parameters (Parameters/Stream/Server). This action takes place when you click  on a channel (horizontal segment of the QO100 spectrum) .</li>" style="color : #636363;">Activation of OBS Studio steering</span><br></td>
         <td><div class="checkcontainer">
 
           <input type="checkbox" id="use_obs_steering" name="OBS[use_obs_steering]" <?php if (isset($datv_config['OBS']['use_obs_steering']))  echo $datv_config['OBS']['use_obs_steering']=='on' ? " checked" :  "" ?>>
@@ -167,13 +158,7 @@
      
 
        </tr>
-     <tr>
-          <td><span class="note tooltip" title="To fluidify, normalize the video stream coming from the ON-DMI-16 encoder" style="color : #636363;">Remux - Force compliant</span> </td>
-        <td><div class="checkcontainer">
-          <input type="checkbox" id="remux" name="H265BOX[remux]" <?php if (isset($datv_config['H265BOX']['remux']))  echo $datv_config['H265BOX']['remux']=='on' ? " checked" :  "" ?>>
-          <label for="remux" aria-describedby="label"><span class="ui"></span> <span id='remux_label'> enabled</span></label>
-        </div> </td>
-     </tr>
+
     
    </table>
    <p>
@@ -311,41 +296,79 @@ Attention, in this version the editable cells are not verified at all.
 <br/>
     <input type="submit" value="Apply Settings" id ="st" onclick="table2json()"><span id="aa"   style="display: none;"> Saved !</span>
 
-   <h2>Avanced for expert use only</h2>
+   <h2>Avanced ⚠️ for expert use only</h2>
 
-   <table>
-    <tr>
-      
-      <td><span class="note tooltip" title="Automatically switches off the transmission after the specificated duration .<ul><li>The feature is disabled when the parameter is empty or equal to zero.</li></ul>" style="color : #636363;">Watchdog</span> <i>(min)</i></td>
-      <td><input type="text" id="tx_watchdog" name="DATV_EXPERT[tx_watchdog]" value="<?php if (isset($datv_config['DATV_EXPERT']['tx_watchdog'])) echo $datv_config['DATV_EXPERT']['tx_watchdog']; ?>" maxlength="4" size="4"></td>    
 
-    </tr>
-   </table>
    <h3>16APSK, 32APSK characteristics</h3>
    <br>
     <table>
 
      <tr>
-        <td><span class="note tooltip" title="Allows to correct a phase shift by balancing the central points around the center of the constellation<ul><li>on the central points of 16ASPK mod</li><li>on the two central point circles of 32ASPK mod</li></ul><p>💡 For fine adjustment, click on the slider and then use the up and down keys<br/> For an adjustment in steps of 10% of the full scale, click on the slider and then use the page up and page down keys.</p>" style="color : #636363;">16APSK phase</span> <i>(relative degrees)</i></td>
+        <td><span class="note tooltip" title="Allows to correct a phase shift by balancing the central points around the center of the constellation<ul><li>on the central points of 16ASPK mod</li></ul><p>💡 For fine adjustment, click on the slider and then use the up and down keys<br/> For an adjustment in steps of 10% of the full scale, click on the slider and then use the page up and page down keys.</p>" style="color : #636363;">16APSK phase</span> <i>(relative degrees)</i></td>
         <td><input type="range" min="-45" max="45" step="0.1" id="phase_correction" name="DATV_EXPERT[phase_correction]" value="<?php if (isset($datv_config['DATV_EXPERT']['phase_correction'])) echo $datv_config['DATV_EXPERT']['phase_correction']; ?>" oninput="update_slide($(this).attr('id'),1,' °')"> <span id="phase_correction-value"></span></td>    
-        <td><span class="note tooltip" title="Allows to correct the distance from the constellation center<ul><li>for the central points of 16ASPK mod</li><li>for the two central point circles of 32ASPK mod</li></ul><p>💡 For fine adjustment, click on the slider and then use the up and down keys<br/> For an adjustment in steps of 10% of the full scale, click on the slider and then use the page up and page down keys.</p>" style="color : #636363;">16APSK magnitude</span> <i>(relative factor)</i></td>
+        <td><span class="note tooltip" title="Allows to correct the distance from the constellation center<ul><li>for the central points of 16ASPK mod</li></ul><p>💡 For fine adjustment, click on the slider and then use the up and down keys<br/> For an adjustment in steps of 10% of the full scale, click on the slider and then use the page up and page down keys.</p>" style="color : #636363;">16APSK magnitude</span> <i>(relative factor)</i></td>
         <td><input type="range" min="0.4" max="2.5" step="0.01"  id="module_correction" name="DATV_EXPERT[module_correction]" value="<?php if (isset($datv_config['DATV_EXPERT']['module_correction'])) echo $datv_config['DATV_EXPERT']['module_correction']; ?>" oninput="update_slide($(this).attr('id'),2,'')"> <span id="module_correction-value"></span></td>               
      </tr>
      <tr> </tr>
      <tr>
-        <td><span class="note tooltip" title="Allows to correct a phase shift by balancing the central points around the center of the constellation<ul><li>on the central points of 16ASPK mod</li><li>on the two central point circles of 32ASPK mod</li></ul><p>💡 For fine adjustment, click on the slider and then use the up and down keys<br/> For an adjustment in steps of 10% of the full scale, click on the slider and then use the page up and page down keys.</p>" style="color : #636363;">32APSK phase1</span> <i>(relative degrees)</i></td>
-        <td><input type="range" min="-45" max="45" step="0.1" id="phase_correction_32_1" name="DATV_EXPERT[phase_correction_32_1]" value="<?php if (isset($datv_config['DATV_EXPERT']['phase_correction_32_1'])) echo $datv_config['DATV_EXPERT']['phase_correction_32_1']; ?>" oninput="update_slide($(this).attr('id'),3,' °')"> <span id="phase_correction_32_1-value"></span></td>    
-        <td><span class="note tooltip" title="Allows to correct the distance from the constellation center<ul><li>for the central points of 16ASPK mod</li><li>for the two central point circles of 32ASPK mod</li></ul><p>💡 For fine adjustment, click on the slider and then use the up and down keys<br/> For an adjustment in steps of 10% of the full scale, click on the slider and then use the page up and page down keys.</p>" style="color : #636363;">32APSK magnitude1</span> <i>(relative factor)</i></td>
-        <td><input type="range" min="0.4" max="2.5" step="0.01"  id="module_correction_32_1" name="DATV_EXPERT[module_correction_32_1]" value="<?php if (isset($datv_config['DATV_EXPERT']['module_correction_32_1'])) echo $datv_config['DATV_EXPERT']['module_correction_32_1']; ?>" oninput="update_slide($(this).attr('id'),4,'')"> <span id="module_correction_32_1-value"></span></td>               
+        <td><span class="note tooltip" title="Allows to correct a phase shift by balancing the central points around the center of the constellation<ul><li>on the two central point circles of 32ASPK mod</li></ul><p>💡 For fine adjustment, click on the slider and then use the up and down keys<br/> For an adjustment in steps of 10% of the full scale, click on the slider and then use the page up and page down keys.</p>" style="color : #636363;">32APSK phase 1</span> <i>(relative degrees)</i></td>
+        <td><input type="range" min="-45" max="45" step="0.1" id="phase_correction_32_1" name="DATV_EXPERT[phase_correction_32_1]" value="<?php if (isset($datv_config['DATV_EXPERT']['phase_correction_32_1'])) echo $datv_config['DATV_EXPERT']['phase_correction_32_1']; ?>" oninput="update_slide($(this).attr('id'),1,' °')"> <span id="phase_correction_32_1-value"></span></td>    
+        <td><span class="note tooltip" title="Allows to correct the distance from the constellation center<ul><li>for the two central point circles of 32ASPK mod</li></ul><p>💡 For fine adjustment, click on the slider and then use the up and down keys<br/> For an adjustment in steps of 10% of the full scale, click on the slider and then use the page up and page down keys.</p>" style="color : #636363;">32APSK magnitude 1</span> <i>(relative factor)</i></td>
+        <td><input type="range" min="0.4" max="2.5" step="0.01"  id="module_correction_32_1" name="DATV_EXPERT[module_correction_32_1]" value="<?php if (isset($datv_config['DATV_EXPERT']['module_correction_32_1'])) echo $datv_config['DATV_EXPERT']['module_correction_32_1']; ?>" oninput="update_slide($(this).attr('id'),2,'')"> <span id="module_correction_32_1-value"></span></td>               
      </tr>
      <tr>
-        <td><span class="note tooltip" title="Allows to correct a phase shift by balancing the central points around the center of the constellation<ul><li>on the central points of 16ASPK mod</li><li>on the two central point circles of 32ASPK mod</li></ul><p>💡 For fine adjustment, click on the slider and then use the up and down keys<br/> For an adjustment in steps of 10% of the full scale, click on the slider and then use the page up and page down keys.</p>" style="color : #636363;">32APSK phase1</span> <i>(relative degrees)</i></td>
-        <td><input type="range" min="-45" max="45" step="0.1" id="phase_correction_32_2" name="DATV_EXPERT[phase_correction_32_2]" value="<?php if (isset($datv_config['DATV_EXPERT']['phase_correction_32_2'])) echo $datv_config['DATV_EXPERT']['phase_correction_32_2']; ?>" oninput="update_slide($(this).attr('id'),5,' °')"> <span id="phase_correction_32_2-value"></span></td>    
-        <td><span class="note tooltip" title="Allows to correct the distance from the constellation center<ul><li>for the central points of 16ASPK mod</li><li>for the two central point circles of 32ASPK mod</li></ul><p>💡 For fine adjustment, click on the slider and then use the up and down keys<br/> For an adjustment in steps of 10% of the full scale, click on the slider and then use the page up and page down keys.</p>" style="color : #636363;">32APSK magnitude2</span> <i>(relative factor)</i></td>
-        <td><input type="range" min="0.4" max="2.5" step="0.01"  id="module_correction_32_2" name="DATV_EXPERT[module_correction_32_2]" value="<?php if (isset($datv_config['DATV_EXPERT']['module_correction_32_2'])) echo $datv_config['DATV_EXPERT']['module_correction_32_2']; ?>" oninput="update_slide($(this).attr('id'),6,'')"> <span id="module_correction_32_2-value"></span></td>               
+        <td><span class="note tooltip" title="Allows to correct a phase shift by balancing the central points around the center of the constellation<ul><li>on the two central point circles of 32ASPK mod</li></ul><p>💡 For fine adjustment, click on the slider and then use the up and down keys<br/> For an adjustment in steps of 10% of the full scale, click on the slider and then use the page up and page down keys.</p>" style="color : #636363;">32APSK phase 2</span> <i>(relative degrees)</i></td>
+        <td><input type="range" min="-45" max="45" step="0.1" id="phase_correction_32_2" name="DATV_EXPERT[phase_correction_32_2]" value="<?php if (isset($datv_config['DATV_EXPERT']['phase_correction_32_2'])) echo $datv_config['DATV_EXPERT']['phase_correction_32_2']; ?>" oninput="update_slide($(this).attr('id'),1,' °')"> <span id="phase_correction_32_2-value"></span></td>    
+        <td><span class="note tooltip" title="Allows to correct the distance from the constellation center<ul><li>for the two central point circles of 32ASPK mod</li></ul><p>💡 For fine adjustment, click on the slider and then use the up and down keys<br/> For an adjustment in steps of 10% of the full scale, click on the slider and then use the page up and page down keys.</p>" style="color : #636363;">32APSK magnitude 2</span> <i>(relative factor)</i></td>
+        <td><input type="range" min="0.4" max="2.5" step="0.01"  id="module_correction_32_2" name="DATV_EXPERT[module_correction_32_2]" value="<?php if (isset($datv_config['DATV_EXPERT']['module_correction_32_2'])) echo $datv_config['DATV_EXPERT']['module_correction_32_2']; ?>" oninput="update_slide($(this).attr('id'),2,'')"> <span id="module_correction_32_2-value"></span></td>               
      </tr>
      
-   </table><br>
+   </table>
+   <h3>Radio</h3>
+<table>
+    <tr>
+      
+      <td><span class="note tooltip" title="<strong>Not available</strong><br>Automatically switches off the transmission after the specificated duration .<ul><li>The feature is disabled when the parameter is empty or equal to zero.</li></ul>" style="color : #636363;">Watchdog</span> <i>(min)</i></td>
+      <td><input type="text" id="tx_watchdog" name="DATV_EXPERT[tx_watchdog]" value="<?php if (isset($datv_config['DATV_EXPERT']['tx_watchdog'])) echo $datv_config['DATV_EXPERT']['tx_watchdog']; ?>" maxlength="4" size="4"></td>    
+
+    
+          <td><span class="note tooltip" title="To fluidify, normalize the video stream coming from the external source.<br>If you are not an expert, keep this option active." style="color : #636363;">Remux - Force compliant</span> </td>
+        <td><div class="checkcontainer">
+          <input type="checkbox" id="remux" name="H265BOX[remux]" <?php if (isset($datv_config['H265BOX']['remux']))  echo $datv_config['H265BOX']['remux']=='on' ? " checked" :  "" ?>>
+          <label for="remux" aria-describedby="label"><span class="ui"></span> <span id='remux_label'> enabled</span></label>
+        </div> </td>
+     </tr>
+   </table>
+<h3>System</h3>
+  <table>
+
+      <tr>
+        <td>Xo Correction</td>
+        <td><input type="text" id="xo_correction" name="SYSTEM[xo_correction]" value="<?php if (isset($network_config['SYSTEM']['xo_correction'])) echo $network_config['SYSTEM']['xo_correction']; ?>" maxlength="4" size="4"></td>
+        <td>UDC Handle suspend </td>
+        <td><input type="text" id="udc_handle_suspend" name="SYSTEM[udc_handle_suspend]" value="<?php if (isset($network_config['SYSTEM']['udc_handle_suspend'])) echo $network_config['SYSTEM']['udc_handle_suspend']; ?>" maxlength="4" size="4"></td>
+
+      </tr>
+
+    </table>
+    <table>
+
+      <tr>
+        <td>Diagnostic report</td>
+        <td><input type="text" id="diagnostic_report" name="ACTIONS[diagnostic_report]" value="<?php if (isset($network_config['ACTIONS']['diagnostic_report'])) echo $network_config['ACTIONS']['diagnostic_report']; ?>" maxlength="4" size="4"></td>
+        <td>DFU (Device Firmware Update) </td>
+        <td><input type="text" id="dfu" name="ACTIONS[dfu]" value="<?php if (isset($network_config['ACTIONS']['dfu'])) echo $network_config['ACTIONS']['dfu']; ?>" maxlength="4" size="4"></td>
+      </tr>
+      <tr>
+        <td>Reset</td>
+        <td><input type="text" id="reset" name="ACTIONS[reset]" value="<?php if (isset($network_config['ACTIONS']['reset'])) echo $network_config['ACTIONS']['reset']; ?>" maxlength="4" size="4"></td>
+        <td>Calibrate </td>
+        <td><input type="text" id="calibrate" name="ACTIONS[calibrate]" value="<?php if (isset($network_config['ACTIONS']['calibrate'])) echo $network_config['ACTIONS']['calibrate']; ?>" maxlength="4" size="4"></td>
+
+      </tr>
+  
+    </table>
+    <br/>
    <input type="submit" value="Apply Settings" id ="general"><span id="general_saved" class="saved"  style="display: none;"> Saved !</span>
 
  <hr>
@@ -449,7 +472,7 @@ If you are using a transverter (e.g. an LNB), specify the offset (LNB Offset) to
           <input type="submit" value="Apply Settings" id ="submit_receiver"><span id="saved_receiver" class="saved"  style="display: none;"> Saved !</span>
    
 <br><hr> <section id=""></section>
-   <h2>Display Settings <i>under developpement</i></h2>
+   <h2>Display Settings</h2>
            <table>
           <tr>
             <td>Fixed menu banner at the top of all the pages</td>
@@ -519,49 +542,7 @@ If you are using a transverter (e.g. an LNB), specify the offset (LNB Offset) to
       </tr>               
     </table>
     <br>
-
-
      
-    <div class="xpert" style="display: none;">
-        <h2>Advanced <i>( ⚠️ Be carefull, expert use only)</i> </h2>
-    <p></p>
-
-    <h3>System, Radio </h3>
-    <p></p>
-
-    <table>
-
-      <tr>
-        <td>Xo Correction</td>
-        <td><input type="text" id="xo_correction" name="SYSTEM[xo_correction]" value="<?php if (isset($network_config['SYSTEM']['xo_correction'])) echo $network_config['SYSTEM']['xo_correction']; ?>" maxlength="4" size="4"></td>
-        <td>UDC Handle suspend </td>
-        <td><input type="text" id="udc_handle_suspend" name="SYSTEM[udc_handle_suspend]" value="<?php if (isset($network_config['SYSTEM']['udc_handle_suspend'])) echo $network_config['SYSTEM']['udc_handle_suspend']; ?>" maxlength="4" size="4"></td>
-
-      </tr>
-
-    </table>
-    <table>
-
-      <tr>
-        <td>Diagnostic report</td>
-        <td><input type="text" id="diagnostic_report" name="ACTIONS[diagnostic_report]" value="<?php if (isset($network_config['ACTIONS']['diagnostic_report'])) echo $network_config['ACTIONS']['diagnostic_report']; ?>" maxlength="4" size="4"></td>
-        <td>DFU (Device Firmware Update) </td>
-        <td><input type="text" id="dfu" name="ACTIONS[dfu]" value="<?php if (isset($network_config['ACTIONS']['dfu'])) echo $network_config['ACTIONS']['dfu']; ?>" maxlength="4" size="4"></td>
-      </tr>
-      <tr>
-        <td>Reset</td>
-        <td><input type="text" id="reset" name="ACTIONS[reset]" value="<?php if (isset($network_config['ACTIONS']['reset'])) echo $network_config['ACTIONS']['reset']; ?>" maxlength="4" size="4"></td>
-        <td>Calibrate </td>
-        <td><input type="text" id="calibrate" name="ACTIONS[calibrate]" value="<?php if (isset($network_config['ACTIONS']['calibrate'])) echo $network_config['ACTIONS']['calibrate']; ?>" maxlength="4" size="4"></td>
-
-      </tr>
-  
-    </table>
-  
-
-   </div>
-
-    <br>      
     <input type="submit" value="Apply Settings" id ="configtxt"><span id="configtxt_saved" class="saved"  style="display: none;"> Saved !</span>
   </form>
 
@@ -749,9 +730,11 @@ if ((typeof mqtt.isConnected === 'function') )  {
       dhcp ();
     update_slide('phase_correction',1,' °');
     update_slide('module_correction',2,'');
-    if (window.location.href.indexOf("xpert") > -1) {
-      $(".xpert").show();
-    }
+    update_slide('phase_correction_32_1',1,' °');
+    update_slide('module_correction_32_1',2,'');
+    update_slide('phase_correction_32_2',1,' °');
+    update_slide('module_correction_32_2',2,'');
+
 
     $('#hi_power_limit').on('change paste keyup',function() {
       if (parseFloat($('#hi_power_limit').val())>0) {
