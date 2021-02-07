@@ -122,7 +122,7 @@
           <input type="checkbox" id="use_obs_steering" name="OBS[use_obs_steering]" <?php if (isset($datv_config['OBS']['use_obs_steering']))  echo $datv_config['OBS']['use_obs_steering']=='on' ? " checked" :  "" ?>>
           <label for="use_obs_steering" aria-describedby="label"><span class="ui"></span> <span id='use_obs_steering_label'> enabled</span></label>
         </div> </td>
-        <td><span class="note tooltip" title="Address of your PC on wich OBS Studio is running. The online status is updated after moving the cursor out of the input field and at the upload of the setup.<ul><li>✔️ : Is online from the Pluto (good answer to the ping command).</li><li>✖️ : Seems not online from the Pluto (no answer to the ping command)</li> " style="color : #636363;">OBS Studio IP address</span></td>
+        <td><span class="note tooltip" title="Address of your PC on which OBS Studio is running. The online status is updated after moving the cursor out of the input field and at the upload of the setup.<ul><li>✔️ : Is online from the Pluto (good answer to the ping command).</li><li>✖️ : Seems not online from the Pluto (no answer to the ping command)</li> " style="color : #636363;">OBS Studio IP address</span></td>
 
         <td><input type="text" id="ipaddr_obs" name="OBS[ipaddr_obs]" value="<?php  if (isset($datv_config['OBS']['ipaddr_obs'])) { $ping_ip_obs= $datv_config['OBS']['ipaddr_obs'] ;} else { $ping_ip_obs=  '192.168.1.111'; } ; echo $ping_ip_obs; ?>" maxlength="15" size="16"> <?php $a= shell_exec ("ping -W 1 -c 1 ".$ping_ip_obs); if (strpos($a, ", 100% packet loss") > 0) {$r= " ✖️";} else { $r= " ✔️"; } ?><span id="ipaddr_obs_status"><?php echo $r; ?></span></td>
       </tr>
