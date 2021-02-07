@@ -61,7 +61,7 @@
 
   </div>
       <div id='col3'>   
-      <div class="anchor">version : <?php
+      <div class="anchor" style="margin-right: 15px;">version : <?php
         $fwver = shell_exec ( 'cat /www/fwversion.txt' );
         echo "$fwver";
         ?></div>
