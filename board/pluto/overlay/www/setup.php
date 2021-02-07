@@ -82,6 +82,10 @@
     <label for="repeater"><span id='lng_repeater' class="note tooltip" title="Soon" style="color : #636363;">Repeater</span></label>
 
   </div>
+  <p>
+     <input type="submit" value="Apply Settings" id ="general"><span id="general_saved" class="saved"  style="display: none;"> Saved !</span>
+
+  </p>
    <hr> <section id="linkdatvsettings"></section>
    <h2>DATV transmission settings</h2>
    <h3>General use</h3>
@@ -109,6 +113,29 @@
    
 
      </tr>
+   </table>
+   <h3>OBS Studio steering</h3>
+   <table>
+          <tr>
+        <td><span class="note tooltip" title="<ul><li>Before activating this function, you need to install the websocket plugin to OBS Studio. (<a href ='https://obsproject.com/forum/resources/obs-websocket-remote-control-obs-studio-from-websockets.466/' target='_blank' >Remote-control OBS Studio from WebSockets Plugin</a> </li><li>This allows you to drive OBS Studio directly from PlutoDVB.</li><li> The main feature is, when you are working in UDP mode, to write directly in OBS Studio the command line with the corresponding parameters (Parameters/Stream/Server). This action takes place when you apply the parameters on the controller page (shortcut F9).</li>" style="color : #636363;">Activation of OBS Studio steering</span><br></td>
+        <td><div class="checkcontainer">
+
+          <input type="checkbox" id="use_obs_steering" name="OBS[use_obs_steering]" <?php if (isset($datv_config['OBS']['use_obs_steering']))  echo $datv_config['OBS']['use_obs_steering']=='on' ? " checked" :  "" ?>>
+          <label for="use_obs_steering" aria-describedby="label"><span class="ui"></span> <span id='use_obs_steering_label'> enabled</span></label>
+        </div> </td>
+        <td><span class="note tooltip" title="Address of your PC on wich OBS Studio is running. The online status is updated after moving the cursor out of the input field and at the upload of the setup.<ul><li>✔️ : Is online from the Pluto (good answer to the ping command).</li><li>✖️ : Seems not online from the Pluto (no answer to the ping command)</li> " style="color : #636363;">OBS Studio IP address</span></td>
+
+        <td><input type="text" id="ipaddr_obs" name="OBS[ipaddr_obs]" value="<?php  if (isset($datv_config['OBS']['ipaddr_obs'])) { $ping_ip_obs= $datv_config['OBS']['ipaddr_obs'] ;} else { $ping_ip_obs=  '192.168.1.111'; } ; echo $ping_ip_obs; ?>" maxlength="15" size="16"> <?php $a= shell_exec ("ping -W 1 -c 1 ".$ping_ip_obs); if (strpos($a, ", 100% packet loss") > 0) {$r= " ✖️";} else { $r= " ✔️"; } ?><span id="ipaddr_obs_status"><?php echo $r; ?></span></td>
+      </tr>
+      <tr>
+        <td><span class="note tooltip" title="Default OBS Studio websocket port is 4444." style="color : #636363;">OBS websocket port</span> </td>
+        <td><input type="text" id="obs_port" name="OBS[obs_port]" value="<?php if (isset($datv_config['OBS']['obs_port'])) echo $datv_config['OBS']['obs_port']; else echo "4444" ?>" maxlength="6" size="6"></td>
+
+        <td><span class="note tooltip" title="By default, there is no password (empty)." style="color : #636363;">OBS websocket password</span></td>
+        <td><input type="text" id="obs_password" name="OBS[obs_password]" value="<?php if (isset($datv_config['OBS']['obs_password'])) echo $datv_config['OBS']['obs_password']; else echo ""?>" maxlength="8" size="8"></td>
+     
+
+       </tr>
    </table>
    <h3>H264/H265 box</h3>
    <table>
@@ -141,8 +168,9 @@
      </tr>
     
    </table>
-
-
+   <p>
+   <input type="submit" value="Apply Settings" id ="general"><span id="general_saved" class="saved"  style="display: none;"> Saved !</span>
+ </p>
 
   <h2>Strategy Setting table</h2>
   This modifiable table makes it easy to set the parameters of the H264/265 encoder automatically according to the stream transport rate (depending on the transmitted signal characteristics).<br/>
