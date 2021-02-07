@@ -23,7 +23,7 @@
               <li><a href="setup.php#linkreceiversettings" >Receiver settings</a></li>
               <li><a href="setup.php#linkplutosettings" >Pluto settings</a></li>
               </ul></li>
-            <li><a href="textgen.php">Text generator</a></li>
+            <!--<li><a href="textgen.php">Text generator</a></li>-->
             <li><a href="status.php">Pluto status</a></li>
             <li><a href="maintenance.php">Maintenance</a></li>
           </ul>
@@ -69,7 +69,7 @@
     
     
   </header>
-  <?php //var_dump($general_ini);
+  <?php var_dump($general_ini);
   if ((isset ($general_ini[1]['DATV']['menu_fixed'])) && ($general_ini[1]['DATV']['menu_fixed']=='on')) {
     
       echo '<script>menu_fixed=true;</script>';
