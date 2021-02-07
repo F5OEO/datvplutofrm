@@ -43,11 +43,11 @@
    
    <hr>
    <h2>Pluto Status</h2>
-   
+   <!--
    Activ Mode :
    TX status : On air / Standby
 
-
+-->
    <ul>
     <li> Last change of Pluto output : <span id="tx">No change since this page is displayed</span>
     <li> FPGA Temperature : <span id = "fpgatemp"></span> °C</li>
