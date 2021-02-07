@@ -841,10 +841,25 @@ if(mouse_y > (canvasHeight * 7/8))
         let textarea = document.getElementById("upf");
         textarea.select();
         let ret= document.execCommand('copy');
-        if (ret == true) {
+        if ((ret == true) && (obs_ws_connected==false)) {
           let ret=false;
           $('#message_spectrum').html('Frequency set and also copied in clipboard ! <span id="rtmp"><i>Click here to copy RTMP server URL in </i>📋<i>.</i></span>');
           $("#message_spectrum").fadeIn(250).delay(5000).fadeOut(1500);
+        } else {
+
+           let t='#tab'+tab+'C ';
+          //rtmp://192.168.2.1:7272/,437,DVBS2,QPSK,333,23,0,nocalib,800,32,
+          let m=window.location.origin+':7272/,' + $(t+"input[name='freq']").val() + ',' + $(t+"select[name='mode']").val()+ ',' + $(t+"select[name='mod']").val() + ',' + $(t+"input[name='sr']").val() + ',' + $(t+"select[name='fec']").val() + ',' + $(t+"input[name='power']").val() + ',nocalib,'+$(t+"input[name='pcrpts']").val() +',32,';
+          m = m.replace("http://", "rtmp://");
+
+          if (obs_ws_connected==true) {
+            if (typeof obsstreamurl === "function") { 
+              
+              obsstreamurl(m,$(t+"input[name='callsign']").val());
+              $('#message_spectrum').html('The URL and key strings have just been sent directly to OBS Studio (Parameters/Stream/Custom Server).<br/> <span style="font-family:verdana;  font-size: 12px; "> '+ m +'</span>');
+              $("#message_spectrum").fadeIn(250).delay(5000).fadeOut(1500);
+            }
+          }
         }
 
          $('#rtmp').click(function () {
@@ -862,13 +877,6 @@ if(mouse_y > (canvasHeight * 7/8))
                    
           }
 
-          if (obs_ws_connected==true) {
-            if (typeof obsstreamurl === "function") { 
-              
-              obsstreamurl($('#upf').val(),$(t+"input[name='callsign']").val());
-              $('#message_spectrum').html('The URL string has just been sent directly to OBS Studio (Parameters/Stream/Custom Server).<br/> <span style="font-family:verdana;  font-size: 12px; "> '+ m +'</span>');
-            }
-          }
           
     
         });
