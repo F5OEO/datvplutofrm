@@ -952,7 +952,7 @@ function update_slider_finefreqtune()
   
 $(t+'#finefreqtunetext').html($(t+'input[name ="finefreqtune"]').val()+'kHz')  ;
  nfreq= parseFloat(parseFloat($(t+'input[name ="freq"]').val())+$(t+'input[name ="finefreqtune"]').val()*0.001);
- console.log('nfreq='+nfreq);
+// console.log('nfreq='+nfreq);
 
  $(t+'input[name ="freq"]').val((parseFloat($(t+'input[name ="f-central"]').val())+parseFloat($(t+'input[name ="finefreqtune"]').val()*0.001)).toFixed(3)).change();
 }

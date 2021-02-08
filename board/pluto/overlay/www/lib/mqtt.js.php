@@ -96,7 +96,7 @@
       if (mqtt.isConnected()) {
        // sendmqtt('plutodvb/var', '{"'+obj+'":"'+ val +'"}' ) ;
         sendmqtt('plutodvb/subvar/'+obj, val ) ;
-        console.log ('t='+t+' obj='+obj+' val='+val);
+        //console.log ('t='+t+' obj='+obj+' val='+val);
       }});
 
     }
