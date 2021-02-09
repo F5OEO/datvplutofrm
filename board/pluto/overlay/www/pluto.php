@@ -139,7 +139,11 @@
       <td>PTT <i>(F10)</i><br>Apply mod. settings <i>(F9)</i>
         <td>
 
-          <button id="ptt" onClick="request_ptt();"></button>
+          <button id="ptt" onClick="request_ptt();"></button> <?php 
+          if ((isset ($general_ini[1]['OBS']['use_obs_steering'])) && ($general_ini[1]['OBS']['use_obs_steering']=='on')) { ?>
+          <button id="streamingOBS"><span id="buttonstreaming" class="note tooltip" title="Click for toggle OBS Studio streaming" style ="color:#fff">Start streaming</span></button>
+          <button id="recordingOBS"><span id="buttonrecording" class="note tooltip" title="Click for toggle OBS Studio recording" style ="color:#fff">Start recording</span></button> 
+          <?php } ?> 
         </td>
         <td>
           <p id="textptt" style="display:none"></p><span id="temps" class="tooltip" title="Tuner temperature - Zynq FGPA temperature"></span><span id="txduration" class="note tooltip" title="Total duration : 00:00:00">00:00:00</span>
@@ -1727,6 +1731,70 @@ $('body').on('change', 'input,select,textarea', function () {
 
     // Send PTT current status for synchronizing with heard pltuodvb/tx = true/false
   }
+});
+
+const streamstarting = (data) => {
+   $("#buttonstreaming").fadeOut(0,function(){
+     $(this).html('Streaming starting...').fadeIn();
+   });
+};
+const streaming = (data) => {
+  $("#buttonstreaming").fadeOut(0,function(){
+    $(this).html('Stop streaming').fadeIn();
+    $(this).css({ 'color' : 'red' });
+  });
+};
+const streamstopping = (data) => {
+   $("#buttonstreaming").fadeOut(0,function(){
+     $(this).html('Streaming stopping...').fadeIn();
+   });
+};
+const streamstopped = (data) => {
+   $("#buttonstreaming").fadeOut(0,function(){
+     $(this).html('Start streaming').fadeIn();
+     $(this).css({ 'color' : '#fff' });
+   });
+};
+const recordingstarting = (data) => {
+  console.log('recordingstarted'+data);
+  $("#buttonrecording").fadeOut(0,function(){
+    $(this).html('Recording starting...').fadeIn();
+  });
+};
+const recordingstarted = (data) => {
+  console.log('recordingstarted'+data);
+  $("#buttonrecording").fadeOut(0,function(){
+    $(this).html('Stop recording').fadeIn();
+    $(this).css({ 'color' : 'red' });
+  });
+};
+const recordingstopping = (data) => {
+  console.log('recordingstarted'+data);
+  $("#buttonrecording").fadeOut(0,function(){
+    $(this).html('Recording stopping...').fadeIn();
+  });
+};
+const recordingstopped = (data) => {
+  console.log('recordingstarted'+data);
+  $("#buttonrecording").fadeOut(0,function(){
+    $(this).html('Start recording').fadeIn();
+    $(this).css({ 'color' : '#fff' });
+  });
+};
+obs.on('StreamStarting', (data) => streamstarting(data));
+obs.on('StreamStarted', (data) => streaming(data));
+obs.on('StreamStopping', (data) => streamstopping(data));
+obs.on('StreamStopped', (data) => streamstopped(data));
+obs.on('RecordingStarting', (data) => recordingstarting(data));
+obs.on('RecordingStarted', (data) => recordingstarted(data));
+obs.on('RecordingStopping', (data) => recordingstopping(data));
+obs.on('RecordingStopped', (data) => recordingstopped(data));
+
+$('#buttonstreaming').click(function() {
+  obs.send("StartStopStreaming", "");
+});
+$('#buttonrecording').click(function() {
+  obs.send("StartStopRecording", "");
 });
 });
 </script>
