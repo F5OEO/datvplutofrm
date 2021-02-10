@@ -431,6 +431,8 @@ echo '<script>var ws_url_override="'.$ws_url_override.'"</script>';
       <option value="34">3/4</option>
       <option value="56">5/6</option>
       <option value="78">7/8</option>
+      <option value="89">8/9</option>
+      <option value="910">9/10</option>
     </select></td>
   </tr>
   <tr id="pilots_option"  >
