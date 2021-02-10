@@ -6,6 +6,4 @@ tunnels:
   second:
     addr: 22
     proto: tcp
-  third:
-    addr: 8282
-    proto: udp
+ 

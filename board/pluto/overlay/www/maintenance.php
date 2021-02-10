@@ -118,7 +118,7 @@ This is needed for apply your saved modifications made in Pluto Configuration se
 </form>
 
 <br>
-<form >
+<form method="post">
   <p>
     <button name="remote" id="remote">Remote assistance</button><span id='remote_assistance'></span>
   </p>
