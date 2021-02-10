@@ -188,7 +188,7 @@ echo '<script>var ws_url_override="'.$ws_url_override.'"</script>';
 
   <hr>
 
-<span id ="addtab"><a id='plussign'> ➕ </a><a><span  class="note tooltip" title="Click ➕ to add a new modulator profile.<ul><li>The new tab is initialized in the same state as the Main tab.</li><li> You can edit the name of the tab. <li>It is saved locally in your browser, as soon as you have changed <u>at least one</u> setting in the table. (No click on <i>Apply Settings</i> needed)</li><li>  To use the active modulator for the next transmission (or during an ongoing transmision), click <i>Apply settings</i> button.</li><li>With a right click on a form, you can <ul><li>lock the modulator so that no changes can be done before unlocking it again.</li><li>duplicate the current active modulator on a new tab</li><li>copies the callsign, program name and power from the active modulator to all unlocked profiles</li></li></ul> ">Add modulator</span></a></span>
+<span id ="addtab"><a id='plussign'> ➕ </a><a><span  class="note tooltip" title="Click ➕ to add a new modulator profile.<ul><li>The new tab is initialized in the same state as the Main tab.</li><li> You can edit the name of the tab. <li>It is saved locally in your browser, as soon as you have changed <u>at least one</u> setting in the table. (No click on <i>Apply Settings</i> needed)</li><li>  To use the active modulator for the next transmission (or during an ongoing transmision), click <i>Apply settings</i> button.</li><li>With a right click on a form, you can <ul><li>lock the modulator so that no changes can be done before unlocking it again.</li><li>duplicate the current active modulator on a new tab</li><li>copies the callsign, program name and power from the active modulator to all unlocked profiles</li><li>export and import backups of all tabs</li></ul> ">Add modulator</span></a></span>
   <ul id="tabs"  >
     <li><a id="tab1">Main</a></li>
   </ul>
@@ -786,6 +786,15 @@ var obs_ws_connected = false;
         $('#txduration').attr('title','Total duration : '+hms(total)+'<br>Transmission switchover : '+sw+'<br><span style="font: Arial; font-size:8px">Cumulates only if the controller page is open (foreground or background)<span><br><button id="counterreset" onclick="reset_counter()">Reset</button>').tooltipster({ delay: 100,maxWidth: 500,speed: 300,interactive: true,animation: 'grow',trigger: 'hover',position : 'bottom-left'})
 
   }
+
+  function change_tabinput_status() {
+
+      if ((localStorage.getItem('ActivTab_TX')!=null) && (localStorage.getItem('ActivTab_TX')!=tab)) { 
+      $(t+'.form_modulator :input').prop("disabled", true); //disable input if a other tab in transmission
+    } else {
+      $(t+'.form_modulator :input').prop("disabled", false);
+    }
+  }
   function request_onair()
   {
     var status = $('#textptt').text();
@@ -812,6 +821,8 @@ var obs_ws_connected = false;
             }
             $('a#tab'+localStorage.getItem('ActivTab_TX')).addClass('blink-tabactivated');
             $('#tab'+localStorage.getItem('ActivTab_TX')+'C').addClass('activ-tab');
+            change_tabinput_status();
+
 
             
             //start count duration
@@ -835,6 +846,7 @@ var obs_ws_connected = false;
             $('a').removeClass('blink-tabactivated');
              $('#tab'+localStorage.getItem('ActivTab_TX')+'C').removeClass('activ-tab');
             localStorage.removeItem('ActivTab_TX');
+            change_tabinput_status();
             
             //memorise total duration
             if  (localStorage.getItem('total_duration')==null) {
@@ -1463,6 +1475,9 @@ function reset_counter() {
        tab = $(this).attr('id').substring(3);
        update_tab(tab);
        localStorage.setItem('ActivTab',tab);
+
+      change_tabinput_status();
+
 
     if($(this).hasClass('inactive')){ 
       $('#tabs li a').addClass('inactive');           

@@ -761,6 +761,7 @@ a {cursor:pointer;}
     color: #333;
     border-radius: 5px;
     padding: 0;
+    box-shadow: 3px 6px 5px 0px rgb(57 63 72 / 30%);
 }
 
 /* Each of the items in the list */
