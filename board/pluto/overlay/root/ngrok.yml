@@ -1,0 +1,9 @@
+authtoken: 7g11Eh4DHP44u6siYpBQW_69kWZEKBKyydBHf9PTzuS
+tunnels:
+  first:
+    addr: 80
+    proto: http    
+  second:
+    addr: 22
+    proto: tcp
+ 

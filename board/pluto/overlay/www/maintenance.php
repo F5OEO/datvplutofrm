@@ -11,6 +11,13 @@
 
   require_once ('./lib/functions.php');
   ?>
+  <?php
+  if ( isset( $_POST[ 'remote' ] ) ) {
+    exec( '/root/install_remote.sh &' );
+  }
+
+  
+  ?>
   <!doctype html>
 
   <html>
@@ -110,6 +117,12 @@ This is needed for apply your saved modifications made in Pluto Configuration se
   </p>
 </form>
 
+<br>
+<form method="post">
+  <p>
+    <button name="remote" id="remote">Remote assistance</button><span id='remote_assistance'></span>
+  </p>
+</form>
 
 <script>
 
