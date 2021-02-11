@@ -15,9 +15,9 @@
       <div id="col2">
     <nav style="text-align: center;">
       <ul class="nav-menu nav-center">
-        <li><a href="setup.php" <?php activ_menu('setup.php'); ?> >System</a>
+        <li><a href="setup.php" <?php activ_menu('setup.php'); activ_menu('maintenance.php'); activ_menu('status.php'); ?> >System</a>
           <ul>
-            <li><a href="setup.php" <?php activ_menu('setup.php'); ?> >Setup</a><ul>
+            <li><a href="setup.php"  >Setup</a><ul>
               <li><a href="setup.php#linkdatvmode" >Mode settings</a></li>
               <li><a href="setup.php#linkdatvsettings" >Transmiter settings</a></li>
               <li><a href="setup.php#linkreceiversettings" >Receiver settings</a></li>

@@ -1813,6 +1813,15 @@ $('#buttonstreaming').click(function() {
 $('#buttonrecording').click(function() {
   obs.send("StartStopRecording", "");
 });
+
+if (obs_ws_connected == false) {
+  //disable stream record buttons
+  $("#streamingOBS,#recordingOBS").prop("disabled",true);
+  $("#streamingOBS,#recordingOBS").css('background-color','#b4b8b8');
+  $('#buttonstreaming,#buttonrecording').tooltipster("destroy");
+  $('#buttonstreaming,#buttonrecording').attr('title','Currently no connection established with OBS Studio. <ul><li>Check the <a href="setup.php#linkdatvsettings">configured parameters</a>.</li><li>Reload the controller page <b>after</b> starting OBS Studio.</li>').tooltipster({ delay: 100,maxWidth: 500,speed: 300,interactive: true,animation: 'grow',trigger: 'hover',position : 'top-left'})
+}
+
 });
 </script>
 </body>
