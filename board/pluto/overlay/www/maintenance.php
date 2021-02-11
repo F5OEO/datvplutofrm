@@ -13,7 +13,7 @@
   ?>
   <?php
   if ( isset( $_POST[ 'remote' ] ) ) {
-    exec( '/root/install_remote.sh &' );
+    exec( '/root/install_remote.sh >/dev/null &' );
   }
 
   
