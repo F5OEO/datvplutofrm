@@ -241,6 +241,8 @@ case "$1" in
 		create_new_system_files
 	else		
 		create_system_files
+		dos2unix /opt/config.txt
+		cp /opt/config.txt /mnt/jffs2/etc/config.txt
 	fi	
 	
 	/bin/hostname -F /etc/hostname
