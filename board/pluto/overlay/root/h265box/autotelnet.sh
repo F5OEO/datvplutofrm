@@ -1,3 +1,5 @@
+myip=$(ip -f inet -o addr show eth0 | cut -d\  -f 7 | cut -d/ -f 1)
+sed -i -e "s/#IP#/$myip/g" patch_for_telnet.txt
 (
 sleep 1
 while read ligne
