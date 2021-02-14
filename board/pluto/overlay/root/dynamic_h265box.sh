@@ -17,7 +17,10 @@ if [ "$MANUAL_MODE" != "on" ]; then
     if [ "$H265BOX" = "on" ] ; then
     com="h265box=$H265BOXIP&codec=$CODEC&res=$RESOLUTION&fps=$VIDEOFPS&keyint=$GOPSIZE&v_bitrate=$VIDEORATE&sound=$SOUND&audioinput=$AUDIOINPUT&audio_channels=$AUDIOCHANNELS&audio_bitrate=$AUDIORATE&enabled=$PTT&pluto_ip=$myip&pluto_port=8282"
     #echo $com
-    php-cgi /www/encoder_control.php $com
+    #php-cgi /www/encoder_control_mini.php $com
+    mosquitto_pub -t h265coder/bitrate -m  $VIDEORATE
+    mosquitto_pub -t h265coder/lost_strategy -m  $VIDEORATE
+    mosquitto_pub -t h265coder/fluctuation -m  2
     fi
 fi
 done
