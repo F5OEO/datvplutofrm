@@ -189,7 +189,10 @@ create_new_system_files () {
 	echo -e "auto eth0" >> $IFAC
 	if [ -n "$ETH_IPADDR" ]; then
 		echo -e "iface eth0 inet static" >> $IFAC
-		echo -e "\taddress $ETH_IPADDR\n\tnetmask $ETH_NETMASK\n\tgateway $ETH_GW\n" >> $IFAC
+		echo -e "\taddress $ETH_IPADDR\n\tnetmask $ETH_NETMASK\n" >> $IFAC
+		if [ -n "$ETH_GW" ]; then
+			echo -e"\tgateway $ETH_GW\n" >> $IFAC
+		fi	
 	else
 		echo -e "iface eth0 inet dhcp\n" >> $IFAC
 	fi
@@ -228,7 +231,7 @@ create_new_system_files () {
         fi
 	fi
 	
-	sed -i -e "s/#IP#/$IPADDR/g" -e "s/#HOSTIP#/$IPADDR_HOST/g" -e "s/#NETMASK#/$NETMASK/g" -e "s/#HOSTNAME#/$HOSTNAME/g" -e "s/#SSID_WLAN#/$WLAN_SSID/g" -e "s/#IPADDR_WLAN#/$WLAN_IPADDR/g" -e "s/#IPADDR_ETH#/$ETH_IPADDR/g" -e "s/#NETMASK_ETH#/$ETH_NETMASK/g" /www/index.html /www/img/index_*.html
+	sed -i -e "s/#IP#/$IPADDR/g" -e "s/#HOSTIP#/$IPADDR_HOST/g" -e "s/#NETMASK#/$NETMASK/g" -e "s/#HOSTNAME#/$HOSTNAME/g" -e "s/#SSID_WLAN#/$WLAN_SSID/g" -e "s/#IPADDR_WLAN#/$WLAN_IPADDR/g" -e "s/#IPADDR_ETH#/$ETH_IPADDR/g" -e "s/#NETMASK_ETH#/$ETH_NETMASK/g" /www/index.html 
 	}
 
 mkdir -p /run/network

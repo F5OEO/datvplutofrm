@@ -2,6 +2,11 @@
     var mqtt;
     var reconnectTimeout = 2000;
     var host="<?php echo shell_exec('echo -n $(ip -f inet -o addr show eth0 | cut -d\  -f 7 | cut -d/ -f 1)'); ?>";
+    if(host == "")
+    {
+         host="<?php echo shell_exec('echo -n $(ip -f inet -o addr show usb0 | cut -d\  -f 7 | cut -d/ -f 1)'); ?>";
+    }
+
     //var host='192.168.1.8'; //debug purpose
     var port=9001;
     
