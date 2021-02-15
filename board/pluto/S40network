@@ -191,7 +191,7 @@ create_new_system_files () {
 		echo -e "iface eth0 inet static" >> $IFAC
 		echo -e "\taddress $ETH_IPADDR\n\tnetmask $ETH_NETMASK\n" >> $IFAC
 		if [ -n "$ETH_GW" ]; then
-			echo -e"\tgateway $ETH_GW\n" >> $IFAC
+			echo -e "\tgateway $ETH_GW\n" >> $IFAC
 		fi	
 	else
 		echo -e "iface eth0 inet dhcp\n" >> $IFAC
