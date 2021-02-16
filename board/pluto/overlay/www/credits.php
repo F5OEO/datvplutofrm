@@ -91,7 +91,8 @@
 <div class="colLeft">
 <p id="test"><strong>Author</strong></p>  
 <p>Hamradio call F5OEO since 1995, electronic and computer science engineer. Interested in experimenting rather than communicating. Main interests : SDR, embedded platform (raspberry pi), digital television (DVB). </p>
-
+<p id="test"><strong>Support the author</strong></p>
+<p>Even most of this development is done under opensource (GPL), I should apreciate donation for integration, development and materials :  <a href="https://www.paypal.me/f5oeo">Donate</a></p>
 <p></p>
 </div>
 <div class="colRight" style='text-align: left;'>
@@ -128,6 +129,18 @@
 </div>
 
 </section>
+<section style="display: inline-block;" >
+<p>
+<h3 id="behind">Behind the scene</h3>
+<ul>
+  <li> G4GUO Charles : C++ sourcecode reference for DVBS/S2/T modulator implementation</li>
+  <li> G4EWJ Brian : arm assembler DVBS modulator, arm neon DVB-S2 modulator</li>
+  <li> F4DAV Pascal : DVBS demodulator</li>
+  <li> M0DNY Phil : BATC QO100 wb spectrum</li>
+  <li> DJ0ABR : Spectrum and waterfall QO100 example</li>
+  <li> Lelegard Thierry : TsDuck transport stream processing</li>
+</ul>
+</p>
 <section style="display: inline-block;" >
 <p>
 <h3 id="technology">Onboard technology</h3>
