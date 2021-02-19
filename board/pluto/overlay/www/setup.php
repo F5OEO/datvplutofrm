@@ -55,30 +55,30 @@
 
     <input type="radio" id="mainmode"
      name="mainmode" value="transverter" <?php if (isset($datv_config['mainmode']))  echo $datv_config['mainmode']=='transverter' ? " checked" :  "" ?>>
-    <label for="transverter"><span class="note tooltip" title="Not available" style="color : #636363;">Transverter</span></label>
+    <label for="transverter"><span id="transverter_tt" class="note tooltip" title="Not available" style="color : #636363;">Transverter</span></label>
 
     <input type="radio" id="mainmode"
      name="mainmode" value="signal_generator" <?php if (isset($datv_config['mainmode']))  echo $datv_config['mainmode']=='signal_generator' ? " checked" :  "" ?>>
-    <label for="signal_generator"><span class="note tooltip" title="Not available" style="color : #636363;">Signal generator</span></label>
+    <label for="signal_generator"><span id="signalgen_tt"class="note tooltip" title="Not available" style="color : #636363;">Signal generator</span></label>
 
   </div>
   <h2 id='lng_datv_mode'> DATV operating mode</h2>
 
    <input type="radio" id="datvmode"
      name="DATV[datvmode]" value="rtmp" <?php if (isset($datv_config['DATV']['datvmode']))  echo $datv_config['DATV']['datvmode']=='rtmp' ? " checked" :  "" ?>>
-    <label for="rtmp"><span class="note tooltip" title="You send to PlutoDVB a transport stream on 7272 port, with rtmp (realtime messaging protocol)" style="color : #636363;">RTMP</span></label>
+    <label for="rtmp"><span id="rtmp_tt" class="note tooltip" title="You send to PlutoDVB a transport stream on 7272 port, with rtmp (realtime messaging protocol)" style="color : #636363;">RTMP</span></label>
 
     <input type="radio" id="datvmode"
      name="DATV[datvmode]" value="udp" <?php if (isset($datv_config['DATV']['datvmode']))  echo $datv_config['DATV']['datvmode']=='udp' ? " checked" :  "" ?>> 
-    <label for="udp"><span class="note tooltip" title="You send to PlutoDVB a transport stream on 8282 port, with udp (user datagram protocol)" style="color : #636363;">UDP</span></label>
+    <label for="udp"><span id="udp_tt" class="note tooltip" title="You send to PlutoDVB a transport stream on 8282 port, with udp (user datagram protocol)" style="color : #636363;">UDP</span></label>
 
     <input type="radio" id="datvmode"
      name="DATV[datvmode]" value="test" <?php if (isset($datv_config['DATV']['datvmode']))  echo $datv_config['DATV']['datvmode']=='test' ? " checked" :  "" ?>>
-    <label for="test"><span class="note tooltip" title="Not available" style="color : #636363;">Pattern</span></label>
+    <label for="test" id="pattern"><span id="pattern_tt" class="note tooltip" title="Not available" style="color : #636363;">Pattern</span></label>
 
     <input type="radio" id="datvmode"
      name="DATV[datvmode]" value="repeater" <?php if (isset($datv_config['DATV']['datvmode']))  echo $datv_config['DATV']['datvmode']=='repeater' ? " checked" :  "" ?>>
-    <label for="repeater"><span class="note tooltip" title="Not available" style="color : #636363;">Repeater</span></label>
+    <label for="repeater"><span id="repeater_tt" class="note tooltip" title="Not available" style="color : #636363;">Repeater</span></label>
 
   </div>
   <p>
@@ -86,10 +86,43 @@
 
   </p>
    <hr> <section id="linkdatvsettings"></section>
-   <h2>DATV transmission settings</h2>
+   <h2 id="datv_tx_settings">DATV transmission settings</h2>
+   <script>
+    var callsign_for_intial_setup ="";
+    var data = localStorage.getItem('modulator_1');
+    if (data !== null ) {
+      var datalines = (data.split('&'));
+      for (var i in datalines) {        
+        var datal =(decodeURIComponent(datalines[i]).split('='));
+        if (datal[0]=='callsign') { //Change callsign source to setup
+          callsign_for_intial_setup = datal[1];
+        } 
+        if (datal[0]=='provname') { //Change callsign source to setup
+          provname_for_intial_setup = datal[1];
+        } 
+      }
+    }
+    let  callsign_insetup  = '<?php if (isset($datv_config['DATV']['callsign'])) echo $datv_config['DATV']['callsign']; else echo '' ?>';
+    let  provname_insetup  = '<?php if (isset($datv_config['DATV']['provname'])) echo $datv_config['DATV']['provname']; else echo '' ?>'
+    if (callsign_insetup == '') {
+      callsign_insetup = callsign_for_intial_setup;
+    }
+    if (provname_insetup == '') {
+      provname_insetup = provname_for_intial_setup;
+    }   
+   </script>
    <h3>General use</h3>
 
    <table>
+        <tr>
+      <td><span class="note tooltip" title="Radio transmission is regulated. Input here your authorized callsign." style="color : #636363;">Callsign</span> </td>
+      <td><input type="text" id="callsign" name="DATV[callsign]" value="<?php // if (isset($datv_config['DATV']['callsign'])) echo $datv_config['DATV']['callsign']; else echo '' ?>" maxlength="16" size="16"></td>
+
+      <td><span class="note tooltip" title="You can personnalize the DVB program name" style="color : #636363;">DVB Provider Name</span></td>
+      <td><input type="text" id="provname" name="DATV[provname]" value="<?php // if (isset($datv_config['DATV']['provname'])) echo $datv_config['DATV']['provname']; else echo ''; ?>" maxlength="15" size="16"></td>
+   
+
+     </tr>
      <tr>
         <td><span class="note tooltip" title="<ul><li>When enabled (yes position), at (re)start of the Pluto, the transmit is activated. This feature is welcome for restart quickly transmission after an unexpected power cut.</li><li>When disabled (no position), the Pluto stay stand-by at (re)start.</li></ul>" style="color : #636363;">Transmission permitted at start-up</span><br></td>
         <td><div class="checkcontainer">
@@ -701,7 +734,13 @@ function update_slide(id,decimal,text) {
   $( document ).ready(function() {
 
     
-    //$.MultiLanguage('./lib/language.json','en');
+if  ($('#callsign').val()== '') {
+   $('#callsign').val(callsign_insetup);
+   }
+if  ($('#provname').val()== '') {
+   $('#provname').val(provname_insetup);
+   }
+  $.MultiLanguage('./lib/language.json','fr');
 
   MQTTconnect();
 
@@ -723,6 +762,8 @@ if ((typeof mqtt.isConnected === 'function') )  {
     sendmqtt('plutodvb/var', '{"'+obj+'":"'+ val +'"}' ) ;
   }
 }
+
+
 });
 
   json2table(); // load the json table definition

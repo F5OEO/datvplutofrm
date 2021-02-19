@@ -209,14 +209,10 @@ echo '<script>var ws_url_override="'.$ws_url_override.'"</script>';
           </td>
         </tr>
       </table>
-
+<input type="hidden" name="callsign" value="<?php 
+          if (isset ($general_ini[1]['DATV']['callsign'])) { echo $general_ini[1]['DATV']['callsign']; } else { echo '<<undefined>>' ; } ?>"><input type="hidden" name="provname" value="<?php 
+          if (isset ($general_ini[1]['DATV']['provname'])) { echo $general_ini[1]['DATV']['provname']; } else { echo '<<undefined>>' ; } ?>" maxlength="15" size="16">
       <table>
-        <tr>
-          <td>Callsign<i>(DVB Program Name)</i></td>
-          <td><input type="text" name="callsign" value="NOCALL"></td>
-          <td>DVB Provider Name <br><i>(output: FwVer_ProvName)</i></td>
-          <td><input type="text" name="provname" value="_yrname/project_" maxlength="15" size="16"> (max 15 chrs)</td>
-        </tr>
         <tr><td>PCR/PTS</td>
           <td><div class="slidecontainer">
             <input type="range" min="100" max="2000" value="800" class="slider" name="pcrpts" oninput="update_slider_pts()">
@@ -1248,7 +1244,25 @@ function update_tab(id) {
         for (var i in datalines) {        
           var datal =(decodeURIComponent(datalines[i]).split('='));
           var $el = $('#tab'+id+'C [name="'+datal[0]+'"]');
-          $el.val(datal[1]);
+          //if (datal[0]!='callsign') { //Change callsign source to setup
+            if (datal[0] == 'callsign') {
+              if ($('#tab'+id+'C [name="callsign"]').val() == '<<undefined>>') {//if callsign is empty (from setup), set the existing local storage callsign
+              $el.val(datal[1]);
+              }
+            } else
+            if (datal[0] == 'provname') {
+              if ($('#tab'+id+'C [name="provname"]').val() == '<<undefined>>') {//if callsign is empty (from setup), set the existing local storage callsign
+              $el.val(datal[1]);
+              }
+            } else 
+
+            if ((datal[0] == 'mod')  || (datal[0] == 'mode')) {
+
+            $el.val(datal[1]).change(); //so that the update list is lauched on change
+
+          } else {
+             $el.val(datal[1]);
+          }
           if (datal[0]=='f-central') {
             check_if_freqcenter = true;
           }
@@ -1268,7 +1282,7 @@ function update_tab(id) {
       }
 
      //upd_mod();
-     upd_fec();
+     
      update_slidertxt()
      update_slider_pat();
      update_slider_pts();
