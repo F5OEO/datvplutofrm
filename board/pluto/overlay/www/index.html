@@ -25,11 +25,15 @@
 </div>
 </header>
 
-<nav style="text-align: center;">
+<nav style="text-align: center;" id="banner1">
 	<h2>Let's go to PlutoDVB</h2>
 	<a class="button" href="http://#IP#/setup.php"><b>Let's go to PlutoDVB</b> (on USB connection)</a>
 	<a class="button" href="http://#IPADDR_ETH#/setup.php"><b>Let's go to PlutoDVB</b> (on Ethernet connection)</a>
 	<p>select the button corresponding to the current method of connecting to Adalm Pluto</p>
+</nav>
+<nav style="text-align: center; display:none;" id="banner2">
+	<h2>Let's go to PlutoDVB</h2>
+	<a class="button" id="link" href="http://#IPADDR_ETH#/setup.php"><b>Let's go to PlutoDVB</b></a>
 </nav>
 <hr>
 <section>
@@ -373,6 +377,20 @@ If you enjoy them, and the price of a coffee doesn't ruin you, I'll be happy to 
 <script src="./img/version.js"></script>
 <script type="text/javascript">
 	$('#releasenote').load('releasenote.php');
+</script>
+<script type="text/javascript">
+    var ip = location.host;
+    console.log("ip"+ip+".");
+    if (ip=="") {
+    	document.getElementById("banner2").style.display = 'none';
+    	document.getElementById("banner1").style.display = 'block';
+    } else {
+    	document.getElementById("id").setAttribute('href', "http://"+ip+"/setup.php");
+
+    	document.getElementById("banner1").style.display = 'none';
+    	document.getElementById("banner2").style.display = 'block';
+
+    }
 </script>
 </body>
 </html>
