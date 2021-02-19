@@ -92,7 +92,7 @@
 <p id="test"><strong>Author</strong></p>  
 <p>Hamradio call F5OEO since 1995, electronic and computer science engineer. Interested in experimenting rather than communicating. Main interests : SDR, embedded platform (raspberry pi), digital television (DVB). </p>
 <p id="test"><strong>Support the author</strong></p>
-<p>Even most of this development is done under opensource (GPL), I should apreciate donation for integration, development and materials :  <a href="https://www.paypal.me/f5oeo">Donate</a></p>
+<p>Even most of this development is done under opensource (GPL), I should apreciate donation for integration, development and materials :  <a href="https://www.paypal.me/f5oeo" target="_blank">Donate</a></p>
 <p></p>
 </div>
 <div class="colRight" style='text-align: left;'>
