@@ -46,6 +46,9 @@
 
     <title>ADALM-PLUTO DVB Controller</title>
     <meta name="description" content="ADALM-PLUTO DVB Controller ">
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
     <link type="text/css" href="./img/style.css" rel="stylesheet">
     <script src="lib/jquery-3.5.1.min.js"></script>
     <script src="lib/u16Websocket.js"></script>
@@ -58,6 +61,7 @@
     <link type="text/css" href="./lib/tooltip.css" rel="stylesheet">
     <link type="text/css" href="./lib/menu.css" rel="stylesheet">
     <link href="img/favicon-32x32.png" rel="icon" type="image/png" />
+
 
   </head>
 

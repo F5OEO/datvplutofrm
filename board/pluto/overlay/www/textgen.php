@@ -15,6 +15,9 @@
 
     <title>PlutoDVB Text generator</title>
     <meta name="description" content="ADALM-PLUTO DVB Text generator">
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />    
     <link type="text/css" href="./img/style.css" rel="stylesheet">
     <link type="text/css" href="lib/nestable.css" rel="stylesheet">
     <script src="lib/jquery-3.5.1.min.js"></script>

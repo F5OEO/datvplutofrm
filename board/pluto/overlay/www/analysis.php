@@ -9,6 +9,9 @@
     <meta charset="UTF-8">
     <title>ADALM-PLUTO DVB Analyzer</title>
     <meta name="description" content="ADALM-PLUTO DVB Analyzer ">
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
     <link href="img/favicon-32x32.png" rel="icon" type="image/png" />
     <link type="text/css" href="./img/style.css" rel="stylesheet">
     <link type="text/css" href="./lib/tooltip.css" rel="stylesheet">

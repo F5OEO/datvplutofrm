@@ -27,6 +27,9 @@
 
     <title>PlutoDVB maintenance</title>
     <meta name="description" content="PlutoDVB maintenance ">
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />        
     <link type="text/css" href="./img/style.css" rel="stylesheet">
     <link type="text/css" href="lib/nestable.css" rel="stylesheet">
     <script src="lib/jquery-3.5.1.min.js"></script>
@@ -118,9 +121,12 @@ This is needed for apply your saved modifications made in Pluto Configuration se
 </form>
 
 <br>
+<h2>Remote  assistance</h2>
+This function opens an access channel to the developers of the PlutoDVB software, since it is connected to an IP network and the Internet.
+This system does not allow to notify a support request. The action on the button will be proposed with the developer you are already in contact with.
 <form method="post">
   <p>
-    <button name="remote" id="remote">Remote assistance</button><span id='remote_assistance'></span>
+    <button name="remote" id="remote">Open aRemote assistance</button><span id='remote_assistance'></span>
   </p>
 </form>
 

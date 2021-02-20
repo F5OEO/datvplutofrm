@@ -54,6 +54,9 @@
 
     <title>PlutoDVB Credits</title>
     <meta name="description" content="PlutoDVB Credits ">
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />        
     <link type="text/css" href="./img/style.css" rel="stylesheet">
     <script src="lib/jquery-3.5.1.min.js"></script>
     <script src="lib/u16Websocket.js"></script>
