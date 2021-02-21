@@ -123,10 +123,10 @@ This is needed for apply your saved modifications made in Pluto Configuration se
 <br>
 <h2>Remote  assistance</h2>
 This function opens an access channel to the developers of the PlutoDVB software, since it is connected to an IP network and the Internet.
-This system does not allow to notify a support request. The action on the button will be proposed with the developer you are already in contact with.
+This system does not allow to notify a support request. The action on the button will be proposed with the developer you are already in contact with. To close the session, please reboot PlutoDVB.
 <form method="post">
   <p>
-    <button name="remote" id="remote">Open aRemote assistance</button><span id='remote_assistance'></span>
+    <button name="remote" id="remote">Open a remote assistance session</button><span id='remote_assistance'></span>
   </p>
 </form>
 
