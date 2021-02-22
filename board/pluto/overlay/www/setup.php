@@ -743,7 +743,7 @@ if  ($('#callsign').val()== '') {
 if  ($('#provname').val()== '') {
    $('#provname').val(provname_insetup);
    }
-  $.MultiLanguage('./lib/language.json','fr');
+  //$.MultiLanguage('./lib/language.json','fr');
 
   MQTTconnect();
 
