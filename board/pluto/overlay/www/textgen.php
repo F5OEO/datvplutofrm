@@ -9,7 +9,6 @@
   <!doctype html>
 
   <html>
-  <!-- if "?xpert" in url then expert parameters are displayed  -->
   <head>
     <meta charset="UTF-8">
 
@@ -27,6 +26,7 @@
     <script src="lib/mqtt.js.php?page=<?php echo basename($_SERVER["SCRIPT_FILENAME"]); ?>"></script>  
     <link type="text/css" href="./lib/tooltip.css" rel="stylesheet">
     <link type="text/css" href="./lib/menu.css" rel="stylesheet">
+    <link href="img/favicon-32x32.png" rel="icon" type="image/png" />
 
     <style>
       /* le bloc défilant */
@@ -92,7 +92,7 @@
 
 <h2>Text generator</h2>
 Drag and drop the items to construct the text as you want it to be composed. It can be directly integrated into your video streaming software and thus be used to animate a banner updated in real time.
-<p>For the generated text to be updated, <b>this page must remain open</b> (From the main menu of PlutoDVB, right click, open the link in a new tab).</p><i>under developpement</i>
+<p>For the generated text to be updated, <b>this page must remain open</b> (From the main menu of PlutoDVB, right click, open the link in a new tab).</p>
 <h3>How to access to the text from your streaming software (e.g. OBS Studio) ?</h3>
 There are several technical means to access the text.
 <h4>File Sharing</h4>
@@ -105,10 +105,13 @@ In OBS Studio, add a Text(GDI+) source on a scene. Check File source, and choose
 <!-- le conteneur fenêtre -->
 <div class="marquee-rtl">
     <!-- le contenu défilant -->
-    <div id ='diplaytextgen'>The generator did not retrieve the items. This will happen when your controller is reloaded, on a seperate browser tab.</div>
+    <div id ='displaytextgen'>The generator did not retrieve the items. This will happen when your controller is reloaded, on a seperate browser tab.</div>
 </div>
 <div style ="margin-bottom: 15px;">
 <button id="addfreetext" type="button">Add a freetext</button> <button id="addmqttvar" type="button">Add a MQTT topic</button>
+
+
+
 </div>
 <div class="cf nestable-lists">
 
@@ -169,6 +172,9 @@ In OBS Studio, add a Text(GDI+) source on a scene. Check File source, and choose
                 <li class="dd-item" data-id="fpgatemp">
                     <div class="dd-handle">FGPA Temperature</div>
                 </li>
+                <li class="dd-item" data-id="plutodvb/status/voltage">
+                    <div class="dd-handle">Pluto Voltage</div>
+                </li>                
                 <li class="dd-item" data-id="nullpacket_p">
                 <div class="dd-handle">Null packets (%)</div>
                 <li class="dd-item" data-id="mod_status">
@@ -197,6 +203,10 @@ In OBS Studio, add a Text(GDI+) source on a scene. Check File source, and choose
                     <div class="dd-handle">Provider name</div>
                 </li>
             </ol>
+                  <div class="checkcontainer" style="margin-top: 6px;">
+        <input type="checkbox" id="space_item" name="space_item-manualmode"  onchange="">
+        <label for="space_item" aria-describedby="label"><span class="ui"></span><span  class="note tooltip" style="color: #333;" title="Add one space after each item">spaced</span></label>
+      </div>
         </div>
 
     </div>
@@ -211,7 +221,8 @@ function buildItem(item) {
 
     var html = "<li class='dd-item' data-id='" + item.id + "' id='" + item.id + "'>";
     html += "<div class='dd-handle'>" + item.desc + "</div>";
-    if ((typeof item.text !== undefined) && (item.text!='')) {
+    if ((item.id.substring(0,8)=='freetext') || (item.id.substring(0,8)=='freemqtt')) {
+    //if ((typeof item.text !== "undefined") && (item.text!='')) {
       html += '<div class="line"><span class="a" spellcheck="false" contentEditable="true">'+item.text+'</span><span class="del" style="float : right">✖️</span></div></li>';
     }
 
@@ -266,6 +277,8 @@ function json2nestable() {
 
 function update_textgen(variable, value) {
 
+let memo_textgen = textgen;
+
 if (variable.substr(0,16)=='plutodvb/subvar/') {
   j=0;
   global_textgen.forEach(function(i) {
@@ -276,30 +289,51 @@ if (variable.substr(0,16)=='plutodvb/subvar/') {
   j+=1;
   })
 }
+
+if (variable.substr(0,16)=='plutodvb/status/') {
+  j=0;
+  global_textgen.forEach(function(i) {
+    
+    if ('plutodvb/status/'+global_textgen[j].id==variable) {
+      global_textgen[j]['value']=value;
+    }
+  j+=1;
+  })
+}
+
 //console.table(global_textgen);
 j=0;
 textgen='';
+let space = '';
+if ($('#space_item').is(":checked")) {
+  space = ' ';
+} 
+
  global_textgen.forEach(function(i) {
   if (global_textgen[j]['id'].substring(0,8)=='freetext') {
-    textgen += global_textgen[j]['text']+' ';
+    textgen += global_textgen[j]['text']+space;
   }
   if (global_textgen[j]['id']=='firmversion') {
     textgen += "<?php echo shell_exec ( "cat /www/fwversion.txt | tr '\n' ' '" );?>";
   }
-    if (global_textgen[j]['id']=='fpgatemp') {
+   /* if (global_textgen[j]['id']=='fpgatemp') {
     textgen += global_textgen[j]['value']+' ';
-  }
-  if (global_textgen[j]['value']!== undefined) {
-    textgen += global_textgen[j]['value']+' ';
+  }*/
+  if (typeof global_textgen[j]['value']!== 'undefined') {
+    textgen += global_textgen[j]['value']+space;
   }
  j+=1;
  });
  
- console.log ('textgen = '+textgen);
- write_text(textgen);
- sendmqtt('plutodvb/subvar/gentext',textgen) ;
- sendmqtt('plutodvb/var','[{"gentext":"'+textgen+'"') ;
- $('#diplaytextgen').text(textgen);
+ if (textgen !== memo_textgen) {
+   console.log ('textgen = '+textgen);
+   write_text(textgen);
+   if (mqtt.isConnected()) {
+     sendmqtt('plutodvb/subvar/gentext',textgen) ;
+     //sendmqtt('plutodvb/var','[{"gentext":"'+textgen+'"') ;
+   }
+   $('#displaytextgen').text(textgen);
+ }
  
 
 }
@@ -339,7 +373,12 @@ console.log("subs "+item.id);
 
               }
             });
-            update_textgen('novar','noval'); 
+           // update_textgen('novar','noval'); 
+           if (mqtt.isConnected()) {
+            message = new Paho.MQTT.Message('Ask');
+            message.destinationName = "plutodvb/textgen/updaterequest";
+            mqtt.send(message);
+          }
         },
         error: function(d){
             /*console.log("error");*/
@@ -375,12 +414,15 @@ console.log("subs "+item.id);
         maxDepth :1
     })
     .on('change', function (){
+
       //console.log ($('#nestable2').nestable('serialize'));
       $.get( "requests.php?cmd="+encodeURIComponent("echo <?php echo $mark;?>["+($(this).nestable('serializeplus'))+"]<?php echo $mark;?> > <?php echo $dir ?>text_gen_set_items.json"), function( data, status ) {
+
         if (status=='success') { 
+
+          
           if (typeof json2nestable2 == 'function') {
-           // json2nestable2();
-             
+           json2nestable2(); //update textgen  
           }
 
           //$('#aa').fadeIn(250).fadeOut(1500);
@@ -399,14 +441,24 @@ function write_text(texttofile) {
 
 
 $('#addfreetext').click(function(){
-  var numItems = 0;
-  numItems = $('[data-id^=freetext]').length +1 ;
-  $("#nestable ol").prepend('<li class="dd-item" data-id="freetext'+numItems+'" data-type="freetext"><div class="dd-handle freetext" >Editable freetext</div><div class="line"><span class="a" spellcheck="false" contentEditable="true">Customize here</span><span class="del" style="float : right">✖️</span></div></li>'); 
+  var max = 0;
+  //numItems = $('[data-id^=freetext]').length +1 ;
+  $('[data-id^=freetext]').each(function() {
+      max = Math.max($(this).data('id').substr(8), max);
+      console.log('this '+$(this).data('id'));
+  });
+  max=max+1;
+  $("#nestable ol").prepend('<li class="dd-item" data-id="freetext'+max+'" data-type="freetext"><div class="dd-handle freetext" >Editable freetext</div><div class="line"><span class="a" spellcheck="false" contentEditable="true">Customize here</span><span class="del" style="float : right">✖️</span></div></li>').change(); 
 })
 $('#addmqttvar').click(function(){
-  var numItems = 0;
-  numItems = $('[data-id^=freemqtt]').length +1 ;
-  $("#nestable ol").prepend('<li class="dd-item" data-id="freemqtt'+numItems+'" data-type="freemqtt"><div class="dd-handle freemqtt" >MQTT variable</div><div class="line"><span class="a" spellcheck="false" contentEditable="true">Type mqtt topic here</span><span class="del" style="float : right">✖️</span></div></li>'); 
+  var max = 0;
+  //numItems = $('[data-id^=freetext]').length +1 ;
+  $('[data-id^=freetext]').each(function() {
+      max = Math.max($(this).data('id').substr(8), max);
+      console.log('this '+$(this).data('id'));
+  });
+  max=max+1;
+  $("#nestable ol").prepend('<li class="dd-item" data-id="freemqtt'+max+'" data-type="freemqtt"><div class="dd-handle freemqtt" >MQTT variable</div><div class="line"><span class="a" spellcheck="false" contentEditable="true">Type mqtt topic here</span><span class="del" style="float : right">✖️</span></div></li>'); 
 })
 
 

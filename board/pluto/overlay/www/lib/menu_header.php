@@ -10,6 +10,11 @@
     activ_menu('tt');
     ?><header id="top">
       <div id="col1">
+        <?php  if ((isset($datv_config['mainmode']))&& $datv_config['mainmode']==='datv')  {?>
+        <div  style="margin-left: 15px; font-family: Arial Narrow, sans-serif;">
+          Buffer : <span id='bufferstatus'></span>
+        </div>
+      <?php  } ?>
         <!--Selector-->
       </div>
       <div id="col2">

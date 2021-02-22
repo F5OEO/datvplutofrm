@@ -7,7 +7,7 @@
          host="<?php echo shell_exec('echo -n $(ip -f inet -o addr show usb0 | cut -d\  -f 7 | cut -d/ -f 1)'); ?>";
     }
 
-    //var host='192.168.1.8'; //debug purpose
+    var host='192.168.1.8'; //debug purpose
     var port=9001;
     
     function onFailure(error,message) {
@@ -20,7 +20,7 @@
       out_msg=out_msg+"    Topic "+msg.destinationName;
      // console.log(out_msg);
       if (typeof update_textgen == 'function') {
-         if (msg.destinationName.substr(0,16)=='plutodvb/subvar/') {
+         if ((msg.destinationName.substr(0,16)=='plutodvb/subvar/') || (msg.destinationName.substr(0,16)=='plutodvb/status/')) {
             update_textgen (msg.destinationName,msg.payloadString); 
          }
          
@@ -38,6 +38,25 @@
 
           }
       }
+      if (msg.destinationName=='plutodvb/textgen/updaterequest') {
+            init_pluto_obj();
+      }
+      if (msg.destinationName=='plutodvb/status/ts/bufferstate') {
+            $('#bufferstatus').html('&nbsp;'+msg.payloadString+'&nbsp;');
+            let c;
+            if (msg.payloadString == 'Nominal')  {
+               c= '#009015';
+            } else
+            if (msg.payloadString == 'Underflow')  {
+               c= '#D57100';
+            } else
+            if (msg.payloadString == 'Overflow')  {
+               c= '#CC0000';
+            }
+            $('#bufferstatus').css('background', c).css('color','white');
+            setTimeout(function(){$('#bufferstatus').css('background', '').css('color','')}, 500);
+      }      
+      
 
     }
     
@@ -60,6 +79,8 @@
     mqtt.subscribe("plutodvb/var");
     mqtt.subscribe("plutodvb/subpage");
     mqtt.subscribe("plutodvb/status/#");
+    mqtt.subscribe("plutodvb/textgen/updaterequest");
+    mqtt.subscribe("plutodvb/status/ts/bufferstate");
     message = new Paho.MQTT.Message('{ "page" : "<?php echo ($_GET["page"]); ?>" }');
     message.destinationName = "plutodvb/page";
     mqtt.send(message);

@@ -4,12 +4,14 @@
 $file_config ='/mnt/jffs2/etc/config.txt';
 $file_general = '/mnt/jffs2/etc/settings-datv.txt';
 $dir = '/mnt/jffs2/etc/';
+$dirtemp = '/tmp/';
 if (true==false) // replace false by true for developping on debug server
 {
-  echo "<i>Attention, in developping mode </i><br>";
+  //echo "<i>Attention, in developping mode </i><br>";
   $file_config ='config.txt';
   $file_general = 'settings-datv.txt';
   $dir= "";
+  $dirtemp = '';
 }
 
 $config_ini = readinifile($file_config);
