@@ -173,8 +173,16 @@
                         
                     items.each(function()
                     {   desc =  $(' ol [data-id="'+$(this).data()['id']+'"]').find('div').html() ;// level.children(list.options.itemNodeName).children('.'+list.options.handleClass);
+                        param = $('ol [data-id="'+$(this).data()['id']+'"] .a').text() ;
+                        var addparam 
+                        if ((param !== undefined) && (param !=='')) {
+                         addparam = ', "text" :"'+param+'"';
+                        } else {
+                            addparam = '';
+                        }
+                        //console.log ('whatIWant = '+$(this).data()['id']+' / '+whatIWant);
                         var li   = $(this),
-                            item = '{"desc":"'+desc+'", "id":"'+li.data()['id']+'"}',
+                            item = '{"desc":"'+desc+'", "id":"'+li.data()['id']+'"'+addparam+'}',
                             sub  = li.children(list.options.listNodeName);
                         if (sub.length) {
                             item.children = step(sub, depth + 1);
