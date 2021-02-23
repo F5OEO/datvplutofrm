@@ -51,6 +51,7 @@ fi
 		fi
 	else
 		/root/watchconsoletx.sh </dev/null 2>/dev/null &
+		ptton
 		echo mode passthrough
 	fi
 	mosquitto_pub -t plutodvb/started -m true
@@ -87,6 +88,21 @@ stop() {
 	
 	pkill ffmpeg
 
+	# Do a standard Pluto for external software
+	echo 3000000 > /sys/bus/iio/devices/iio:device1/out_voltage_sampling_frequency
+	sleep 0.1
+	echo 3000000 > /sys/bus/iio/devices/iio:device4/in_voltage_sampling_frequency
+	sleep 0.1
+	echo 3000000 > /sys/bus/iio/devices/iio:device3/out_voltage_sampling_frequency
+	sleep 0.1
+	echo 1 > /sys/bus/iio/devices/iio:device1/in_out_voltage_filter_fir_en
+	sleep 0.1
+	echo 0 > /sys/bus/iio/devices/iio:device1/out_altvoltage1_TX_LO_powerdown
+	sleep 0.1
+	echo 0 > /sys/bus/iio/devices/iio:device1/out_altvoltage0_RX_LO_powerdown
+	sleep 0.1
+	echo 0 > /sys/kernel/debug/iio/iio:device1/loopback
+	sleep 0.1
 	echo "Stopping"
 }
 
