@@ -728,6 +728,7 @@ function update_slide(id,decimal,text) {
   if ((typeof mqtt.isConnected  === 'function') )  {
     if (mqtt.isConnected()) {
      sendmqtt('plutodvb/var', '{"'+id+'":"'+$('#'+id).val()+'"}' ) ;
+     sendmqtt('plutodvb/subvar/'+id, $('#'+id).val() ) ;
     }
   }
 }
@@ -763,6 +764,7 @@ if ((typeof mqtt.isConnected === 'function') )  {
     }
 
     sendmqtt('plutodvb/var', '{"'+obj+'":"'+ val +'"}' ) ;
+    sendmqtt('plutodvb/subvar/'+obj, val ) ;
   }
 }
 
