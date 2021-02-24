@@ -78,8 +78,6 @@
    <?php include ('lib/menu_header.php'); ?>
 
 
-
-
     <header id="maintitle"> <h1><strong>ADALM-PLUTO</strong> DATV Controller</h1>
 
   </header>
@@ -638,7 +636,7 @@ Warning : In order to write permanently, you need first to apply setting then Sa
   </p>
 </form>
 <br>
-<a class="anchor" href="#top">Back to top</a>
+
 <script>
   function spectrum_display () {
     <?php $display="false"; if ((isset($datv_config['DATV_RECEIVER']['spectrum_enable']))&& $datv_config['DATV_RECEIVER']['spectrum_enable']==='on') {$display="true";} ?>
@@ -1768,77 +1766,7 @@ $('body').on('change', 'input,select,textarea', function () {
   }
 });
 
-const streamstarting = (data) => {
-   $("#buttonstreaming").fadeOut(0,function(){
-     $(this).html('Streaming starting...').fadeIn();
-   });
-};
-const streaming = (data) => {
-  $("#buttonstreaming").fadeOut(0,function(){
-    $(this).html('Stop streaming').fadeIn();
-    $(this).css({ 'color' : 'red' });
-  });
-};
-const streamstopping = (data) => {
-   $("#buttonstreaming").fadeOut(0,function(){
-     $(this).html('Streaming stopping...').fadeIn();
-   });
-};
-const streamstopped = (data) => {
-   $("#buttonstreaming").fadeOut(0,function(){
-     $(this).html('Start streaming').fadeIn();
-     $(this).css({ 'color' : '#fff' });
-   });
-};
-const recordingstarting = (data) => {
-  console.log('recordingstarted'+data);
-  $("#buttonrecording").fadeOut(0,function(){
-    $(this).html('Recording starting...').fadeIn();
-  });
-};
-const recordingstarted = (data) => {
-  console.log('recordingstarted'+data);
-  $("#buttonrecording").fadeOut(0,function(){
-    $(this).html('Stop recording').fadeIn();
-    $(this).css({ 'color' : 'red' });
-  });
-};
-const recordingstopping = (data) => {
-  console.log('recordingstarted'+data);
-  $("#buttonrecording").fadeOut(0,function(){
-    $(this).html('Recording stopping...').fadeIn();
-  });
-};
-const recordingstopped = (data) => {
-  console.log('recordingstarted'+data);
-  $("#buttonrecording").fadeOut(0,function(){
-    $(this).html('Start recording').fadeIn();
-    $(this).css({ 'color' : '#fff' });
-  });
-};
-obs.on('StreamStarting', (data) => streamstarting(data));
-obs.on('StreamStarted', (data) => streaming(data));
-obs.on('StreamStopping', (data) => streamstopping(data));
-obs.on('StreamStopped', (data) => streamstopped(data));
-obs.on('RecordingStarting', (data) => recordingstarting(data));
-obs.on('RecordingStarted', (data) => recordingstarted(data));
-obs.on('RecordingStopping', (data) => recordingstopping(data));
-obs.on('RecordingStopped', (data) => recordingstopped(data));
 
-$('#buttonstreaming').click(function() {
-  obs.send("StartStopStreaming", "");
-});
-$('#buttonrecording').click(function() {
-  obs.send("StartStopRecording", "");
-});
-
-if (obs_ws_connected == false) {
-  //disable stream record buttons
-  $("#streamingOBS,#recordingOBS").prop("disabled",true);
-  $("#streamingOBS,#recordingOBS").css('background-color','#b4b8b8');
-  $('#buttonstreaming,#buttonrecording').tooltipster("destroy");
-  $('#buttonstreaming,#buttonrecording').attr('title','Currently no connection established with OBS Studio. <ul><li>Check the <a href="setup.php#linkdatvsettings">configured parameters</a>.</li><li>Reload the controller page <b>after</b> starting OBS Studio.</li>').tooltipster({ delay: 100,maxWidth: 500,speed: 300,interactive: true,animation: 'grow',trigger: 'hover',position : 'top-left'})
-}
 
 });
 </script>
