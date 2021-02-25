@@ -8,22 +8,25 @@ This allows the parameters changed by the operator to be taken into account with
 
 ## Implemented messages 
 
-- ```plutodvb/var``` All the variables available on a page are sent in the following form ``` { "id or name" : value }```
+- ``` plutodvb/var``` All the variables available on a page are sent in the following form ``` { "id or name" : value }```
 	-  ```'{"fec":"13"}``` Ask to change FEC to 1/3
-	-  ```'{"ptt":"false"}``` Ask to stop transmission
-	-  ```'{"ptt":"true"}``` Ask to go to transmission	
+	-  ```'{"ptt":"false"}``` Ask to stop transmission (Not implemented yet)
+	-  ```'{"ptt":"true"}``` Ask to go to transmission (Not implemented yet)	
 	-  ```'{"page":"setup.php"}``` Tell the user is (re)load this page, or client is reconnected
 	-  ```'{"file_firm":"C:\fakepath\pluto.frm"}``` A firmware file is uploaded	
-- ```plutodvb/started``` true false Sent by the PlutoDVB when is started
-- ```plutodvb/ts/netbitrate``` Transport Stream Bitrate in bits/s
-- ```plutodvb/status/tx``` Transmiting status : true = On air, false = Stand by
+- ``` plutodvb/subvar/VAR``` All variables VAR are transmit with raw value (no json format)
+	-  ```'plutodvb/subvar/textgen``` Text generator string (can be used as a text banner for video)
+- ``` plutodvb/started``` true false Sent by the PlutoDVB when is started
+- ``` plutodvb/status/tx``` Transmiting status : true = On air, false = Stand by
 - ``` plutodvb/status/adtemp``` ADC Temperature
 - ``` plutodvb/status/fpgatemp``` FPGA Temperature
 - ``` plutodvb/status/voltage``` Input voltage (V)
 - ``` plutodvb/status/current``` Input current (mA)
-
-"file_firm":"C:\fakepath\pluto.frm"}
-
+- ``` plutodvb/ts/netbitrate``` Transport Stream Bitrate in bits/s
+- ``` plutodvb/status/ts/bufferstate```   [Nominal,Underflow,Overflow]
+- ``` plutodvb/status/ts/bufferfill```   Buffer filling (quantity of bytes in buffer)
+- ``` plutodvb/status/ts/bufferoverflow```  Buffer overflow level (in millisec)
+- ``` plutodvb/textgen/updaterequest```  Buffer overflow level (in millisec)
 
 
 # Feedbacks and discussions
