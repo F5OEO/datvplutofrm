@@ -28,6 +28,7 @@ This allows the parameters changed by the operator to be taken into account with
 - ``` plutodvb/subvar/textgen``` Text generator string (can be used as a text banner for video - textgen.php page must be displayed)
 - ``` plutodvb/textgen/updaterequest```  Request an update of generated text (textgen.php page must be displayed)
 
+We advise the use of [MQTT Explorer](http://mqtt-explorer.com/) to observe the exchanged variables.
 
 # Feedbacks and discussions
 https://groups.io/g/plutodvb
