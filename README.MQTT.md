@@ -30,20 +30,21 @@ This allows the parameters changed by the operator to be taken into account with
 
 
 ## H265 Patch Box
-h265coder/request_status 
-h265coder/codec {h264,h265}
-h265coder/stattime Window time(ms) for statistical bitrate
-h265coder/bitrate Video bitrate
-h265coder/framerate Video Framerate
-h265coder/gop GOP (in frames)
-h265coder/fluctuation 0 (automatic) 1(Low quality , no bitrate fluctuation)-4(High quality, but variable bitrate)
-h265coder/qpdelta
-h265coder/maxqp
-h265coder/minqp
-h265coder/level [1,5] //A smaller value indicates better quality.
-h265coder/mqpdelta
-h265coder/aspect_ratio 16x9 : force aspect ratio 
-h265coder/lost_strategy Skip strategy : bitrate threeshold to skip picture
+- ``` h265coder/request_status``` 
+- ``` h265coder/codec``` {h264,h265}
+- ``` h265coder/stattime``` Window time(ms) for statistical bitrate
+- ``` h265coder/bitrate``` Video bitrate
+- ``` h265coder/framerate``` Video Framerate
+- ``` h265coder/gop``` GOP (in frames)
+- ``` h265coder/fluctuation``` 0 (automatic) 1(Low quality , no bitrate fluctuation)-4(High quality, but variable - ``` bitrate)
+- ``` h265coder/qpdelta```
+- ``` h265coder/maxqp```
+- ``` h265coder/minqp```
+- ``` h265coder/level``` [1,5] //A smaller value indicates better quality.
+- ``` h265coder/mqpdelta```
+- ``` h265coder/aspect_ratio``` 16x9 : force aspect ratio 
+- ``` h265coder/lost_strategy``` Skip strategy : bitrate threeshold to skip picture
+
 We advise the use of [MQTT Explorer](http://mqtt-explorer.com/) to observe the exchanged variables.
 
 # Feedbacks and discussions
