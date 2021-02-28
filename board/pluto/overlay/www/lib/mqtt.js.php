@@ -32,12 +32,12 @@
          }
          
       }
-      if ('<?php echo ($_GET["page"]); ?>'=='pluto.php') {
+      /*if ('<?php echo ($_GET["page"]); ?>'=='pluto.php') {
           if ((msg.destinationName=='plutodvb/subpage') && (msg.payloadString=='textgen.php')) {
             init_pluto_obj();
 
           }
-      }
+      }*/
       if (msg.destinationName=='plutodvb/textgen/updaterequest') {
             init_pluto_obj();
       }
@@ -85,7 +85,7 @@
     message.destinationName = "plutodvb/page";
     mqtt.send(message);
     sendmqtt("plutodvb/subpage","<?php echo ($_GET["page"]); ?>");
-    init_pluto_obj();
+    //init_pluto_obj();
 
     }
     function MQTTconnect() {

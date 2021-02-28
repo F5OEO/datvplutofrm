@@ -933,8 +933,8 @@ function update_slidertxt()
     text_watt = (Math.pow(10,(abs/10))/1000).toFixed(1)+'W'
   }
   $(t+'#powertext').text(parseFloat($(t+'input[name ="power"]').val()).toFixed(1)+'dB (Abs: '+abs.toFixed(1)+'dBm / '+text_watt+')' ) ;
-  $(t+'#power_abs').val(abs.toFixed(1)+'dBm').change();
-  $(t+'#power_abs_watt').val(text_watt).change();;
+  $(t+'#power_abs').val(abs.toFixed(1)).change();
+  $(t+'#power_abs_watt').val(watt.toFixed(5)).change();;
  }
  else {
   $(t+'#powertext').text(parseFloat($(t+'input[name ="power"]').val()).toFixed(1)+'dB')  ;
