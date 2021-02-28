@@ -1746,26 +1746,27 @@ $('#tab1').click(function(){
 
   MQTTconnect();
 
-  //MQTT send messages
-$('body').on('change', 'input,select,textarea', function () {
+    //MQTT send messages
+  $('body').on('change', 'input,select,textarea', function () {
 
-    obj= $(this).attr('id');
-    if (obj==undefined) {
-      obj=$(this).attr('name');
+      obj= $(this).attr('id');
+      if (obj==undefined) {
+        obj=$(this).attr('name');
+      }
+      if ($(this).is(':checkbox')) {
+        val= $(this).is(':checked');
+      } else {
+        val=$(this).val();
+      }
+    if (mqtt.isConnected() ) {
+      if (( $('#id-tabs-content').children().hasClass('activ-tab')==false) || (( $('#id-tabs-content').children().hasClass('activ-tab')==true ) && ($(t).hasClass('activ-tab') == true )))  { //Send MQTT only of activ tab during transmission
+        sendmqtt('plutodvb/var', '{"'+obj+'":"'+ val +'"}' ) ;
+        sendmqtt('plutodvb/subvar/'+obj, val ) ;
+
+        // Send PTT current status for synchronizing with heard pltuodvb/tx = true/false
+      }
     }
-    if ($(this).is(':checkbox')) {
-      val= $(this).is(':checked');
-    } else {
-      val=$(this).val();
-    }
-  if (mqtt.isConnected()) {
-    sendmqtt('plutodvb/var', '{"'+obj+'":"'+ val +'"}' ) ;
-    sendmqtt('plutodvb/subvar/'+obj, val ) ;
-
-    // Send PTT current status for synchronizing with heard pltuodvb/tx = true/false
-  }
-});
-
+  });
 
 
 });
