@@ -19,6 +19,54 @@
       out_msg="MQTT Message received "+msg.payloadString+"";
       out_msg=out_msg+"    Topic "+msg.destinationName;
      // console.log(out_msg);
+      if (msg.destinationName.substr(0,16)=='plutodvb/subvar/') { 
+
+        //control display for external mqtt changes 
+        var id_wanted = msg.destinationName.substr(16, msg.destinationName.length-16);
+        var val_wanted = msg.payloadString;
+        
+        console.log('id_wanted:'+id_wanted+' +msg.payloadString' +val_wanted);
+
+        if ($('.form_modulator [name="'+id_wanted+'"]').length>=1) {  //is in a modulator
+
+
+
+         /* if ( $('#id-tabs-content').children().hasClass('activ-tab')==true ) { //in transmission **not possible because maybe tab is not loaded**
+            tab_sel = '#'+ $('#id-tabs-content').find('.activ-tab').attr('id')+' ';
+          } else { */
+            tab_sel = t;
+          } else  { tab_sel =''; }
+          //}
+          
+
+          if ($(tab_sel+ '#'+id_wanted).length==1)  {
+             if ($(tab_sel+ '#'+id_wanted).is(':checkbox')) { 
+              if (((val_wanted.toLowerCase() == 'true') || (val_wanted.toLowerCase() =='false')) && ($(tab_sel+'#'+id_wanted).prop('checked')!= val_wanted))  {
+                let isBool = (val_wanted.toLowerCase() == 'true');
+                $(tab_sel+'#'+id_wanted).prop("checked", isBool);
+              }
+             }
+
+            if ($(tab_sel+'#'+id_wanted).val()!=val_wanted) {
+              $(tab_sel+'#'+id_wanted).val(val_wanted);
+              $(tab_sel+'#'+id_wanted).trigger('change');
+              $(tab_sel+'#'+id_wanted).trigger('click');
+              $(tab_sel+'#'+id_wanted).trigger('input');
+
+            }
+            
+          } else if ($(tab_sel+'[name="'+id_wanted+'"]').length==1) {
+            if ($(tab_sel+'[name="'+id_wanted+'"]').val()!=val_wanted) {
+              $(tab_sel+'[name="'+id_wanted+'"]').val(val_wanted);
+              $(tab_sel+'[name="'+id_wanted+'"]').trigger('change');
+              $(tab_sel+'[name="'+id_wanted+'"]').trigger('click');
+              $(tab_sel+'[name="'+id_wanted+'"]').trigger('input');
+            }
+          } 
+        }
+
+        
+
       if (typeof update_textgen == 'function') {
          if ((msg.destinationName.substr(0,16)=='plutodvb/subvar/') || (msg.destinationName.substr(0,16)=='plutodvb/status/')) {
             update_textgen (msg.destinationName,msg.payloadString); 
@@ -41,6 +89,16 @@
       if (msg.destinationName=='plutodvb/textgen/updaterequest') {
             init_pluto_obj();
       }
+      if (msg.destinationName=='plutodvb/modulator/tab_to_activate') {
+             $("#tabs li:nth-child("+msg.payloadString+") a").trigger("click");
+      }
+      if (msg.destinationName=='plutodvb/modulator/apply') { 
+          if (typeof save_modulator_setup == 'function') {
+            save_modulator_setup();
+          }
+      }
+
+      
       if (msg.destinationName=='plutodvb/status/ts/bufferstate') {
             $('#bufferstatus').html('&nbsp;'+msg.payloadString+'&nbsp;');
             let c;
@@ -77,8 +135,11 @@
 
     mqtt.subscribe("plutodvb/started");
     mqtt.subscribe("plutodvb/var");
+    mqtt.subscribe("plutodvb/subvar/#");
     mqtt.subscribe("plutodvb/subpage");
     mqtt.subscribe("plutodvb/status/#");
+    mqtt.subscribe("plutodvb/modulator/tab_to_activate"); //pass a integer to activate the n tab
+    mqtt.subscribe("plutodvb/modulator/apply"); //Apply the modulator settings
     mqtt.subscribe("plutodvb/textgen/updaterequest");
     mqtt.subscribe("plutodvb/status/ts/bufferstate");
     message = new Paho.MQTT.Message('{ "page" : "<?php echo ($_GET["page"]); ?>" }');

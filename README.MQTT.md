@@ -14,7 +14,7 @@ This allows the parameters changed by the operator to be taken into account with
 	-  ```{"ptt":"true"}``` Ask to go to transmission (Not implemented yet)	
 	-  ```{"page":"setup.php"}``` Tell the user is (re)load this page, or client is reconnected
 	-  ```{"file_firm":"C:\fakepath\pluto.frm"}``` A firmware file is uploaded	
-- ``` plutodvb/subvar/VAR``` All variables VAR are transmit with raw value (no json format)
+- ``` plutodvb/subvar/VAR``` All variables VAR are transmit with raw value (no json format).  You can change value from external software to plutoDVB (display is also updated, but only on the active modulator tab - it can be changed by piloting (see tab_to_activate)). Change of checkbox is made by {false,true} values.
 - ``` plutodvb/started``` true false Sent by the PlutoDVB when is started
 - ``` plutodvb/status/tx``` Transmiting status : true = On air, false = Stand by
 - ``` plutodvb/status/adtemp``` ADC Temperature
@@ -27,6 +27,8 @@ This allows the parameters changed by the operator to be taken into account with
 - ``` plutodvb/status/ts/bufferoverflow```  Buffer overflow level (in millisec)
 - ``` plutodvb/subvar/textgen``` Text generator string (can be used as a text banner for video - textgen.php page must be displayed)
 - ``` plutodvb/textgen/updaterequest```  Request an update of generated text (textgen.php page must be displayed)
+- ``` plutodvb/modulator/tab_to_activate```  [n integer 1.. ] display one of the modulator tabs of the controller page (simulates a click on the tab at position n)
+- ``` plutodvb/modulator/apply```  With controler page opened, apply active modulator settings from external software
 
 
 ## H265 Patch Box
