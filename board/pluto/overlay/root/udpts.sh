@@ -44,7 +44,32 @@ CONF=/mnt/jffs2/etc/settings-datv.txt
 REMUX=$(grep "remux" $CONF | cut -f2 -d '='|sed 's/ //g')
 H265BOX=$(grep use_h265box $CONF | cut -f2 -d '='|sed 's/ //g')
 H265BOXIP=$(grep ipaddr_h265box $CONF | cut -f2 -d '='|sed 's/ //g')
- 
+
+phase_correction=$(grep -w "phase_correction" $CONF | cut -f2 -d '='|sed 's/ //g')
+if [ "$phase_correction" == "" ]; then
+        phase_correction="0.0"
+fi        
+module_correction=$(grep -w "module_correction" $CONF | cut -f2 -d '='|sed 's/ //g')
+if [ "$module_correction" == "" ]; then
+        module_correction="1.0"
+fi        
+phase_correction_32_1=$(grep -w "phase_correction_32_1" $CONF | cut -f2 -d '='|sed 's/ //g')
+if [ "$phase_correction_32_1" == "" ]; then
+        phase_correction_32_1="0.0"
+fi  
+module_correction_32_1=$(grep -w "module_correction_32_1" $CONF | cut -f2 -d '='|sed 's/ //g')
+if [ "$module_correction_32_1" == "" ]; then
+        module_correction_32_1="1.0"
+fi  
+phase_correction_32_2=$(grep -w "phase_correction_32_2" $CONF | cut -f2 -d '='|sed 's/ //g')
+if [ "$phase_correction_32_2" == "" ]; then
+        phase_correction_32_2="0.0"
+fi  
+module_correction_32_2=$(grep -w "module_correction_32_2" $CONF | cut -f2 -d '='|sed 's/ //g')
+if [ "$module_correction_32_2" == "" ]; then
+        module_correction_32_2="1.0"
+fi  
+
 echo remux $REMUX
 
 echo FREQ $FREQ MODE $MODE CONSTEL $CONSTEL SR $SR FEC $FEC PILOT $PILOTS_TXT FRAME $FRAME_TXT Rof $ROLLOFF PCRPTS $PCRPTS PATPERIOD $PATPERIOD CODEC $CODEC SOUND $SOUND AUDIOINPUT $AUDIOINPUT
@@ -106,9 +131,9 @@ if [[ "$REMUX" == "on" ]]; then
 echo "Remux mode"
 echo call $CALL
 #ffmpeg -analyzeduration 4000000 -f mpegts -i udp://0.0.0.0:8282/   -ss 4 -c:v copy -tune zerolatency -c:a copy -f mpegts -muxrate $TSBITRATE -pat_period $PATPERIOD -metadata service_provider="$MESSAGE" -metadata service_name=$CALL -streamid 0:256 -muxrate "$TSBITRATE" -max_delay "$PCRPTS"000 -pat_period $PATPERIODSEC - | tsp -r --buffer-size-mb 0.01 --max-flushed-packets 100 --max-input-packets 50 -P analyze --normalized -i 1 -o /root/analyse.txt -P pcrextract --evaluate-pcr-offset --pts --noheader --pid 256 -o /root/pcr.txt -O file /root/tspipe | /root/pluto_dvb -i /root/tspipe -m $MODE -c $CONSTEL -s $SR"000" -f $FEC -t $FREQ"e6" -g $GAIN -T 6 -L 400 $PILOTS $FRAME -P 0 -r $ROLLOFF
-
+echo "-m $MODE -c $CONSTEL -s $SR"000" -f $FEC -t $FREQ"e6" -g $GAIN -T 0 -L 400 $PILOTS $FRAME -P 0 -r $ROLLOFF -R $phase_correction -A $module_correction -G $phase_correction_32_1 -H $module_correction_32_1 -M $phase_correction_32_2 -N $module_correction_32_2"
 #tsp -r --buffer-size-mb 0.001 --max-flushed-packets 7 --max-input-packets 7 -I ip 0.0.0.0:8282 | /root/tsvbr2cbr -b $TSBITRATE -p $PCRPTS | tsp --buffer-size-mb 0.001 --max-flushed-packets 10 --max-input-packets 10 -r -P sdt --create-after 300 --ts-id 1 -n $CALL -p $MESSAGE -i -s 1 -P analyze --normalized -i 1 -o /root/analyse.txt -P pcrextract --evaluate-pcr-offset --pts --noheader --pid 256 -o /root/pcr.txt | /root/pluto_dvb -m $MODE -c $CONSTEL -s $SR"000" -f $FEC -t $FREQ"e6" -g $GAIN -T 0 -L 400 $PILOTS $FRAME -P 0 -r $ROLLOFF 
-ffmpeg -f mpegts -i udp://0.0.0.0:8282 -c:v copy -c:a libfdk_aac -profile:a aac_he_v2 -ar 16k -ac 8k -f mpegts -y -| /root/tsvbr2cbr -b $TSBITRATE -p $PCRPTS | tsp --buffer-size-mb 0.001 --max-flushed-packets 10 --max-input-packets 10 -r -P sdt --create-after 300 --ts-id 1 -n $CALL -p $MESSAGE -i -s 1 -P analyze --normalized -i 1 -o /root/analyse.txt -P pcrextract --evaluate-pcr-offset --pts --noheader --pid 256 -o /root/pcr.txt | /root/pluto_dvb -m $MODE -c $CONSTEL -s $SR"000" -f $FEC -t $FREQ"e6" -g $GAIN -T 0 -L 400 $PILOTS $FRAME -P 0 -r $ROLLOFF 
+ffmpeg -f mpegts -i udp://0.0.0.0:8282 -c:v copy -c:a libfdk_aac -profile:a aac_he_v2 -ar 16k -ac 8k -f mpegts -y -| /root/tsvbr2cbr -b $TSBITRATE -p $PCRPTS | tsp --buffer-size-mb 0.001 --max-flushed-packets 10 --max-input-packets 10 -r -P sdt --create-after 300 --ts-id 1 -n $CALL -p $MESSAGE -i -s 1 -P analyze --normalized -i 1 -o /root/analyse.txt -P pcrextract --evaluate-pcr-offset --pts --noheader --pid 256 -o /root/pcr.txt | /root/pluto_dvb -m $MODE -c $CONSTEL -s $SR"000" -f $FEC -t $FREQ"e6" -g $GAIN -T 0 -L 400 $PILOTS $FRAME -P 0 -r $ROLLOFF -R $phase_correction -A $module_correction -G $phase_correction_32_1 -H $module_correction_32_1 -M $phase_correction_32_2 -N $module_correction_32_2
 #tsp -r -d -v --buffer-size-mb 0.01 --max-flushed-packets 100 --max-input-packets 50 -b 2500000 -I ip 230.0.0.1:8282 -P sdt -n $CALL -p $MESSAGE -i -s 1 -O ip 230.0.0.2:10000
 
 #nc -lu -p 8282 | /root/tsvbr2cbr -b $TSBITRATE -p $PCRPTS | /root/pluto_dvb -m $MODE -c $CONSTEL -s $SR"000" -f $FEC -t $FREQ"e6" -g $GAIN -T 6 -L 400 $PILOTS $FRAME -P 0 -r $ROLLOFF 
@@ -118,7 +143,7 @@ ffmpeg -f mpegts -i udp://0.0.0.0:8282 -c:v copy -c:a libfdk_aac -profile:a aac_
 
 else
 echo "Warning : Passthrough mode !!!!"
-tsp -r --buffer-size-mb 0.01 --max-flushed-packets 100 --max-input-packets 50 -I ip 0.0.0.0:8282 -P sdt -n $CALL -p $MESSAGE -i -s 1 -P analyze --normalized -i 1 -o /root/analyse.txt -P pcrextract --evaluate-pcr-offset --pts --noheader --pid 256 -o /root/pcr.txt | /root/pluto_dvb -m $MODE -c $CONSTEL -s $SR"000" -f $FEC -t $FREQ"e6" -g $GAIN -T 0 -L 400 $PILOTS $FRAME -P 0 -r $ROLLOFF
+tsp -r --buffer-size-mb 0.01 --max-flushed-packets 100 --max-input-packets 50 -I ip 0.0.0.0:8282 -P sdt -n $CALL -p $MESSAGE -i -s 1 -P analyze --normalized -i 1 -o /root/analyse.txt -P pcrextract --evaluate-pcr-offset --pts --noheader --pid 256 -o /root/pcr.txt | /root/pluto_dvb -m $MODE -c $CONSTEL -s $SR"000" -f $FEC -t $FREQ"e6" -g $GAIN -T 0 -L 400 $PILOTS $FRAME -P 0 -r $ROLLOFF -R $phase_correction -A $module_correction -G $phase_correction_32_1 -H $module_correction_32_1 -M $phase_correction_32_2 -N $module_correction_32_2
 fi
 echo endstreaming
 
