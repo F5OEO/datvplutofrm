@@ -25,7 +25,7 @@
         var id_wanted = msg.destinationName.substr(16, msg.destinationName.length-16);
         var val_wanted = msg.payloadString;
         
-        console.log('id_wanted:'+id_wanted+' +msg.payloadString' +val_wanted);
+       // console.log('id_wanted:'+id_wanted+' +msg.payloadString' +val_wanted);
 
         if ($('.form_modulator [name="'+id_wanted+'"]').length>=1) {  //is in a modulator
 

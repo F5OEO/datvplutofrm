@@ -1293,6 +1293,28 @@ function update_tab(id) {
       update_slide('fps',' fps','');
       update_slide('v_bitrate',' kb/s','');
 
+      //send mqtt all form value via mqtt
+      $('#tab'+id+'C .form_modulator input, #tab'+id+'C .form_modulator textarea').each( function(index) {  
+
+        let val;
+        if ($(this).is(':checkbox')) {
+          val= $(this).is(':checked');
+        } else {
+          val=$(this).val();
+        }
+        let obj = $(this).attr('id');
+        if (obj == undefined) {
+          obj = $(this).attr('name');
+        } 
+        //console.log(obj + ' ='+val);
+        if (mqtt.isConnected() ) {
+          if (( $('#id-tabs-content').children().hasClass('activ-tab')==false) || (( $('#id-tabs-content').children().hasClass('activ-tab')==true ) && ($(t).hasClass('activ-tab') == true )))  { //Send MQTT only of activ tab during transmission 
+            sendmqtt('plutodvb/var', '{"'+obj+'":"'+ val +'"}' ) ;
+            sendmqtt('plutodvb/subvar/'+obj, val ) ;
+          }
+        }
+      });
+
 }
 
 var max_id_modulator =1;
