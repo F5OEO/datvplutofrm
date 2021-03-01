@@ -251,6 +251,17 @@ case "$1" in
 	/bin/hostname -F /etc/hostname
 	/sbin/ifup -a 2>&1 | logger
 	[ $? = 0 ] && echo "OK" || echo "FAIL"
+	ethip=$(ip -f inet -o addr show eth0 |cut -d\  -f 7 | cut -d/ -f 1)
+	
+	if [ "$ethip" == "" ]; then
+    	CONF=/mnt/jffs2/etc/config.txt
+    	IPADDR_HOST=$(grep -w "ipaddr_host" $CONF | cut -f2 -d '='|sed 's/ //g')
+		if [ "$IPADDR_HOST" == "" ]; then
+			IPADDR_HOST=192.168.2.10
+		fi
+    	echo "Adding route $IPADDR_HOST" | logger
+		route add default gw $IPADDR_HOST
+	fi
 	;;
   stop)
 	printf "Stopping network: "
