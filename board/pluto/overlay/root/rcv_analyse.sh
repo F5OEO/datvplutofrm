@@ -10,11 +10,11 @@ kill -9 $mypid
 
 if [ -n "${1}" ] && [ $1 = "start" ]
 then
-	IP=$(grep  "\bminitiouner-udp-ip\b" /mnt/jffs2/etc/settings-receiver.txt | cut -f2 -d' ')
-	PORT=$(grep  "\bminitiouner-udp-port\b" /mnt/jffs2/etc/settings-receiver.txt | cut -f2 -d' ')
+	IP=$(grep  "\bminitiouner-udp-ip\b" /mnt/jffs2/etc/settings-datv.txt | cut -f2 -d'='|sed 's/ //g')
+	PORT=$(grep  "\bminitiouner-udp-port\b" /mnt/jffs2/etc/settings-datv.txt | cut -f2 -d'='|sed 's/ //g')
 
 	echo $IP
 	echo $PORT
 	tsp -r --buffer-size-mb 0.01 --max-flushed-packets 100 --max-input-packets 50  -I ip $IP:$PORT -P analyze --normalized -i 1 -o /root/analysercv.txt -P pcrextract --evaluate-pcr-offset --pts --noheader --pid 256 -o /root/pcrrcv.txt -O drop &
 	/root/decodevideo.sh $IP:$PORT >/dev/null </dev/null 2>/dev/null &	
-fi
+fi                   
