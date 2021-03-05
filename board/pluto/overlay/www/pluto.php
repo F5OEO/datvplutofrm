@@ -670,6 +670,7 @@ var obs_ws_connected = false;
 
 
       localStorage.setItem('ActivTab_TX',tab );
+      $('div .activ-tab').removeClass('activ-tab');
       $('a#tab'+tab).addClass('blink-tabactivated');
       $(t).addClass('activ-tab');
     }
@@ -809,6 +810,7 @@ var obs_ws_connected = false;
           document.getElementById("ptt").innerHTML = 'Switch OFF';
           document.getElementById("textptt").innerHTML  = '<font color="#ff0000">ON AIR</font>';
           if (localStorage.getItem('ActivTab_TX')) {
+            $('div .activ-tab').removeClass('activ-tab');
             $('a#tab'+localStorage.getItem('ActivTab_TX')).addClass('blink-tabactivated');
             $('#tab'+localStorage.getItem('ActivTab_TX')+'C').addClass('activ-tab');
           }
@@ -817,6 +819,7 @@ var obs_ws_connected = false;
             if (localStorage.getItem('LastTabApplied')) {
              localStorage.setItem('ActivTab_TX',localStorage.getItem('LastTabApplied') );
             }
+            $('div .activ-tab').removeClass('activ-tab');
             $('a#tab'+localStorage.getItem('ActivTab_TX')).addClass('blink-tabactivated');
             $('#tab'+localStorage.getItem('ActivTab_TX')+'C').addClass('activ-tab');
             change_tabinput_status();
