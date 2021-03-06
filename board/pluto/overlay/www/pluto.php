@@ -1297,7 +1297,7 @@ function update_tab(id) {
       update_slide('v_bitrate',' kb/s','');
 
       //send mqtt all form value via mqtt
-      $('#tab'+id+'C .form_modulator input, #tab'+id+'C .form_modulator textarea').each( function(index) {  
+      $('#tab'+id+'C .form_modulator input, #tab'+id+'C .form_modulator textarea, #tab'+id+'C .form_modulator select').each( function(index) {  
 
         let val;
         if ($(this).is(':checkbox')) {
@@ -1792,6 +1792,11 @@ $('#tab1').click(function(){
       }
     }
   });
+
+
+
+
+
 
 
 });
