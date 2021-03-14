@@ -26,9 +26,10 @@ inotifywait -e modify /sys/bus/iio/devices/iio\:device1/out_voltage0_hardwaregai
 gain=$(cat /sys/bus/iio/devices/iio:device1/out_voltage0_hardwaregain)
 if [ "$gain" = "-40.000000 dB" ] ; then
 echo "SdrConsole PTT OFF"
+pttoff
 else
         if [ "$gain" = "0.000000 dB" ] ; then
-                sleep 0.5
+                sleep 2
                 gain=$(cat /sys/bus/iio/devices/iio:device1/out_voltage0_hardwaregain)
                 if [ "$gain" = "0.000000 dB" ] ; then
                         echo "SdrConsole Power Max PTT ON"
