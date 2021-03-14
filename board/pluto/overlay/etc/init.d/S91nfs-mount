@@ -1,3 +1,4 @@
+#!/bin/sh
 nfs_server=`fw_printenv -n nfs_server 2> /dev/null`
 
 start() {

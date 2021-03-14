@@ -1,4 +1,4 @@
-#! /bin/sh
+#!/bin/sh
 
 # Extract patch.zip in /mnt/jfss2 for patching firmware
 # start/stop/restart
