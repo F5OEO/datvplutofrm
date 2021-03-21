@@ -376,7 +376,7 @@ Attention, in this version the editable cells are not verified at all.
     
           <td><span class="note tooltip" title="To fluidify, normalize the video stream coming from the external source.<br>If you are not an expert, keep this option active." style="color : #636363;">Remux - Force compliant</span> </td>
         <td><div class="checkcontainer">
-          <input type="checkbox" id="remux" name="H265BOX[remux]" <?php if (isset($datv_config['H265BOX']['remux']))  echo $datv_config['H265BOX']['remux']=='on' ? " checked" :  "" ?>>
+          <input type="checkbox" id="remux" name="DATV[remux]" <?php if (isset($datv_config['DATV']['remux']))  echo $datv_config['DATV']['remux']=='on' ? " checked" :  "" ?>>
           <label for="remux" aria-describedby="label"><span class="ui"></span> <span id='remux_label'> enabled</span></label>
         </div> </td>
      </tr>

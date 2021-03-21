@@ -1,3 +1,4 @@
+#!/bin/sh
 
 ptton()
 {
@@ -16,19 +17,33 @@ pttoff()
 
 start() {
 
-cp /mnt/jffs2/etc/settings-receiver.txt /www/
+if [ -f "/mnt/jffs2/etc/settings-receiver.txt" ]; then
+	cp /mnt/jffs2/etc/settings-receiver.txt /www/
+fi
 
 if [ -f "/mnt/jffs2/etc/settings.txt" ]; then   
    cp /mnt/jffs2/etc/settings.txt /www/settings.txt 
 else
 	/root/readconfig_from_env.sh >/dev/null </dev/null 2>/dev/null
 	cp /www/settings.txt /mnt/jffs2/etc/settings.txt 
-fi   
-  
+fi 
+ 
+ 
    CONF=/mnt/jffs2/etc/settings-datv.txt
    	MAINMODE=$(grep mainmode $CONF | cut -f2 -d '='|sed 's/ //g')
 	DATVMODE=$(grep datvmode $CONF | cut -f2 -d '='|sed 's/ //g')
 	TXSTART=$(grep tx_onstart $CONF | cut -f2 -d '='|sed 's/ //g')
+    REMUX=$(grep remux $CONF | cut -f2 -d '='|sed 's/ //g')
+	if [ "$MAINMODE" = "" ]; then
+		MAINMODE=pass
+		echo -e "mainmode = pass\n" >> $CONF
+		echo -e "[DATV]\n" >> $CONF
+		echo -e "datvmode = rtmp\n" >> $CONF
+		echo -e "remux = on\n" >> $CONF
+		
+	fi
+	
+
 
 	if [ "$MAINMODE" = "datv" ]; then
 		if [ "$TXSTART" = "on" ]; then
