@@ -25,10 +25,13 @@
     <script src="lib/tooltip.js"></script>
     <script src="lib/jquery.nestable.js"></script> 
     <script src="lib/mqttws31.js"></script>  
+    <script src="lib/obs-websocket.js"></script>
+    <script src="obs.js.php"></script>
     <script src="lib/jquery.MultiLanguage.min.js"></script>  
     <script src="lib/mqtt.js.php?page=<?php echo basename($_SERVER["SCRIPT_FILENAME"]); ?>"></script>  
     <link type="text/css" href="./lib/tooltip.css" rel="stylesheet">
     <link type="text/css" href="./lib/menu.css" rel="stylesheet">
+    <link href="img/favicon-32x32.png" rel="icon" type="image/png" />
   </head>
 
   <body>
@@ -152,7 +155,7 @@
    <h3>OBS Studio steering</h3>
    <table>
           <tr>
-        <td><span class="note tooltip" title="<ul><li>Before activating this function, you need to install the websocket plugin to OBS Studio. (<a href ='https://obsproject.com/forum/resources/obs-websocket-remote-control-obs-studio-from-websockets.466/' target='_blank' >Remote-control OBS Studio from WebSockets Plugin</a> - for download, see <a href='https://github.com/Palakis/obs-websocket/releases' target='_blank'>Install instructions</a>) </li><li>This allows you to drive OBS Studio directly from PlutoDVB.</li><li> The main feature is, usefull when you are working in UDP mode, to write directly in OBS Studio the command line with the corresponding parameters (Parameters/Stream/Server). This action takes place when you click  on a channel (horizontal segment of the QO100 spectrum) . OBS Studio must be started before you load the controller page.</li>" style="color : #636363;">Activation of OBS Studio steering</span><br></td>
+        <td><span class="note tooltip" title="<ul><li>Before activating this function, you need to install the websocket plugin to OBS Studio. (<a href ='https://obsproject.com/forum/resources/obs-websocket-remote-control-obs-studio-from-websockets.466/' target='_blank' >Remote-control OBS Studio from WebSockets Plugin</a> - for download, see <a href='https://github.com/Palakis/obs-websocket/releases' target='_blank'>Install instructions</a>) </li><li>This allows you to drive OBS Studio directly from PlutoDVB.</li><li> The main feature is, usefull when you are working in RTMP mode, to write directly in OBS Studio the command line with the corresponding parameters (Parameters/Stream/Server). This action takes place when you click  on a channel (horizontal segment of the QO100 spectrum). You are also be able to activate streaming or recording from the buttons on the controller page.</li>" style="color : #636363;">Activation of OBS Studio steering</span><br></td>
         <td><div class="checkcontainer">
 
           <input type="checkbox" id="use_obs_steering" name="OBS[use_obs_steering]" <?php if (isset($datv_config['OBS']['use_obs_steering']))  echo $datv_config['OBS']['use_obs_steering']=='on' ? " checked" :  "" ?>>
@@ -170,6 +173,9 @@
         <td><input type="text" id="obs_password" name="OBS[obs_password]" value="<?php if (isset($datv_config['OBS']['obs_password'])) echo $datv_config['OBS']['obs_password']; else echo ""?>" maxlength="8" size="8"></td>
      
 
+       </tr>
+       <tr>
+         <td>Destination OBS Studio text</td><td><span id='obs_text_destination'>No selection, OBS Studio steering must be enabled (<i>under developpement</i>)</span></td>
        </tr>
    </table>
    <h3>H264/H265 box</h3>
