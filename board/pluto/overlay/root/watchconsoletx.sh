@@ -1,15 +1,6 @@
 #!/bin/sh
 #https://www.analog.com/media/cn/technical-documentation/user-guides/AD9364_Register_Map_Reference_Manual_UG-672.pdf
-#F5UII: determine which device to use depending on the version of hardware
-check_rev=$(iio_info | grep "PlutoSDR Rev." | awk -F "Rev." '{print $2}'| cut -c1-1)
-dev=$(
-case $check_rev in
-   ('B') echo "1";;
-   ('C') echo "0";;
-   ('D') echo "0";;
-   (*) echo "1";;
-esac)
-echo "Rev $check_rev => Device number is $dev.";
+source /root/device_sel.sh
 ptton()
 {
     #PTT on GPIO 0 AND GPIO 2 (GPIO 1 should be not touched)

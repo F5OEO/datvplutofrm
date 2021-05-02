@@ -1,7 +1,7 @@
 #!/bin/sh
 mkfifo /root/bigtspipe
 mkfifo /root/tspipe
-
+source /root/device_sel.sh
 
 
 while :
@@ -21,7 +21,7 @@ do
  sleep 1
 
  VIDEORATE=$(grep -o " Video:.*" infortmp | cut -f4 -d, | cut -f1 -d'k') 
- echo Wait for RTMP connexion
+ echo Wait for RTMP connection
 done
 
 
@@ -101,9 +101,9 @@ fi
 
 if [ "$MODE" = "ANA" ]; then
         echo Analogique
-echo 0 > /sys/bus/iio/devices/iio:device1/out_voltage_filter_fir_en
-echo 2250000 > /sys/bus/iio/devices/iio:device1/out_voltage_sampling_frequency
-echo $FREQ"000000" > /sys/bus/iio/devices/iio:device1/out_altvoltage1_TX_LO_frequency
+echo 0 > /sys/bus/iio/devices/iio:device$dev/out_voltage_filter_fir_en
+echo 2250000 > /sys/bus/iio/devices/iio:device$dev/out_voltage_sampling_frequency
+echo $FREQ"000000" > /sys/bus/iio/devices/iio:device$dev/out_altvoltage1_TX_LO_frequency
 ffmpeg -f flv -i /root/bigtspipe -c:v copy -c:a copy -f mpegts -y /root/tspipe \
 | /root/hacktv -m apollo-fsc-fm -o - -t int16 -s 2250000 ffmpeg:/root/tspipe | iio_writedev -b 100000 cf-ad9361-dds-core-lpc
 else
