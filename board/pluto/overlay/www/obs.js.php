@@ -14,9 +14,9 @@ if ((isset ($general_ini[1]['OBS']['use_obs_steering'])) && ($general_ini[1]['OB
   };
 
  ?>
-      
+     const obs = new OBSWebSocket(); 
       function obsconnect() {
-      const obs = new OBSWebSocket();
+      
 
       var obs_websocket_host = "<?php echo $ipaddr_obs ?>";
       var obs_websocket_port = "<?php echo $obs_port ?>";
@@ -127,7 +127,6 @@ if ((isset ($general_ini[1]['OBS']['use_obs_steering'])) && ($general_ini[1]['OB
         $('#buttonstreaming,#buttonrecording').tooltipster("destroy");
         $('#buttonstreaming,#buttonrecording').attr('title','Currently no connection established with OBS Studio. <ul><li>Check the <a href="setup.php#linkdatvsettings">configured parameters</a>.</li><li>Start OBS Studio and enable its websocket server (Tools menu).</li>').tooltipster({ delay: 100,maxWidth: 500,speed: 300,interactive: true,animation: 'grow',trigger: 'hover',position : 'top-left'});
 
-        setTimeout(obsconnect, 3000);
       };
 
 
