@@ -4,14 +4,14 @@ source /root/device_sel.sh
 ptton()
 {
     #PTT on GPIO 0 AND GPIO 2 (GPIO 1 should be not touched)
-	echo 0x27 0x50 > /sys/kernel/debug/iio/iio:device$dev/direct_reg_access
-	mosquitto_pub -t plutodvb/status/tx -m true
+        echo 0x27 0x50 > /sys/kernel/debug/iio/iio:device$dev/direct_reg_access
+        mosquitto_pub -t plutodvb/status/tx -m true
 }
 
 pttoff()
 {
         echo 0x27 0x00 > /sys/kernel/debug/iio/iio:device$dev/direct_reg_access
-		mosquitto_pub -t plutodvb/status/tx -m false
+                mosquitto_pub -t plutodvb/status/tx -m false
 }
 
 
@@ -26,11 +26,11 @@ inotifywait -e modify /sys/bus/iio/devices/iio\:device$dev/out_voltage0_hardware
 gain=$(cat /sys/bus/iio/devices/iio:device$dev/out_voltage0_hardwaregain)
 gain=${gain::-4}
 
-if [ "`echo "${gain} < -40.001" | bc`" -eq 1 ]; then
+if [ "`echo "${gain} <= -40" | bc`" -eq 1 ]; then
 echo "SdrConsole PTT OFF"
 pttoff
 else
-        if [ "$gain" = "0.000000 dB" ] ; then
+        if [ "$gain" = "0.00000" ] ; then
                 sleep 2
                 gain=$(cat /sys/bus/iio/devices/iio:device$dev/out_voltage0_hardwaregain)
                 if [ "$gain" = "0.000000 dB" ] ; then
@@ -43,4 +43,3 @@ else
         fi
 fi
 done
-
