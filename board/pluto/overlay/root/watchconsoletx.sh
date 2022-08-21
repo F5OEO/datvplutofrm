@@ -24,7 +24,9 @@ while :
 do
 inotifywait -e modify /sys/bus/iio/devices/iio\:device$dev/out_voltage0_hardwaregain
 gain=$(cat /sys/bus/iio/devices/iio:device$dev/out_voltage0_hardwaregain)
-if [ "$gain" = "-40.000000 dB" ] ; then
+gain=${gain::-4}
+
+if [ "`echo "${gain} < -40.001" | bc`" -eq 1 ]; then
 echo "SdrConsole PTT OFF"
 pttoff
 else
